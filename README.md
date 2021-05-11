@@ -1,4 +1,4 @@
-# RRZE Vac
+# RRZE Pieksy
 
 System zur Vergabe von Impfterminen. 
 
@@ -26,12 +26,11 @@ GNU General Public License (GPL) Version 3
 ## Zweck 
 
 Mit dem Buchungssystems RRZE-Vac können Impf-Trancen festgelegt werden, zu denen sich Personen nach IdM-Anmeldung registieren, ein- und ausbuchen können.
-Der Name leitet sich von der Abkürzung "vac" aus dem lat. "vaccination" für "Impfung" ab.
 
 ## Dokumentation
 
 Eine vollständige Dokumentation mit vielen Anwendungsbeispielen findet sich auf der Seite: 
-https://www.wordpress.rrze.fau.de/plugins/fau-und-rrze-plugins/vac/
+https://www.wordpress.rrze.fau.de/plugins/fau-und-rrze-plugins/pieksy/
 
 
 ## Verwendung der SSO-Option
