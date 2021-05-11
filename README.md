@@ -2,7 +2,12 @@
 
 System zur Vergabe von Impfterminen. 
 
-Fork vom RRZE-RSVP (Platzbuchungssystem der FAU)
+Fork vom RRZE-RSVP (Platzbuchungssystem der FAU). Ausgenommen sind:
+- LDAP
+- Equipments
+- Kontaktverfolgung
+- (weitere sind zu ergänzen)
+
 Das Plugin ermöglicht das Reservieren, Einbuchen und Ausbuchen von Impfterminen.
 
 ## Download 
