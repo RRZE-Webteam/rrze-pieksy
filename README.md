@@ -2,7 +2,8 @@
 
 System zur Vergabe von Impfterminen. 
 
-Fork vom RRZE-RSVP (Platzbuchungssystem der FAU). Ausgenommen sind:
+Fork vom RRZE-RSVP (Platzbuchungssystem der FAU). 
+Entfernt werden die Funktionalitäten:
 - LDAP
 - Equipments
 - Kontaktverfolgung
@@ -25,7 +26,8 @@ GNU General Public License (GPL) Version 3
 
 ## Zweck 
 
-Mit dem Buchungssystems RRZE-Pieksy können Trancen festgelegt werden, zu denen sich Personen nach IdM-Anmeldung registieren, ein- und ausbuchen können. Als Trancen sind zu verstehen: gruppenweise durchgeführte Impfungen mit fester Anzahl an Personen in einem definierten Zeitfenster.
+Mit dem Buchungssystems RRZE-Pieksy können Trancen festgelegt werden, zu denen sich Personen nach IdM-Anmeldung registieren, ein- und ausbuchen können. 
+Trancen: gruppenweise durchgeführte Impfungen mit fester Anzahl an Personen in einem definierten Zeitfenster.
 
 ## Dokumentation
 
