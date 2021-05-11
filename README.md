@@ -21,7 +21,7 @@ GNU General Public License (GPL) Version 3
 ## Zweck 
 
 Mit dem Buchungssystems RRZE-Vac können Impf-Trancen festgelegt werden, zu denen sich Personen nach IdM-Anmeldung registieren, ein- und ausbuchen können.
-
+Der Name leitet sich von der Abkürzung "vac" aus dem lat. "vaccination" für "Impfung" ab.
 
 ## Dokumentation
 
