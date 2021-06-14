@@ -34,7 +34,6 @@ class Tools
         $value_schema_rows = '';
         $value_schema_seats = '';
         $value_prefix = '';
-        $value_equipment = [];
         $value_start_number = '';
 
         echo '<div class="wrap">';
@@ -83,11 +82,6 @@ class Tools
                 if ($_GET['schema_rows'] == 'num' && isset($_GET['start_number']) && is_numeric($_GET['start_number'])) {
                     $row = absint($_GET['start_number']);
                 }
-                if (isset($_GET['equipment'])) {
-                    $equipment = array_map('absint', $_GET['equipment']);
-                } else {
-                    $equipment = false;
-                }
                 $prefix = isset($_GET['prefix']) ? sanitize_text_field($_GET['prefix']) . ' ' : '';
                 $num_created = 0;
 
@@ -103,9 +97,6 @@ class Tools
                         $num_created++;
                         if ($seat_id) {
                             update_post_meta($seat_id, 'rrze-pieksy-seat-room', $room_id);
-                            if (is_array($equipment)) {
-                                wp_set_post_terms($seat_id, $equipment, 'rrze-pieksy-equipment');
-                            }
                         }
                         $seat++;
                     }

@@ -1157,32 +1157,12 @@ class Bookings extends Shortcodes {
             $response['time'] = $this->buildTimeslotSelect($roomID, $date, $time, $availability);
             if ($time && ($bookingMode != 'consultation')) {
                 $seatSelect = $this->buildSeatSelect($roomID, $date, $time, $seat, $availability);
-                $seatInfo = ($seat) ? $this->buildSeatInfo($seat) : '';
                 $response['seat'] = $seatSelect . $seatInfo;
             }
         }
         wp_send_json($response);
     }
 
-    public function buildSeatInfo($seatID = '') {
-        if ($seatID == '') {
-            return '';
-        }
-        $output = '';
-        $seat_name = get_the_title($seatID);
-        $equipment = get_the_terms($seatID, 'rrze-pieksy-equipment');
-        if ($equipment !== false) {
-            $output .= '<div class="pieksy-item-info">';
-            $output .= '<div class="pieksy-item-equipment"><h5>' . sprintf( __( 'Seat %s', 'rrze-pieksy' ), $seat_name ) . '</h5>';
-            foreach  ($equipment as $e) {
-                $e_arr[] = $e->name;
-            }
-            $output .= '<p><strong>' . __('Equipment','rrze-pieksy') . '</strong>: ' . implode(', ', $e_arr) . '</p>';
-            $output .= '</div>';
-            $output .= '</div>';
-        }
-        return $output;
-    }
 
     private function buildTimeslotSelect($roomID, $date, $time = false, $availability) {
         $slots = [];

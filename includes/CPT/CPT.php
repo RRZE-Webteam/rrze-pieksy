@@ -88,14 +88,6 @@ class CPT extends Main
 
         add_submenu_page(
             'edit.php?post_type=booking',
-            __('Equipment', 'rrze-pieksy'),
-            __('Equipment', 'rrze-pieksy'),
-            'edit_seats',
-            'edit-tags.php?taxonomy=rrze-pieksy-equipment&post_type=seat'
-        );
-
-        add_submenu_page(
-            'edit.php?post_type=booking',
             __('Room occupancy for today', 'rrze-pieksy'),
             __('Room occupancy', 'rrze-pieksy'),
             'edit_seats',
@@ -140,14 +132,6 @@ class CPT extends Main
         }
 
         if ($current_screen->post_type == 'seat') {
-            if ($pagenow == 'edit-tags.php') {
-                $submenu_file = 'edit-tags.php?taxonomy=rrze-pieksy-equipment&post_type=seat';
-            }
-
-            if ($pagenow == 'term.php') {
-                $submenu_file = 'edit-tags.php?taxonomy=rrze-pieksy-equipment&post_type=seat';
-            }
-
             $parent_file = 'edit.php?post_type=booking';
         }
 
