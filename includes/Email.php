@@ -58,8 +58,8 @@ class Email
         $autoConfirmation = isset($roomMeta['rrze-pieksy-room-auto-confirmation']) ? Functions::getBoolValueFromAtt($roomMeta['rrze-pieksy-room-auto-confirmation'][0]) : false;
         $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
         $showConfirmationButton = false;
-        $showCheckinButton = false;
-        $showCheckoutButton = false;
+        // $showCheckinButton = false;
+        // $showCheckoutButton = false;
         $showCancelButton = false;
         if ($cancelReason == '') {
             $cancelReason = false;
@@ -67,14 +67,14 @@ class Email
         }
 
         switch ($mailContext) {
-            case 'customerConfirmationRequired':
-                $subject = $this->options->email_force_to_confirm_subject;
-                $subject_en = $this->options->email_force_to_confirm_subject_en;
-                $text = $this->options->email_force_to_confirm_text;
-                $text_en = $this->options->email_force_to_confirm_text_en;
-                $showConfirmationButton = true;
-                $showCancelButton = true;
-                break;
+            // case 'customerConfirmationRequired':
+            //     $subject = $this->options->email_force_to_confirm_subject;
+            //     $subject_en = $this->options->email_force_to_confirm_subject_en;
+            //     $text = $this->options->email_force_to_confirm_text;
+            //     $text_en = $this->options->email_force_to_confirm_text_en;
+            //     $showConfirmationButton = true;
+            //     $showCancelButton = true;
+            //     break;
             case 'customerConfirmed':
                 if ($adminConfirmationRequired) {
                     if ($recipient == 'admin') {
@@ -96,8 +96,8 @@ class Email
                     $subject_en = $this->options->email_confirm_subject_en;
                     $text = $this->options->email_confirm_text;
                     $text_en = $this->options->email_confirm_text_en;
-                    $showCheckinButton = true;
-                    $showCheckoutButton = true;
+                    // $showCheckinButton = true;
+                    // $showCheckoutButton = true;
                     $showCancelButton = true;
                     $status = 'confirmed';
                 }
@@ -123,8 +123,8 @@ class Email
                 $subject_en = $this->options->email_confirm_subject_en;
                 $text = $this->options->email_confirm_text;
                 $text_en = $this->options->email_confirm_text_en;
-                $showCheckinButton = true;
-                $showCheckoutButton = true;
+                // $showCheckinButton = true;
+                // $showCheckoutButton = true;
                 $showCancelButton = true;
                 $status = 'confirmed';
                 break;
@@ -159,8 +159,8 @@ class Email
                 $subject_en = $this->options->email_confirm_subject_en;
                 $text = $this->options->email_confirm_text;
                 $text_en = $this->options->email_confirm_text_en;
-                $showCheckinButton = false;
-                $showCheckoutButton = true;
+                // $showCheckinButton = false;
+                // $showCheckoutButton = true;
                 $showCancelButton = false;
                 $status = 'checked-in';
                 break;
@@ -253,64 +253,64 @@ class Email
             $data['show_cancel_btn'] = false;
         }
 
-        // CheckIn Button
-        if ($showCheckinButton) {
-            $data['show_checkin_btn'] = true;
-            $data['checkin_url'] = Functions::bookingReplyUrl('checkin', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-            $data['checkin_btn'] = __('Check In', 'rrze-pieksy');
-            $data['checkin_btn_en'] = 'Check In';
-            $forceCheckin = isset($roomMeta['rrze-pieksy-room-force-to-checkin']) ? $roomMeta['rrze-pieksy-room-force-to-checkin'][0] : '';
+        // // CheckIn Button
+        // if ($showCheckinButton) {
+        //     $data['show_checkin_btn'] = true;
+        //     $data['checkin_url'] = Functions::bookingReplyUrl('checkin', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
+        //     $data['checkin_btn'] = __('Check In', 'rrze-pieksy');
+        //     $data['checkin_btn_en'] = 'Check In';
+        //     $forceCheckin = isset($roomMeta['rrze-pieksy-room-force-to-checkin']) ? $roomMeta['rrze-pieksy-room-force-to-checkin'][0] : '';
 
-            if ($forceCheckin) {
-                $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
-                if ($checkInTime == '') {
-                    $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
-                    $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
-                    $checkInTime = $settingsCheckInTime;
-                }
-                $bookingTimeStamp = $booking['booking_date_timestamp'];
-                $bookingStart = $booking['start'];
-                if ($bookingStart < $bookingTimeStamp) {
-                    //Seat booked after beginning of timeslot
-                    $timeStampCheckIn = $bookingTimeStamp + ($checkInTime * MINUTE_IN_SECONDS);
-                } else {
-                    $timeStampCheckIn = $bookingStart + ($checkInTime * MINUTE_IN_SECONDS);
-                }
-                $checkInLimit = Functions::timeFormat($timeStampCheckIn);
-                $checkInLimit_en = date('g:i a', $timeStampCheckIn);
-                $data['checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
-                $data['checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
-                $data['alt_checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
-                $data['alt_checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
-            } else {
-                $data['checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
-                $data['checkin_text_en'] = 'Please check-in your booking on site.';
-                $data['alt_checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
-                $data['alt_checkin_text_en'] = 'Please check-in your booking on site.';
-            }
-        } else {
-            $data['show_checkin_btn'] = false;
-        }
+        //     if ($forceCheckin) {
+        //         $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
+        //         if ($checkInTime == '') {
+        //             $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
+        //             $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
+        //             $checkInTime = $settingsCheckInTime;
+        //         }
+        //         $bookingTimeStamp = $booking['booking_date_timestamp'];
+        //         $bookingStart = $booking['start'];
+        //         if ($bookingStart < $bookingTimeStamp) {
+        //             //Seat booked after beginning of timeslot
+        //             $timeStampCheckIn = $bookingTimeStamp + ($checkInTime * MINUTE_IN_SECONDS);
+        //         } else {
+        //             $timeStampCheckIn = $bookingStart + ($checkInTime * MINUTE_IN_SECONDS);
+        //         }
+        //         $checkInLimit = Functions::timeFormat($timeStampCheckIn);
+        //         $checkInLimit_en = date('g:i a', $timeStampCheckIn);
+        //         $data['checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
+        //         $data['checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
+        //         $data['alt_checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
+        //         $data['alt_checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
+        //     } else {
+        //         $data['checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
+        //         $data['checkin_text_en'] = 'Please check-in your booking on site.';
+        //         $data['alt_checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
+        //         $data['alt_checkin_text_en'] = 'Please check-in your booking on site.';
+        //     }
+        // } else {
+        //     $data['show_checkin_btn'] = false;
+        // }
 
-        // CheckOut Button
-        if ($showCheckoutButton) {
-            $data['show_checkout_btn'] = true;
-            $data['checkout_url'] = Functions::bookingReplyUrl('checkout', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-            $data['checkout_btn'] = __('Check Out', 'rrze-pieksy');
-            $data['checkout_btn_en'] = 'Check Out';
-            $data['checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
-            $data['checkout_text_en'] = 'Please check out when you leave the site.';
-            $data['alt_checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
-            $data['alt_checkout_text_en'] = 'Please check out when you leave the site.';
-        } else {
-            $data['show_checkout_btn'] = false;
-        }
+        // // CheckOut Button
+        // if ($showCheckoutButton) {
+        //     $data['show_checkout_btn'] = true;
+        //     $data['checkout_url'] = Functions::bookingReplyUrl('checkout', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
+        //     $data['checkout_btn'] = __('Check Out', 'rrze-pieksy');
+        //     $data['checkout_btn_en'] = 'Check Out';
+        //     $data['checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
+        //     $data['checkout_text_en'] = 'Please check out when you leave the site.';
+        //     $data['alt_checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
+        //     $data['alt_checkout_text_en'] = 'Please check out when you leave the site.';
+        // } else {
+        //     $data['show_checkout_btn'] = false;
+        // }
 
-        if ($showCheckinButton || $showCheckoutButton) {
-            $data['show_check_btns'] = true;
-        } else {
-            $data['show_check_btns'] = false;
-        }
+        // if ($showCheckinButton || $showCheckoutButton) {
+        //     $data['show_check_btns'] = true;
+        // } else {
+        //     $data['show_check_btns'] = false;
+        // }
 
         // ICS attachment
         $attachment = '';

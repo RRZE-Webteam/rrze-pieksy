@@ -207,10 +207,10 @@ class Schedule
                 $bookingId = get_the_ID();
                 $seatId = get_post_meta($bookingId, 'rrze-pieksy-booking-seat', true);
                 $roomId = get_post_meta($seatId, 'rrze-pieksy-seat-room', true);
-                if (get_post_meta($roomId, 'rrze-pieksy-room-force-to-confirm', true)) {
-                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
-                    $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled', 'notconfirmed');
-                }
+                // if (get_post_meta($roomId, 'rrze-pieksy-room-force-to-confirm', true)) {
+                //     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
+                //     $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled', 'notconfirmed');
+                // }
             }
             wp_reset_postdata();
         }

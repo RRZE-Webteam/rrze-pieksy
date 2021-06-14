@@ -59,7 +59,6 @@ class CPT extends Main
 
         $seats = new Seats;
         $seats->seats_post_type();
-        $seats->seats_taxonomies();
     }
 
     public function bookingMenu()
@@ -77,13 +76,13 @@ class CPT extends Main
                 'edit.php?post_type=' . $cpt       // menu slug
             );
 
-            add_submenu_page(
-                'edit.php?post_type=booking',
-                $cpt_obj->labels->name,
-                $hiddenTitle,
-                $cpt_obj->cap->edit_posts,
-                'post-new.php?post_type=' . $cpt
-            );
+            // add_submenu_page(
+            //     'edit.php?post_type=booking',
+            //     $cpt_obj->labels->name,
+            //     $hiddenTitle,
+            //     $cpt_obj->cap->edit_posts,
+            //     'post-new.php?post_type=' . $cpt
+            // );
         }
 
         add_submenu_page(

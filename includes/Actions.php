@@ -104,7 +104,7 @@ class Actions
 			}
 
             $bookingMode = get_post_meta($booking['room'], 'rrze-pieksy-room-bookingmode', true);
-            $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
+            // $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
             $autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-auto-confirmation', true));
             $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
 
@@ -123,11 +123,11 @@ class Actions
 				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
 				$this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled');
 			} elseif ($status == 'cancelled' && $action == 'restore') {
-                if ($forceToConfirm) {
-                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
-                } else {
+                // if ($forceToConfirm) {
+                //     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
+                // } else {
                     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
-                }
+                // }
 			} elseif ((in_array($status, ['checked-out', 'confirmed']) || $bookingMode == 'check-only') && $action == 'checkin') {
 			    $now = current_time('timestamp');
                 $offset = 15 * MINUTE_IN_SECONDS;
@@ -782,16 +782,16 @@ class Actions
 		$bookingCheckedOut = ($bookingStatus == 'checked-out');
 
 		$bookingMode = get_post_meta($booking['room'], 'rrze-pieksy-room-bookingmode', true);
-		$forceToConfirm = get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true);
+		// $forceToConfirm = get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true);
 
 		if (($bookingBooked || $bookingCancelled) && $bookingStatus == 'confirmed') {
 			update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'confirmed');
-			if ($forceToConfirm) {
-				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
+			// if ($forceToConfirm) {
+			// 	update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
+			// 	$this->email->doEmail('adminConfirmed', 'customer', $bookingId);
+			// } else {
 				$this->email->doEmail('adminConfirmed', 'customer', $bookingId);
-			} else {
-				$this->email->doEmail('adminConfirmed', 'customer', $bookingId);
-			}
+			// }
 		} elseif (($bookingBooked || $bookingConfirmed) && $bookingStatus == 'cancelled') {
 			$this->email->doEmail('bookingCancelled', 'customer', $bookingId);
 		} elseif ($bookingCheckedIn) {
