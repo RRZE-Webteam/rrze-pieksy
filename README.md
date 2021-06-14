@@ -7,7 +7,7 @@ Entfernt werden die Funktionalitäten:
 - LDAP
 - Equipments
 - Kontaktverfolgung
-- (weitere sind zu ergänzen)
+- QR / PDF
 
 Das Plugin ermöglicht das Reservieren und Stornieren von Impfterminen.
 

@@ -220,7 +220,7 @@ class Actions
 			return $actions;
 		}
 
-		$generatePdfLink = !empty($actions['generate-pdf']) ? $actions['generate-pdf'] : '';
+		// $generatePdfLink = !empty($actions['generate-pdf']) ? $actions['generate-pdf'] : '';
         $view = $actions['view'];
 		$actions = [];
 		$title = _draft_or_post_title();		
@@ -261,9 +261,9 @@ class Actions
 
         $actions['view'] = $view;
         
-		if ($generatePdfLink) {
-			$actions['generate-pdf'] = $generatePdfLink;
-		}
+		// if ($generatePdfLink) {
+		// 	$actions['generate-pdf'] = $generatePdfLink;
+		// }
 		return $actions;
 	}
 
@@ -285,16 +285,16 @@ class Actions
 		if (!in_array($post_type, ['room', 'seat'])) {
 			return;
 		}		
-		$generatePdfAction= !empty($actions['generate-pdf']) ? $actions['generate-pdf'] : '';
+		// $generatePdfAction= !empty($actions['generate-pdf']) ? $actions['generate-pdf'] : '';
 		$actions = [];
 		if (EMPTY_TRASH_DAYS) {
 			$actions["trash_{$post_type}"] = _x('Delete', 'Booking', 'rrze-pieksy');
 		} else {
 			$actions["delete_{$post_type}"] = __('Delete Permanently');
 		}
-		if ($generatePdfAction) {
-			$actions['generate-pdf'] = $generatePdfAction;
-		}
+		// if ($generatePdfAction) {
+		// 	$actions['generate-pdf'] = $generatePdfAction;
+		// }
 		return $actions;
 	}
 
