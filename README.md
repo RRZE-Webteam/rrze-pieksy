@@ -1,11 +1,19 @@
 # RRZE Pieksy
 
-Platzbuchungssystem der FAU.
-Das Plugin ermöglicht das Reservieren, Einbuchen und Ausbuchen von Plätzen in Räumen oder anderen Orten.
+System zur Vergabe von Impfterminen. 
+
+Fork vom RRZE-RSVP (Platzbuchungssystem der FAU). 
+Entfernt werden die Funktionalitäten:
+- LDAP
+- Equipments
+- Kontaktverfolgung
+- (weitere sind zu ergänzen)
+
+Das Plugin ermöglicht das Reservieren, Einbuchen und Ausbuchen von Impfterminen.
 
 ## Download 
 
-GitHub-Repo: https://github.com/RRZE-Webteam/rrze-pieksy
+GitHub-Repo: https://github.com/RRZE-Webteam/rrze-vac
 
 
 ## Autor 
@@ -18,15 +26,8 @@ GNU General Public License (GPL) Version 3
 
 ## Zweck 
 
-Mit Hilfe des (Sitz-)Platzbuchungs- und Reservierungsssystems (Pieksy, „Réservez S’il Vous Plaît“) ist es Raumverantwortlichen möglich, 
-auf ihren jeweiligen Webauftritten eine Buchungsmöglichkeit für Plätze in Seminarräumen, Hörsälen und anderen Räumen anzubieten. 
-Personen, die einen Platz buchen wollen, können sich vor Ort zu einem Platz ein- und abbuchen. 
-Zusätzlich soll auch optional eine Reservierungsmöglichkeit angeboten werden.
-
-In Bezug auf die notwendigen Maßnahmen zur Eindämmung der Corona-Pandemie eignet sich das System auch für eine Kontaktverfolgung.
-
-Das System eignet sich auch für die Verwaltung von Sprechstundenterminen.
-
+Mit dem Buchungssystems RRZE-Pieksy können Trancen festgelegt werden, zu denen sich Personen nach IdM-Anmeldung registieren, ein- und ausbuchen können. 
+Trancen: gruppenweise durchgeführte Impfungen mit fester Anzahl an Personen in einem definierten Zeitfenster.
 
 ## Dokumentation
 
@@ -34,9 +35,9 @@ Eine vollständige Dokumentation mit vielen Anwendungsbeispielen findet sich auf
 https://www.wordpress.rrze.fau.de/plugins/fau-und-rrze-plugins/pieksy/
 
 
-## Verwendung der SSO-Option (Raum Einstellungen)
+## Verwendung der SSO-Option
 
-Das Plugin unterstützt die Anmeldung für zentral-vergebene Kennungen von Studierenden und Beschäftigten der Universität Erlangen-Nürnberg. Mit dieser Option ist es möglich, den Zugriff auf die Reservierungsseite nur für Personen zu autorisieren, die eine IdM-Kennung haben.
+Das Plugin nutzt die Anmeldung für zentral-vergebene Kennungen von Studierenden und Beschäftigten der Universität Erlangen-Nürnberg. Damit ist der Zugriff auf die Reservierungsseite nur für Personen autorisiert, die eine IdM-Kennung haben.
 
 Damit die SSO-Option funktioniert, muss zuerst das FAU-WebSSO-Plugin installiert und aktiviert werden.
 Vgl. https://github.com/RRZE-Webteam/fau-websso
@@ -44,18 +45,9 @@ Vgl. https://github.com/RRZE-Webteam/fau-websso
 Folgen Sie dann den Anweisungen unter folgendem Link:
 https://github.com/RRZE-Webteam/fau-websso/blob/master/README.md
 
-Nachdem Sie den korrekten Betrieb des FAU-WebSSO-Plugins überprüft haben, können Sie die SSO-Option des Pieksy-Plugins verwenden.
+Nachdem Sie den korrekten Betrieb des FAU-WebSSO-Plugins überprüft haben, können Sie die SSO-Option des RSVP-Plugins verwenden.
 
 
-## Verwendung der LDAP-Option (Raum Einstellungen)
+## Speicherung der Daten
 
-Das Plugin unterstützt auch die Anmeldung über LDAP. Mit dieser Option ist es möglich, den Zugriff auf die Reservierungsseite nur für Personen zu autorisieren, die einen Zugang zu Ihrem Active Directory haben.
-
-
-## Kontaktverfolgung
-
-Das Plugin bietet auch die Möglichkeit, alle Personen zu ermitteln, die sich mit einer gesuchten Person zeitgleich in denselben Räumen befanden.
-Das Suchformular hierfür wird über "Werkzeuge" -> "Pieksy Kontaktverfolgung" aufgerufen.
-Falls der Zugriff nur für SuperAdmins möglich sein soll, muss das Plugin rrze-pieksy-network ( https://github.com/RRZE-Webteam/rrze-pieksy-network ) installiert und aktiviert werden.
-Damit kann das Suchformular nur im Dashboard der Netzwerkverwaltung über "Pieksy Kontaktverfolgung" aufgerufen werden und Administratoren erhalten einen Hinweis anstelle des Formulars. 
-Alle persönlichen Daten der Kontaktverfolgung werden verschlüsselt gespeichert und automatisch nach 4 Wochen gelöscht. Nur im Fall eines Suchtreffers werden sie entschlüsselt und in einem CSV bereitgestellt.
+Alle persönlichen Daten werden verschlüsselt gespeichert und automatisch nach 4 Wochen gelöscht. Für die Suche werden sie entschlüsselt und auf der Website bereitgestellt.
