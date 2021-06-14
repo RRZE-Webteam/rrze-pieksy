@@ -122,8 +122,8 @@ function defaultOptions()  {
             'fau_logo' => 'on',
             'website_logo' => 'off',
             'website_url' => 'on',
-            'instructions_de' => 'Bitte lesen Sie den QR Code ein, um auf diesem Platz einzuchecken oder diesen Platz für einen späteren Zeitpunkt zu reservieren.',
-            'instructions_en' => 'Please scan the QR code to check in at this place or to reserve this place for a later date.',
+            // 'instructions_de' => 'Bitte lesen Sie den QR Code ein, um auf diesem Platz einzuchecken oder diesen Platz für einen späteren Zeitpunkt zu reservieren.',
+            // 'instructions_en' => 'Please scan the QR code to check in at this place or to reserve this place for a later date.',
             'room_text' => 'off',
             // 'room_image' => 'off',
             'room_address' => 'off',
@@ -164,10 +164,10 @@ function getSections()
             'id'    => 'email',
             'title' => __('E-Mail Settings', 'rrze-pieksy')
         ],
-        [
-            'id'    => 'pdf',
-            'title' => __('QR PDF Settings', 'rrze-pieksy')
-        ],
+        // [
+        //     'id'    => 'pdf',
+        //     'title' => __('QR PDF Settings', 'rrze-pieksy')
+        // ],
         [
             'id'    => 'reset',
             'title' => __('Reset Settings', 'rrze-pieksy')
@@ -414,68 +414,68 @@ function getFields(){
             'exception'         => ['locale' => 'en']
             ]         
         ],
-        'pdf' => [
-            [
-                'name'  => 'fau_logo',
-                'label' => __('Print FAU logo', 'rrze-pieksy'),
-                'default'           => $defaults['fau_logo'],
-                'type'  => 'checkbox'
-            ],
-            [
-                'name'  => 'website_logo',
-                'label' => __('Print website\'s logo or title', 'rrze-pieksy'),
-                'default'           => $defaults['website_logo'],
-                'type'  => 'checkbox'
-            ],
-            [
-                'name'  => 'website_url',
-                'label' => __('Print website\'s URL', 'rrze-pieksy'),
-                'default'           => $defaults['website_url'],
-                'type'  => 'checkbox'
-            ],
-            [
-                'name'              => 'instructions_de',
-                'label'             => __('Instructions in German', 'rrze-pieksy'),
-                'desc'              => __('This text will be shown above the QR code.', 'rrze-pieksy'),
-                'placeholder'       => __('Instructions in German', 'rrze-pieksy'),
-                'type'              => 'textarea',
-                'default'           => $defaults['instructions_de'],
-                'sanitize_callback' => 'sanitize_text_field'
-            ],
-            [
-                'name'              => 'instructions_en',
-                'label'             => __('Instructions in English', 'rrze-pieksy'),
-                'desc'              => __('This text will be shown above the QR code.', 'rrze-pieksy'),
-                'placeholder'       => __('Instructions in English', 'rrze-pieksy'),
-                'type'              => 'textarea',
-                'default'           => $defaults['instructions_en'],
-                'sanitize_callback' => 'sanitize_text_field'
-            ],
-            [
-                'name'  => 'room_text',
-                'label' => __('Print room\'s text', 'rrze-pieksy'),
-                'default' => $defaults['room_text'],
-                'type'  => 'checkbox'
-            ],
-            // [
-            //     'name'  => 'room_image',
-            //     'label' => __('Print room\'s image', 'rrze-pieksy'),
-            //     'default' => $defaults['room_image'],
-            //     'type'  => 'checkbox'
-            // ],
-            [
-                'name'  => 'room_address',
-                'label' => __('Print room\'s address', 'rrze-pieksy'),
-                'default' => $defaults['room_address'],
-                'type'  => 'checkbox'
-            ],
-            // [
-            //     'name'  => 'room_floorplan',
-            //     'label' => __('Print floor plan', 'rrze-pieksy'),
-            //     'default' => $defaults['room_floorplan'],
-            //     'type'  => 'checkbox'
-            // ],
-        ],
+        // 'pdf' => [
+        //     [
+        //         'name'  => 'fau_logo',
+        //         'label' => __('Print FAU logo', 'rrze-pieksy'),
+        //         'default'           => $defaults['fau_logo'],
+        //         'type'  => 'checkbox'
+        //     ],
+        //     [
+        //         'name'  => 'website_logo',
+        //         'label' => __('Print website\'s logo or title', 'rrze-pieksy'),
+        //         'default'           => $defaults['website_logo'],
+        //         'type'  => 'checkbox'
+        //     ],
+        //     [
+        //         'name'  => 'website_url',
+        //         'label' => __('Print website\'s URL', 'rrze-pieksy'),
+        //         'default'           => $defaults['website_url'],
+        //         'type'  => 'checkbox'
+        //     ],
+        //     // [
+        //     //     'name'              => 'instructions_de',
+        //     //     'label'             => __('Instructions in German', 'rrze-pieksy'),
+        //     //     'desc'              => __('This text will be shown above the QR code.', 'rrze-pieksy'),
+        //     //     'placeholder'       => __('Instructions in German', 'rrze-pieksy'),
+        //     //     'type'              => 'textarea',
+        //     //     'default'           => $defaults['instructions_de'],
+        //     //     'sanitize_callback' => 'sanitize_text_field'
+        //     // ],
+        //     // [
+        //     //     'name'              => 'instructions_en',
+        //     //     'label'             => __('Instructions in English', 'rrze-pieksy'),
+        //     //     'desc'              => __('This text will be shown above the QR code.', 'rrze-pieksy'),
+        //     //     'placeholder'       => __('Instructions in English', 'rrze-pieksy'),
+        //     //     'type'              => 'textarea',
+        //     //     'default'           => $defaults['instructions_en'],
+        //     //     'sanitize_callback' => 'sanitize_text_field'
+        //     // ],
+        //     [
+        //         'name'  => 'room_text',
+        //         'label' => __('Print room\'s text', 'rrze-pieksy'),
+        //         'default' => $defaults['room_text'],
+        //         'type'  => 'checkbox'
+        //     ],
+        //     // [
+        //     //     'name'  => 'room_image',
+        //     //     'label' => __('Print room\'s image', 'rrze-pieksy'),
+        //     //     'default' => $defaults['room_image'],
+        //     //     'type'  => 'checkbox'
+        //     // ],
+        //     [
+        //         'name'  => 'room_address',
+        //         'label' => __('Print room\'s address', 'rrze-pieksy'),
+        //         'default' => $defaults['room_address'],
+        //         'type'  => 'checkbox'
+        //     ],
+        //     // [
+        //     //     'name'  => 'room_floorplan',
+        //     //     'label' => __('Print floor plan', 'rrze-pieksy'),
+        //     //     'default' => $defaults['room_floorplan'],
+        //     //     'type'  => 'checkbox'
+        //     // ],
+        // ],
         'reset' => [
             [
                 'name'  => 'reset_settings',
@@ -560,23 +560,23 @@ function getShortcodeSettings(){
             ],
 
         ],
-        'pieksy-qr' => [
-            'block' => [
-                'blocktype' => 'rrze-pieksy/pieksy-qr', // dieser Wert muss angepasst werden
-                'blockname' => 'pieksy-qr', // dieser Wert muss angepasst werden
-                'title' => 'Pieksy QR', // Der Titel, der in der Blockauswahl im Gutenberg Editor angezeigt wird
-                'category' => 'widgets', // Die Kategorie, in der der Block im Gutenberg Editor angezeigt wird
-                'icon' => 'admin-users',  // Das Icon des Blocks
-                'show_block' => 'content', // 'right' or 'content' : Anzeige des Blocks im Content-Bereich oder in der rechten Spalte
-                'message' => __( 'Find the settings on the right side', 'rrze-pieksy' ) // erscheint bei Auswahl des Blocks, wenn "show_block" auf 'right' gesetzt ist
-            ],
-            'seat' => [
-                'default' => 0,
-                'field_type' => 'text', // Art des Feldes im Gutenberg Editor
-                'label' => __( 'Seat ID', 'rrze-pieksy' ),
-                'type' => 'number' // Variablentyp der Eingabe
-            ],
-        ]
+        // 'pieksy-qr' => [
+        //     'block' => [
+        //         'blocktype' => 'rrze-pieksy/pieksy-qr', // dieser Wert muss angepasst werden
+        //         'blockname' => 'pieksy-qr', // dieser Wert muss angepasst werden
+        //         'title' => 'Pieksy QR', // Der Titel, der in der Blockauswahl im Gutenberg Editor angezeigt wird
+        //         'category' => 'widgets', // Die Kategorie, in der der Block im Gutenberg Editor angezeigt wird
+        //         'icon' => 'admin-users',  // Das Icon des Blocks
+        //         'show_block' => 'content', // 'right' or 'content' : Anzeige des Blocks im Content-Bereich oder in der rechten Spalte
+        //         'message' => __( 'Find the settings on the right side', 'rrze-pieksy' ) // erscheint bei Auswahl des Blocks, wenn "show_block" auf 'right' gesetzt ist
+        //     ],
+        //     'seat' => [
+        //         'default' => 0,
+        //         'field_type' => 'text', // Art des Feldes im Gutenberg Editor
+        //         'label' => __( 'Seat ID', 'rrze-pieksy' ),
+        //         'type' => 'number' // Variablentyp der Eingabe
+        //     ],
+        // ]
     ];
 }
 

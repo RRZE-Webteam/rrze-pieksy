@@ -43,9 +43,6 @@ class Main
 		$shortcodes = new Shortcodes($this->pluginFile, $settings);
 		$shortcodes->onLoaded();
 
-		$printing = new Printing;
-		$printing->onLoaded();
-
 		$schedule = new Schedule;
 		$schedule->onLoaded();
 
