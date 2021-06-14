@@ -3,7 +3,8 @@
 System zur Vergabe von Impfterminen. 
 
 Fork vom RRZE-RSVP (Platzbuchungssystem der FAU). 
-Entfernt werden die Funktionalitäten:
+
+Entfernt wurden die Funktionalitäten:
 - LDAP
 - Equipments
 - Kontaktverfolgung
