@@ -9,7 +9,7 @@ Entfernt werden die Funktionalitäten:
 - Kontaktverfolgung
 - (weitere sind zu ergänzen)
 
-Das Plugin ermöglicht das Reservieren, Einbuchen und Ausbuchen von Impfterminen.
+Das Plugin ermöglicht das Reservieren und Stornieren von Impfterminen.
 
 ## Download 
 
