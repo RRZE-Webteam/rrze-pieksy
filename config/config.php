@@ -127,7 +127,6 @@ function defaultOptions()  {
             // 'room_image' => 'off',
             'room_address' => 'off',
             // 'room_floorplan' => 'off',
-            'seat_equipment' => 'off',
             'room-notes-label' => __('Additional informations', 'rrze-pieksy'),
             'check-in-time' => '15',
         ];
@@ -466,12 +465,6 @@ function getFields(){
             //     'default' => $defaults['room_floorplan'],
             //     'type'  => 'checkbox'
             // ],
-            [
-                'name'  => 'seat_equipment',
-                'label' => __('Print seats\' equipment', 'rrze-pieksy'),
-                'default' => $defaults['seat_equipment'],
-                'type'  => 'checkbox'
-            ],
         ],
         'reset' => [
             [

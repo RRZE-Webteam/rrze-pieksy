@@ -24,7 +24,6 @@ class Seats
 	public function onLoaded()
 	{
 		add_action('init', [$this, 'seats_post_type']);
-		add_action('init', [$this, 'seats_taxonomies']);
 
 		add_filter('manage_seat_posts_columns', [$this, 'columns']);
 		add_action('manage_seat_posts_custom_column', [$this, 'customColumn'], 10, 2);
@@ -87,26 +86,6 @@ class Seats
 		];
 
 		register_post_type('seat', $args);
-	}
-
-	public function seats_taxonomies()
-	{
-		$labels_equipment = array(
-			'name'				=> _x('Equipment', 'taxonomy general name', 'rrze-pieksy'),
-			'singular_name'		=> _x('Equipment', 'taxonomy singular name', 'rrze-pieksy'),
-		);
-		$args_equipment = array(
-			'labels' => $labels_equipment,
-			'hierarchical' => true,
-			'rewrite' => 'rrze-pieksy-equipment',
-			'capabilities' => [
-				'manage_terms'  => 'edit_seats',
-				'edit_terms'    => 'edit_seats',
-				'delete_terms'  => 'edit_seats',
-				'assign_terms'  => 'edit_seats'
-			]
-		);
-		register_taxonomy('rrze-pieksy-equipment', 'seat', $args_equipment);
 	}
 
 	public function columns($columns)

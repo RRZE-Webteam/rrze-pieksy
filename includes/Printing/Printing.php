@@ -193,19 +193,6 @@ class Printing {
                 $pdf->Text($pdf->GetX(), $y + 5, $permalink);
 
 
-                // Seat equiptment
-                if ($this->options->pdf_seat_equipment == 'on'){
-                    $html = '';
-                    $aEquipment = get_the_terms($seat_post_id, 'rrze-pieksy-equipment');
-                    if ($aEquipment){
-                        $html = '<strong>' . __('Equipment:', 'rrze-pieksy') . '</strong><ul>';
-                        foreach($aEquipment as $equipment){
-                            $html .= '<li>' . $equipment->name . '</li>';
-                        }
-                        $html .= '<ul>';
-                        $pdf->writeHTMLCell(0, 1, PDF_MARGIN_LEFT, $pdf->GetY() + 2*$ySpace, $html, 0, 2, 0);
-                    }
-                }
             }
     
             $pdf_file_name = 'rrze-pieksy-' . date('Y-m-d-His') . '.pdf';
