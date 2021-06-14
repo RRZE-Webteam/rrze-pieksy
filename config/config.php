@@ -45,7 +45,7 @@ function isAllowedSearchForGuest(){
     return in_array($_SERVER['SERVER_NAME'], $allowedDomains);
 }
 
-// used in wp_kses_custom()  
+// used in wp_kses_custom() and for 'desc' of 'contact_tracking_note'  
 function getAllowedHTML(){
     return [
         'a' => [
@@ -93,6 +93,7 @@ function defaultOptions()  {
 
         return [
             'single_room_availability_table' => 'yes_link',
+            'contact_tracking_note' => '<h3>Hinweis</h3><p>Bei Anfragen des Gesundheitsamtes oder anderer Behörden ist auf die Adresse <a href="mailto:kanzler@fau.de">kanzler@fau.de</a> zu verweisen. Eine Abfrage der Daten zur Kontaktverfolgung wird auf Anforderung und Freigabe des Kanzlerbüros zentral durch das RRZE vorgenommen. Bei technischen Fragen hierzu wenden Sie sich an <a href="mailto:webmaster@fau.de">webmaster@fau.de</a>.</p><p>Weitergehende Informationen finden sie hier:</p><ul><li><a href="https://www.verwaltung.zuv.fau.de/arbeitssicherheit/gefaehrungen-am-arbeitsplatz/biologische-arbeitsstoffe/#sprungmarke2">Empfehlungen zu Hygienemaßnahmen des Referats Arbeitssicherheit</a></li><li><a href="https://www.verwaltung.zuv.fau.de/arbeitssicherheit/dokumentation-im-arbeitsschutz/gefaehrdungsbeurteilung/#sprungmarke7">Handlungshilfen des Referats Arbeitssicherheit</a></li><li><a href="https://www.wordpress.rrze.fau.de/plugins/fau-und-rrze-plugins/pieksy/hilfsmittel-und-hinweise-zur-nutzung/">Hilfsmittel und Hinweise zur Nutzung der Platzbuchungssystems</a></li></ul>', 
             'notification_email' => $notification_email,
             'notification_if_new' => 'yes',
             'notification_if_cancel' => 'yes',
@@ -129,6 +130,7 @@ function defaultOptions()  {
             // 'room_floorplan' => 'off',
             'room-notes-label' => __('Additional informations', 'rrze-pieksy'),
             'check-in-time' => '15',
+            'dsgvo-declaration' => __('Ich bin damit einverstanden, dass meine Kontaktdaten für die Dauer des Vorganges der Platzbuchung und bis zu 4 Wochen danach zum Zwecke der Nachverfolgung gemäß der gesetzlichen Grundlagen zur Corona-Bekämpfung gespeichert werden dürfen. Ebenso wird Raumverantwortlichen und Veranstalter von Sprechstunden das Recht eingeräumt, während der Dauer des Buchungsprozesses und bis zum Ende des ausgewählten Termins Einblick in folgende Buchungsdaten zu nehmen: E-Mailadresse, Name, Vorname. Raumverantwortliche und Veranstalter von Sprechstunden erhalten diese Daten allein zum Zweck der Durchführung und Verwaltung des Termins gemäß §6 Abs1 a DSGVO. Die Telefonnummer wird nur zum Zwecke der Kontaktverfolgung aufgrund der gesetzlicher Grundlagen zur Pandemiebekämpfung für Gesundheitsbehörden erfasst.', 'rrze-pieksy'),
         ];
     }
     
@@ -200,6 +202,14 @@ function getFields(){
                     'no'  => __('No', 'rrze-pieksy')
                 ]
             ],
+            [
+                'name'    => 'contact_tracking_note',
+                'label'   => __('Note for admins', 'rrze-pieksy'),
+                'desc'    => __('Allowed HTML-Tags are:', 'rrze-pieksy') . esc_html(' <' . implode('> <', array_keys(getAllowedHTML())) . '>'),
+                'type'    => 'textarea' . (is_super_admin() ? '' : 'readonly'),
+                'default' =>  $defaults['contact_tracking_note'],
+                'sanitize_callback' => 'wp_kses_custom'                
+            ],            
         ],
         'email' => [
             [

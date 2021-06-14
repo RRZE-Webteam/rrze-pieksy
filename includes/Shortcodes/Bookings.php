@@ -370,7 +370,10 @@ class Bookings extends Shortcodes {
                 . '<label for="pieksy_comment">' . $label . '</label>'
                 . '<textarea name="pieksy_comment" id="pieksy_comment"></textarea>';
         }
-
+        $output .= '<div class="form-group">'
+        . '<input type="checkbox" value="1" id="pieksy_dsgvo" name="pieksy_dsgvo" required> '
+        . '<label for="pieksy_dsgvo">' . $defaults['dsgvo-declaration'] . '</label>'
+        . '</div>';
 	$output .= '</fieldset>';  
         $output .= '<button type="submit" class="btn btn-primary">' . __('Submit booking', 'rrze-pieksy') . '</button>
             </form>
