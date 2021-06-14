@@ -82,8 +82,6 @@ class Actions
 			$this->ajaxResult(['result' => false]);
 		}
 
-		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
-
 		$this->ajaxResult(['result' => true]);
 	}
 
@@ -145,8 +143,6 @@ class Actions
 			} elseif ($status == 'checked-in' && $action == 'checkout') {
 			    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-out');
 			}
-
-			do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 
 			wp_redirect(get_admin_url() . 'edit.php?post_type=booking');
 			exit;
@@ -323,7 +319,6 @@ class Actions
 					if (!Functions::isBookingArchived($postId) && in_array($status, ['booked', 'confirmed'])) {
 						update_post_meta($postId, 'rrze-pieksy-booking-status', 'cancelled');
 						$this->email->doEmail('bookingCancelled', 'customer', $postId);
-						do_action('rrze-pieksy-tracking', get_current_blog_id(), $postId);
 						$cancelled++;
 					} else {
 						unset($postIds[$key]);
@@ -807,7 +802,6 @@ class Actions
 			return;
 		}
 
-		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 	}
 
 
@@ -970,7 +964,6 @@ class Actions
 			return $this->template->getContent('reply/booking-admin', $data);
 		});
 
-		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 	}
 
 	protected function bookingReplyCustomer(int $bookingId, array $booking, string $action)
@@ -1124,7 +1117,6 @@ class Actions
 			return $this->template->getContent('reply/booking-customer', $data);
 		});
 
-		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 	}
 
 	protected function ajaxResult(array $returnAry)

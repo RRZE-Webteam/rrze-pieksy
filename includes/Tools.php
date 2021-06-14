@@ -183,22 +183,6 @@ class Tools
             . '</td>'
             . '</tr>';
 
-        echo '<tr><th scope="row"><strong>' . __('Equipment', 'rrze-pieksy') . ' [' . __('optional', 'rrze-pieksy') . ']</strong></th>';
-        $equipments = get_terms('rrze-pieksy-equipment', ['hide_empty' => false,]);
-        $equi_out = '';
-        if (!empty($equipments)) {
-            foreach ($equipments as $equipment) {
-                $equi_out .= '<p><input type="checkbox" name="equipment[]" id="equipment_' . $equipment->term_id . '" value="' . $equipment->term_id . '" ' . checked(in_array($equipment->term_id, $value_equipment), true, false) . '>'
-                    . '<label for="equipment_' . $equipment->term_id . '">' . $equipment->name . '</label></p>';
-            }
-        } else {
-            $equi_out .= '<p>' . sprintf(__('No equipment found. You can add seat equipment on the %sEquipment screen%s.'), '<a href="' . admin_url('/edit-tags.php?taxonomy=rrze-pieksy-equipment">'), '</a>') . '</p>';
-        }
-        echo '<td>' . $equi_out;
-
-        echo '<p class="description">' . __('Preselect equipment that will be available on all seats. You can modify the equipment later by editing the seats individually or by bulk editing several seats in the seats table.', 'rrze-pieksy') . '</p>';
-        echo '</td></tr>';
-
         echo '</tbody></table>';
         echo '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="' . __('Create Seats', 'rrze-pieksy') . '"></p>';
 

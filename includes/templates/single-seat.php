@@ -4,12 +4,11 @@ namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\Pieksy\Auth\{IdM, LDAP};
+use RRZE\Pieksy\Auth\{IdM};
 
 use WP_Query;
 
 $idm = new IdM;
-$ldapInstance = new LDAP;
 
 $settings = new Settings(plugin()->getFile());
 $options = (object) $settings->getOptions();
@@ -32,20 +31,13 @@ if (isset($_GET['id']) && isset($_GET['nonce']) && wp_verify_nonce($_GET['nonce'
         $room = $seatCheckInOut['room'];
         $customerEmail = $seatCheckInOut['guest_email'];
         $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-sso-required', true));
-        $ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-ldap-required', true));
-        $ldapRequired = $ldapRequired && $settings->getOption('ldap', 'server') ? true : false;
   
         $bSSO = true;
         if (!$ssoRequired || !$idm->isAuthenticated()) {
             $bSSO = false;
         }
 
-        $bLDAP = true;
-        if (!$ldapRequired || !$ldapInstance->isAuthenticated()) {
-            $bLDAP = false;
-        }
-
-        if ($bSSO || $bLDAP) {
+        if ($bSSO) {
             if ($bSSO) {
                 $idm->setAttributes();
                 $customerData = $idm->getCustomerData();
@@ -55,15 +47,6 @@ if (isset($_GET['id']) && isset($_GET['nonce']) && wp_verify_nonce($_GET['nonce'
                     exit;
                 }else{
                     $idm->logout(home_url( add_query_arg( null, null ) . '&sso_loggedout=1'));
-                }
-            } elseif ($bLDAP) {
-                $ldapInstance->setAttributes();
-                $customerData = $ldapInstance->getCustomerData();
-                $ldapInstance->logout();
-                // check if booking email is logged in email
-                if ($customerEmail != $customerData['customer_email']){
-                    wp_redirect(home_url( add_query_arg( null, null ) . '&email_error=1'));
-                    exit;
                 }
             }   
         }                
@@ -159,7 +142,6 @@ if ($checkInBooking) {
         case 'checkin':
             if ($status == 'confirmed') {
                 update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
-                do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
             }
             $link = sprintf(
                 '<a href="%1$s?id=%2$d&action=checkout&nonce=%3$s" class="button button-checkout" data-id="%2$d">%4$s</a>',
@@ -207,7 +189,6 @@ if ($checkInBooking) {
     $bookingId = null;
     $status = null;
     $ssoRequired = false;
-    $ldapRequired = false;
    
     $roomId = get_post_meta($seatId, 'rrze-pieksy-seat-room', true);
     $now = current_time('timestamp');
@@ -263,8 +244,6 @@ if ($checkInBooking) {
         $date = $data['date'];
         $time = $data['time'];
         $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-sso-required', true));
-        $ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-ldap-required', true));
-        $ldapRequired = $ldapRequired && $settings->getOption('ldap', 'server') ? true : false;
     }
 
     $bookingmode = get_post_meta($roomId, 'rrze-pieksy-room-bookingmode', true);
@@ -272,7 +251,7 @@ if ($checkInBooking) {
     $allowInstant = Functions::getBoolValueFromAtt(get_post_meta($roomId, 'rrze-pieksy-room-instant-check-in', true));
 
     //$nonceQuery = (!$ssoRequired ? '' : '&nonce=' . $nonce );
-    $nonceQuery = ( !$ssoRequired && !$ldapRequired ? '' : '&nonce=' . $nonce );
+    $nonceQuery = ( !$ssoRequired ? '' : '&nonce=' . $nonce );
 
     if ($bookingmode == 'reservation' && $status == 'confirmed') {
         $link = sprintf(

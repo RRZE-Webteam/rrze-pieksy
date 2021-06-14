@@ -1,9 +1,9 @@
 {
-  "name": "rrze-rsvp",
-  "version": "2.6.3",
-  "description": "Platzbuchungssystem der FAU.",
-  "main": "rrze-rsvp.php",
-  "textdomain": "rrze-rsvp",
+  "name": "rrze-pieksy",
+  "version": "0.0.4",
+  "description": "FAU Reservation Tool for vaccinations",
+  "main": "rrze-pieksy.php",
+  "textdomain": "rrze-pieksy",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,9 +11,9 @@
   "cssdir": "./assets/css/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RRZE-Webteam/rrze-rsvp.git",
-    "issues": "https://github.com/RRZE-Webteam/rrze-rsvp/issues",
-    "clone": "git+https://github.com/RRZE-Webteam/rrze-rsvp.git"
+    "url": "git+https://github.com/RRZE-Webteam/rrze-pieksy.git",
+    "issues": "https://github.com/RRZE-Webteam/rrze-pieksy/issues",
+    "clone": "git+https://github.com/RRZE-Webteam/rrze-pieksy.git"
   },
   "browserslist": [
     "last 3 years",
@@ -43,7 +43,7 @@
     "semver": "^6.3.0"
   },
   "bugs": {
-    "url": "https://github.com/RRZE-Webteam/rrze-rsvp/issues"
+    "url": "https://github.com/RRZE-Webteam/rrze-pieksy/issues"
   },
-  "homepage": "https://github.com/RRZE-Webteam/rrze-rsvp#readme"
+  "homepage": "https://github.com/RRZE-Webteam/rrze-pieksy#readme"
 }

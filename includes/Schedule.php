@@ -92,7 +92,6 @@ class Schedule
     {
         $this->deleteOldBookings();
         $this->deleteCancelledBookings();
-        $this->deleteOldTrackingData();
     }
 
     /**
@@ -211,7 +210,6 @@ class Schedule
                 if (get_post_meta($roomId, 'rrze-pieksy-room-force-to-confirm', true)) {
                     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
                     $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled', 'notconfirmed');
-                    do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
                 }
             }
             wp_reset_postdata();
@@ -275,11 +273,9 @@ class Schedule
                 }
                 if (in_array($bookingMode, ['consultation', 'no-check'])) {
                     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
-                    do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
                 } elseif ($checkInRequired) {
                     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
                     $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled', 'notcheckedin');
-                    do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
                 }
             }
             wp_reset_postdata();
@@ -323,22 +319,9 @@ class Schedule
             while ($query->have_posts()) {
                 $query->the_post();
                 update_post_meta(get_the_ID(), 'rrze-pieksy-booking-status', 'checked-out');
-                do_action('rrze-pieksy-tracking', get_current_blog_id(), get_the_ID());
             }
             wp_reset_postdata();
         }
     }
 
-    /**
-     * deleteOldTrackingData
-     * Delete all tracking data older than 4 weeks.
-     * 
-     * @return void
-     */    
-    protected function deleteOldTrackingData()
-    {
-        global $wpdb;
-        $dbTable = Tracking::getTableName();
-        $wpdb->query("DELETE FROM $dbTable WHERE ts_inserted < (NOW() - INTERVAL 4 WEEK)");
-    }
 }
