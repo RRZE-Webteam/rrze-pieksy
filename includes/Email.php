@@ -67,14 +67,14 @@ class Email
         }
 
         switch ($mailContext) {
-            case 'customerConfirmationRequired':
-                $subject = $this->options->email_force_to_confirm_subject;
-                $subject_en = $this->options->email_force_to_confirm_subject_en;
-                $text = $this->options->email_force_to_confirm_text;
-                $text_en = $this->options->email_force_to_confirm_text_en;
-                $showConfirmationButton = true;
-                $showCancelButton = true;
-                break;
+            // case 'customerConfirmationRequired':
+            //     $subject = $this->options->email_force_to_confirm_subject;
+            //     $subject_en = $this->options->email_force_to_confirm_subject_en;
+            //     $text = $this->options->email_force_to_confirm_text;
+            //     $text_en = $this->options->email_force_to_confirm_text_en;
+            //     $showConfirmationButton = true;
+            //     $showCancelButton = true;
+            //     break;
             case 'customerConfirmed':
                 if ($adminConfirmationRequired) {
                     if ($recipient == 'admin') {

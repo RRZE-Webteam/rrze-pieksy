@@ -220,7 +220,7 @@ class Bookings {
                             $_wpnonce,
                             _x('Check-Out', 'Booking', 'rrze-pieksy')
                         );
-                        $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
+                        // $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
                         if ($bookingMode == 'check-only') {
                             switch ($status) {
                                 case 'checked-in':
@@ -234,8 +234,8 @@ class Bookings {
                                     $button =  $checkInButton;
                                     break;
                             }
-                        } elseif ($status == 'booked' && $forceToConfirm) {
-                            $button = _x('Waiting for customer confirmation', 'Booking', 'rrze-pieksy') . $cancelButton;
+                        // } elseif ($status == 'booked' && $forceToConfirm) {
+                        //     $button = _x('Waiting for customer confirmation', 'Booking', 'rrze-pieksy') . $cancelButton;
                         } elseif ($status == 'confirmed') {
                             $button = $cancelButton . $checkInButton;
                         } elseif ($status == 'checked-in') {

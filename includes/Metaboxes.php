@@ -318,10 +318,10 @@ class Metaboxes
             'type'             => 'select',
             'default'          => 'reservation',
             'options' => array(
-                'reservation' => __('Reservation with check-in', 'rrze-pieksy'),
+                // 'reservation' => __('Reservation with check-in', 'rrze-pieksy'),
                 'no-check' => __('Reservation without check-in', 'rrze-pieksy'),
-                'consultation' => __('Consultation', 'rrze-pieksy'),
-                'check-only' => __('Check-in and check-out only on site', 'rrze-pieksy'), // Nur Ein- und Auschecken vor Ort
+                // 'consultation' => __('Consultation', 'rrze-pieksy'),
+                // 'check-only' => __('Check-in and check-out only on site', 'rrze-pieksy'), // Nur Ein- und Auschecken vor Ort
             ),
             'description' => 'Der Buchungsmodus legt den grundlegenden Workflow für eine Buchung fest:<br />
     <b>Platzreservierung mit Check-In:</b> Registrierung und Anmeldung für einen Termin und einen Platz + Einchecken und Auschecken am Platz beim Erreichen des Termins + Speicherung der Daten der Teilnehmer zur Kontaktverfolgung.</br />
@@ -362,14 +362,14 @@ class Metaboxes
             'classes' => ['hide-check-only']
         ));
 
-        $cmb_general->add_field(array(
-            'name' => __('Customer confirmation required', 'rrze-pieksy'),
-            'desc' => __('The customer must confirm his reservation within one hour. Otherwise the system will cancel the booking.', 'rrze-pieksy'),
-            'id'   => 'rrze-pieksy-room-force-to-confirm',
-            'type' => 'checkbox',
-            'default' => '',
-            'classes' => ['hide-check-only']
-        ));
+        // $cmb_general->add_field(array(
+        //     'name' => __('Customer confirmation required', 'rrze-pieksy'),
+        //     'desc' => __('The customer must confirm his reservation within one hour. Otherwise the system will cancel the booking.', 'rrze-pieksy'),
+        //     'id'   => 'rrze-pieksy-room-force-to-confirm',
+        //     'type' => 'checkbox',
+        //     'default' => '',
+        //     'classes' => ['hide-check-only']
+        // ));
 
         $cmb_general->add_field(array(
             'name' => __('Checkout notification', 'rrze-pieksy'),

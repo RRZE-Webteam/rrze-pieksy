@@ -103,10 +103,10 @@ function defaultOptions()  {
             'received_subject_en' => 'Thank you for booking',
             'received_text' => __('We received your booking and we will notify you once it has been confirmed.', 'rrze-pieksy'),
             'received_text_en' => 'We received your booking and we will notify you once it has been confirmed.',
-            'force_to_confirm_subject' => __('Please confirm your booking', 'rrze-pieksy'),
-            'force_to_confirm_subject_en' => 'Please confirm your booking',
-            'force_to_confirm_text' => __('You are required to confirm the booking now. Please note that unconfirmed bookings automatically expire after one hour.', 'rrze-pieksy'),
-            'force_to_confirm_text_en' => 'You are required to confirm the booking now. Please note that unconfirmed bookings automatically expire after one hour.',                         
+            // 'force_to_confirm_subject' => __('Please confirm your booking', 'rrze-pieksy'),
+            // 'force_to_confirm_subject_en' => 'Please confirm your booking',
+            // 'force_to_confirm_text' => __('You are required to confirm the booking now. Please note that unconfirmed bookings automatically expire after one hour.', 'rrze-pieksy'),
+            // 'force_to_confirm_text_en' => 'You are required to confirm the booking now. Please note that unconfirmed bookings automatically expire after one hour.',                         
             'confirm_subject' => __('Your booking has been confirmed', 'rrze-pieksy'),
             'confirm_subject_en' => 'Your booking has been confirmed',            
             'confirm_text' => __('We are happy to inform you that your booking has been confirmed.', 'rrze-pieksy'),
@@ -289,36 +289,36 @@ function getFields(){
                 'default'           => $defaults['received_text_en'],
                 'exception'         => ['locale' => 'en']
             ],  
-            [
-                'name'              => 'force_to_confirm_subject',
-                'label'             => __('Subject for confirmation required.', 'rrze-pieksy'),
-                'desc'              => __('Subject of the email where confirmation of the booking by the customer is required.', 'rrze-pieksy'),
-                'type'              => 'text',
-                'default'           => $defaults['force_to_confirm_subject'],
-                'sanitize_callback' => 'sanitize_text_field'
-            ],  
-            [
-                'name'              => 'force_to_confirm_subject_en',
-                'label'             => __('Subject for confirmation required (english)', 'rrze-pieksy'),
-                'desc'              => __('Subject of the email where confirmation of the booking by the customer is required.', 'rrze-pieksy'),
-                'type'              => 'text',
-                'default'           => $defaults['force_to_confirm_subject_en'],
-                'sanitize_callback' => 'sanitize_text_field',
-                'exception'         => ['locale' => 'en']
-            ], 
-            [
-                'name'              => 'force_to_confirm_text',
-                'label'             => __('Text for confirmation required', 'rrze-pieksy'),
-                'type'              => 'textarea',
-                'default'           => $defaults['force_to_confirm_text']
-            ],   
-            [
-                'name'              => 'force_to_confirm_text_en',
-                'label'             => __('Text for confirmation required (english)', 'rrze-pieksy'),
-                'type'              => 'textarea',
-                'default'           => $defaults['force_to_confirm_text_en'],
-                'exception'         => ['locale' => 'en']
-            ],                                                    
+            // [
+            //     'name'              => 'force_to_confirm_subject',
+            //     'label'             => __('Subject for confirmation required.', 'rrze-pieksy'),
+            //     'desc'              => __('Subject of the email where confirmation of the booking by the customer is required.', 'rrze-pieksy'),
+            //     'type'              => 'text',
+            //     'default'           => $defaults['force_to_confirm_subject'],
+            //     'sanitize_callback' => 'sanitize_text_field'
+            // ],  
+            // [
+            //     'name'              => 'force_to_confirm_subject_en',
+            //     'label'             => __('Subject for confirmation required (english)', 'rrze-pieksy'),
+            //     'desc'              => __('Subject of the email where confirmation of the booking by the customer is required.', 'rrze-pieksy'),
+            //     'type'              => 'text',
+            //     'default'           => $defaults['force_to_confirm_subject_en'],
+            //     'sanitize_callback' => 'sanitize_text_field',
+            //     'exception'         => ['locale' => 'en']
+            // ], 
+            // [
+            //     'name'              => 'force_to_confirm_text',
+            //     'label'             => __('Text for confirmation required', 'rrze-pieksy'),
+            //     'type'              => 'textarea',
+            //     'default'           => $defaults['force_to_confirm_text']
+            // ],   
+            // [
+            //     'name'              => 'force_to_confirm_text_en',
+            //     'label'             => __('Text for confirmation required (english)', 'rrze-pieksy'),
+            //     'type'              => 'textarea',
+            //     'default'           => $defaults['force_to_confirm_text_en'],
+            //     'exception'         => ['locale' => 'en']
+            // ],                                                    
 	        [
                 'name'              => 'confirm_subject',
                 'label'             => __('Subject Confirmation', 'rrze-pieksy'),

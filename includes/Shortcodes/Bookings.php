@@ -523,7 +523,7 @@ class Bookings extends Shortcodes {
         $roomMeta = get_post_meta($roomId);
 
         $data['autoconfirmation'] = (isset($roomMeta['rrze-pieksy-room-auto-confirmation']) && $roomMeta['rrze-pieksy-room-auto-confirmation'][0] == 'on');
-        $data['force_to_confirm'] = (isset($roomMeta['rrze-pieksy-room-force-to-confirm']) && $roomMeta['rrze-pieksy-room-force-to-confirm'][0] == 'on');
+        // $data['force_to_confirm'] = (isset($roomMeta['rrze-pieksy-room-force-to-confirm']) && $roomMeta['rrze-pieksy-room-force-to-confirm'][0] == 'on');
         $data['force_to_checkin'] = (isset($roomMeta['rrze-pieksy-room-force-to-checkin']) && $roomMeta['rrze-pieksy-room-force-to-checkin'][0] == 'on');
 
         $data['date'] = $booking['date'];
@@ -847,7 +847,7 @@ class Bookings extends Shortcodes {
 
         $autoconfirmation = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-auto-confirmation', true));
         $instantCheckIn = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-instant-check-in', true));
-        $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-force-to-confirm', true));
+        // $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-force-to-confirm', true));
         $forceToCheckin = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-force-to-checkin', true));
         $sendIcsToAdmin = get_post_meta($room_id, 'rrze-pieksy-room-send-to-email', true);
         if ($booking_mode == 'check-only') {
@@ -890,9 +890,9 @@ class Bookings extends Shortcodes {
         $timestamp = current_time('timestamp');
         $bookingMode = get_post_meta($room_id, 'rrze-pieksy-room-bookingmode', true);
 
-        if ($forceToConfirm) {
-            $status = 'booked';
-        } else {
+        // if ($forceToConfirm) {
+        //     $status = 'booked';
+        // } else {
             if ($autoconfirmation) {
                 $status = 'confirmed';
                 switch ($bookingMode) {
@@ -912,7 +912,7 @@ class Bookings extends Shortcodes {
             } else {
                 $status = 'booked';
             }
-        }
+        // }
 
         update_post_meta($booking_id, 'rrze-pieksy-booking-status', $status );
         update_post_meta($booking_id, 'rrze-pieksy-booking-notes', $booking_comment);
@@ -920,9 +920,9 @@ class Bookings extends Shortcodes {
 
 
         // E-Mail senden
-        if ($forceToConfirm) {
-            $this->email->doEmail('customerConfirmationRequired', 'customer', $booking_id, $status);
-        } else {
+        // if ($forceToConfirm) {
+        //     $this->email->doEmail('customerConfirmationRequired', 'customer', $booking_id, $status);
+        // } else {
             if ($bookingMode == 'check-only') {
                 $this->email->doEmail('bookingCheckedIn', 'customer', $booking_id, $status);
                 if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
@@ -937,7 +937,7 @@ class Bookings extends Shortcodes {
                 $this->email->doEmail('adminConfirmationRequired', 'customer', $booking_id, $status);
                 $this->email->doEmail('adminConfirmationRequired', 'admin', $booking_id, $status);
             }
-        }
+        // }
 
 
         /*switch($bookingMode) {
