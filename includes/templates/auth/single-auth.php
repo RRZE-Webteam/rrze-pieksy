@@ -4,10 +4,9 @@ namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\Pieksy\Auth\{IdM, LDAP};
+use RRZE\Pieksy\Auth\{IdM};
 
 $idm = new IdM;
-$ldapInstance = new LDAP;
 $template = new Template;
 $settings = new Settings(plugin()->getFile());
 
@@ -24,21 +23,6 @@ if (!$roomID && isset($_GET['id'])){
 }
 
 $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($roomID, 'rrze-pieksy-room-sso-required', true));
-$ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($roomID, 'rrze-pieksy-room-ldap-required', true));
-$ldapRequired = $ldapRequired && $settings->getOption('ldap', 'server') ? true : false;
-
-$loginDenied = '';
-if ($ldapRequired && isset($_POST['submit_ldap'])) {
-    $ldapInstance->login();
-    if ($ldapInstance->isAuthenticated()) {
-        $queryStr = Functions::getQueryStr([], ['require-auth']);
-        $redirectUrl = trailingslashit(get_permalink()) . ($queryStr ? '?' . $queryStr : '');
-        wp_redirect($redirectUrl);
-        exit;
-    } else {
-        $loginDenied = '<br><p class="error-message">' . __('Login denied', 'rrze-pieksy') . '</p>';
-    }
-}
 
 if ($ssoRequired && $idm->simplesamlAuth) {
     $loginUrl = $idm->getLoginURL();
@@ -97,18 +81,6 @@ $sOr = '';
 if ($ssoRequired) {
     echo "<p>$idmLogin</p>";
     $sOr = '<br><strong>' . __('Oder', 'rrze-pieksy') . '</strong><br>&nbsp;<br>';
-}
-
-if ($ldapRequired) {
-    $headline = $sOr . __('Please login with your UB-AD username', 'rrze-pieksy') . ':' . $loginDenied;
-    echo <<<FORMEND
-    $headline
-        <form action="#" method="POST">
-            <label for="username">Username: </label><input id="username" type="text" name="username" value="" />
-            <label for="password">Password: </label><input id="password" type="password" name="password"  value="" />
-            <input type="submit" name="submit_ldap" value="Submit" />
-        </form>
-FORMEND;
 }
 
 echo $divClose;

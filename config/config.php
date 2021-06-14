@@ -170,10 +170,6 @@ function getSections()
             'title' => __('QR PDF Settings', 'rrze-pieksy')
         ],
         [
-             'id'    => 'ldap',
-             'title' => __('LDAP Settings', 'rrze-pieksy')
-        ],
-        [
             'id'    => 'reset',
             'title' => __('Reset Settings', 'rrze-pieksy')
         ],
@@ -487,43 +483,6 @@ function getFields(){
                 'type'  => 'checkbox'
             ],
         ],
-        'ldap' => [
-            [
-                'name'    => 'server',
-                'label'   => __('Server', 'rrze-pieksy'),
-                'desc'   => __('LDAP server URL. Leave blank if you are not using LDAP as an authentication system.', 'rrze-pieksy'),
-                'type'    => 'text',
-		        'sanitize_callback' => 'sanitize_text_field'
-            ],
-            [
-                'name'    => 'port',
-                'label'   => __('Port', 'rrze-pieksy'),
-                'desc'   => __('LDAP server port.', 'rrze-pieksy'),
-                'type'    => 'number',
-		        'sanitize_callback' => 'sanitize_natint_field'
-            ],
-            [
-                'name'    => 'distinguished_name',
-                'label'   => __('DN', 'rrze-pieksy'),
-                'desc'   => __('LDAP Distinguished Name.', 'rrze-pieksy'),
-                'type'    => 'text',
-		        'sanitize_callback' => 'sanitize_text_field'
-            ],
-            [
-                'name'    => 'bind_base_dn',
-                'label'   => __('Bind Base DN', 'rrze-pieksy'),
-                'desc'   => __('DN to bind on.', 'rrze-pieksy'),
-                'type'    => 'text',
-		        'sanitize_callback' => 'sanitize_text_field'
-            ],
-            [
-                'name'    => 'search_base_dn',
-                'label'   => __('Search Base DN', 'rrze-pieksy'),
-                'desc'   => __('DN to search in.', 'rrze-pieksy'),
-                'type'    => 'text',
-		        'sanitize_callback' => 'sanitize_text_field'
-            ],
-        ],
         'reset' => [
             [
                 'name'  => 'reset_settings',
@@ -569,13 +528,7 @@ function getShortcodeSettings(){
                 'field_type' => 'toggle',
                 'label' => __( 'Require SSO Authentication', 'rrze-pieksy' ),
                 'type' => 'boolean',
-                'default'   => false
-            ],
-            'ldap' => [
-                'field_type' => 'toggle',
-                'label' => __( 'Require LDAP Authentication', 'rrze-pieksy' ),
-                'type' => 'boolean',
-                'default'   => false
+                'default'   => TRUE
             ],
         ],
         'pieksy-availability' => [

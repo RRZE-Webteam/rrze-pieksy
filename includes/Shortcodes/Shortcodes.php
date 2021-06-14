@@ -8,7 +8,7 @@ use RRZE\Pieksy\Shortcodes\Bookings;
 use RRZE\Pieksy\Shortcodes\Availability;
 use RRZE\Pieksy\Shortcodes\QR;
 
-use RRZE\Pieksy\Auth\{Auth, IdM, LDAP};
+use RRZE\Pieksy\Auth\{Auth, IdM};
 
 use function RRZE\Pieksy\Config\getShortcodeSettings;
 use function RRZE\Pieksy\plugin;
@@ -21,14 +21,12 @@ class Shortcodes{
     private $settings = '';
     private $shortcodesettings = 'X';
     protected $idm;
-    // protected $ldap; 
 
     public function __construct($pluginFile, $settings){
         $this->pluginFile = $pluginFile;
         $this->settings = $settings;
         $this->shortcodesettings = getShortcodeSettings();
         $this->idm = new IdM;
-        $this->ldapInstance = new LDAP;
     }
 
     public function onLoaded(){
@@ -116,8 +114,6 @@ class Shortcodes{
         if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'rrze-pieksy-seat-check-inout')) {
             $isAuth = false;
             if ($this->idm->isAuthenticated()) {
-                $isAuth = true;
-            } elseif ($this->ldapInstance->isAuthenticated()) {
                 $isAuth = true;
             }
     

@@ -340,16 +340,6 @@ class Metaboxes
             'default' => '',
         ));
 
-        if ($this->settings->getOption('ldap', 'server')) {
-            $cmb_general->add_field(array(
-                'name' => __('LDAP is required', 'rrze-pieksy'),
-                'desc' => __('If LDAP is enabled, the customer must log in via LDAP in order to use the booking system.', 'rrze-pieksy'),
-                'id'   => 'rrze-pieksy-room-ldap-required',
-                'type' => 'checkbox',
-                'default' => '',
-            ));
-        }
-
         $cmb_general->add_field(array(
             'name' => __('Available days in advance', 'rrze-pieksy'),
             'desc' => __('Number of days for which bookings are available in advance.', 'rrze-pieksy'),
