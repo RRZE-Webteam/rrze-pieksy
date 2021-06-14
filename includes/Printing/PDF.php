@@ -1,15 +1,15 @@
 <?php
-namespace RRZE\RSVP\Printing;
+namespace RRZE\Pieksy\Printing;
 
 defined('ABSPATH') || exit;
 
-use function RRZE\RSVP\plugin;
+use function RRZE\Pieksy\plugin;
 
 require_once plugin()->getPath('vendor/tcpdf') . 'tcpdf.php';
 
 
 use TCPDF;
-use RRZE\RSVP\Settings;
+use RRZE\Pieksy\Settings;
 
 class PDF extends TCPDF{
 

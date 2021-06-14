@@ -1,11 +1,11 @@
 "use strict";
 
 jQuery(document).ready(function ($) {
-    var DATE_FORMAT = rrze_rsvp_admin.dateformat,
-        TEXT_CANCEL = rrze_rsvp_admin.text_cancel,
-        TEXT_CANCELLED = rrze_rsvp_admin.text_cancelled,
-        TEXT_CONFIRMED = rrze_rsvp_admin.text_confirmed,
-        API_AJAXURL = rrze_rsvp_admin.ajaxurl;
+    var DATE_FORMAT = rrze_pieksy_admin.dateformat,
+        TEXT_CANCEL = rrze_pieksy_admin.text_cancel,
+        TEXT_CANCELLED = rrze_pieksy_admin.text_cancelled,
+        TEXT_CONFIRMED = rrze_pieksy_admin.text_confirmed,
+        API_AJAXURL = rrze_pieksy_admin.ajaxurl;
 
 	function bookingAction(type, button) {
 		var id = button.attr('data-id'),
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
 				console.error("AJAX request failed");
 			}).done(function(data) {
 				if (type == 'confirm') {
-					button.addClass('rrze-rsvp-confirmed').attr('disabled', 'disabled').html(TEXT_CONFIRMED);
+					button.addClass('rrze-pieksy-confirmed').attr('disabled', 'disabled').html(TEXT_CONFIRMED);
 				} else {
 					button.attr('disabled', 'disabled').html(TEXT_CANCELLED);
 				}
@@ -40,13 +40,13 @@ jQuery(document).ready(function ($) {
 
 	}
 
-    $('.rrze-rsvp-confirm').click(function(e) {
+    $('.rrze-pieksy-confirm').click(function(e) {
         e.preventDefault();
         bookingAction('confirm', jQuery(this));
         return false;
     });
 
-    $('.rrze-rsvp-cancel').click(function(e) {
+    $('.rrze-pieksy-cancel').click(function(e) {
         e.preventDefault();
         if (confirm(TEXT_CANCEL)) {
             bookingAction('cancel', jQuery(this));
@@ -66,17 +66,17 @@ jQuery(document).ready(function ($) {
     }
 
 	// Hide booking mode info text on loading, insert booking mode info icon
-	$('select#rrze-rsvp-room-bookingmode').after('<a><span class="dashicons dashicons-editor-help info-bookingmode" title="Informationen zum Buchungsmodus anzeigen" aria-hidden="true"></span><span class="screen-reader-text">Informationen zum Buchungsmodus anzeigen</span></a>');
-	$('.cmb2-id-rrze-rsvp-room-bookingmode .cmb2-metabox-description').hide();
-	$('.cmb2-id-rrze-rsvp-room-bookingmode').find('.info-bookingmode').click(function() {
-		$('.cmb2-id-rrze-rsvp-room-bookingmode .cmb2-metabox-description').slideToggle();
+	$('select#rrze-pieksy-room-bookingmode').after('<a><span class="dashicons dashicons-editor-help info-bookingmode" title="Informationen zum Buchungsmodus anzeigen" aria-hidden="true"></span><span class="screen-reader-text">Informationen zum Buchungsmodus anzeigen</span></a>');
+	$('.cmb2-id-rrze-pieksy-room-bookingmode .cmb2-metabox-description').hide();
+	$('.cmb2-id-rrze-pieksy-room-bookingmode').find('.info-bookingmode').click(function() {
+		$('.cmb2-id-rrze-pieksy-room-bookingmode .cmb2-metabox-description').slideToggle();
 	});
 
 	// CPT Room: Set timeslot remove buttons to disabled if timeslot bookings for this timeslot exist
-	var timeslotgroup = $('body.wp-admin.post-type-room #rrze-rsvp-room-timeslots_repeat div.cmb-repeatable-grouping');
+	var timeslotgroup = $('body.wp-admin.post-type-room #rrze-pieksy-room-timeslots_repeat div.cmb-repeatable-grouping');
 	$(timeslotgroup).each(function (index) {
-		// console.log($(this).find("input[id$='rrze-rsvp-room-starttime']").prop('disabled'));
-		if ($(this).find("input[id$='rrze-rsvp-room-starttime']").prop('disabled') == true) {
+		// console.log($(this).find("input[id$='rrze-pieksy-room-starttime']").prop('disabled'));
+		if ($(this).find("input[id$='rrze-pieksy-room-starttime']").prop('disabled') == true) {
 			$(this).find('button.cmb-remove-group-row').prop({
 				disabled: true
 			});
@@ -91,12 +91,12 @@ jQuery(document).ready(function ($) {
 	});
 
 	// Fill date/time inputs with timeslot selector
-	var details = jQuery('div#rrze-rsvp-booking-details'),
-		seat = details.find('select#rrze-rsvp-booking-seat'),
-		startdate = details.find('input#rrze-rsvp-booking-start_date'),
-		starttime = details.find('input#rrze-rsvp-booking-start_time'),
-		enddate = details.find('input#rrze-rsvp-booking-end_date'),
-		endtime = details.find('input#rrze-rsvp-booking-end_time');
+	var details = jQuery('div#rrze-pieksy-booking-details'),
+		seat = details.find('select#rrze-pieksy-booking-seat'),
+		startdate = details.find('input#rrze-pieksy-booking-start_date'),
+		starttime = details.find('input#rrze-pieksy-booking-start_time'),
+		enddate = details.find('input#rrze-pieksy-booking-end_date'),
+		endtime = details.find('input#rrze-pieksy-booking-end_time');
 
 	starttime.attr('disabled', 'disabled');
 
@@ -113,7 +113,7 @@ jQuery(document).ready(function ($) {
 		starttime.val('');
 		endtime.val('');
 		if (seat.val() == '' || startdate.val() == '') {
-			alert(rrze_rsvp_admin.alert_no_seat_date);
+			alert(rrze_pieksy_admin.alert_no_seat_date);
 			startdate.val('');
 			enddate.val('');
 		} else {
@@ -125,13 +125,13 @@ jQuery(document).ready(function ($) {
 			}, function (result) {                 //callback
 				// console.log(result);
 				if (result != false){
-					jQuery('input#rrze-rsvp-booking-start_time').after(result);
+					jQuery('input#rrze-pieksy-booking-start_time').after(result);
 				}
 			});
 		}
 	});
 
-	$('div.cmb2-id-rrze-rsvp-booking-start').on('change', 'select.select_timeslot', (function() {
+	$('div.cmb2-id-rrze-pieksy-booking-start').on('change', 'select.select_timeslot', (function() {
 		var select_start = jQuery(this).val();
 		var select_end   = jQuery(this).find(':selected').data('end');
 		//console.log(select_start);
@@ -141,13 +141,13 @@ jQuery(document).ready(function ($) {
 	}));
 
 
-    /* trigger reservations' details - see https://github.com/RRZE-Webteam/rrze-rsvp/issues/92 */
-	var bookingModeSelect = $('select#rrze-rsvp-room-bookingmode');
+    /* trigger reservations' details - see https://github.com/RRZE-Webteam/rrze-pieksy/issues/92 */
+	var bookingModeSelect = $('select#rrze-pieksy-room-bookingmode');
 	var bookingMode = bookingModeSelect.val();
-	var instantCheckInRow = $('div.cmb2-id-rrze-rsvp-room-instant-check-in');
-	var autoConfirmationInput = $('input#rrze-rsvp-room-auto-confirmation');
+	var instantCheckInRow = $('div.cmb2-id-rrze-pieksy-room-instant-check-in');
+	var autoConfirmationInput = $('input#rrze-pieksy-room-auto-confirmation');
 	var autoConfirmationChecked = autoConfirmationInput.is(':checked');
-	var forceConfirmationInput = $('input#rrze-rsvp-room-force-to-checkin');
+	var forceConfirmationInput = $('input#rrze-pieksy-room-force-to-checkin');
 	var forceConfirmationChecked = forceConfirmationInput.is(':checked');
 	triggerModeVisibility(bookingMode);
 	triggerInstant(autoConfirmationChecked);
@@ -167,12 +167,12 @@ jQuery(document).ready(function ($) {
 	});
 
 	function triggerModeVisibility(bookingMode){
-		$('div#cmb2-metabox-rrze_rsvp_general-meta div.cmb-row.hide-'+bookingMode).slideUp();
-		$('div#cmb2-metabox-rrze_rsvp_general-meta div.cmb-row').not('.hide-'+bookingMode).slideDown();
-		$('div#cmb2-metabox-rrze_rsvp_general-meta div.cmb-row.hide-'+bookingMode+' input').prop('checked', false);
+		$('div#cmb2-metabox-rrze_pieksy_general-meta div.cmb-row.hide-'+bookingMode).slideUp();
+		$('div#cmb2-metabox-rrze_pieksy_general-meta div.cmb-row').not('.hide-'+bookingMode).slideDown();
+		$('div#cmb2-metabox-rrze_pieksy_general-meta div.cmb-row.hide-'+bookingMode+' input').prop('checked', false);
 		if (bookingMode === 'check-only') {
-			$('input#rrze-rsvp-room-instant-check-in').prop('checked', true);
-			$('input#rrze-rsvp-room-auto-confirmation').prop('checked', true);
+			$('input#rrze-pieksy-room-instant-check-in').prop('checked', true);
+			$('input#rrze-pieksy-room-auto-confirmation').prop('checked', true);
 		}
 	}
 
@@ -184,15 +184,15 @@ jQuery(document).ready(function ($) {
 			}
 		} else {
 			instantCheckInRow.slideUp();
-			$('#rrze-rsvp-room-instant-check-in').prop('checked', false);
+			$('#rrze-pieksy-room-instant-check-in').prop('checked', false);
 		}
 	}
 
 	function triggerCheckInTime(forceConfirmationChecked) {
 		if (forceConfirmationChecked === true) {
-			$('div.cmb2-id-rrze-rsvp-room-check-in-time').slideDown();
+			$('div.cmb2-id-rrze-pieksy-room-check-in-time').slideDown();
 		} else {
-			$('div.cmb2-id-rrze-rsvp-room-check-in-time').slideUp();
+			$('div.cmb2-id-rrze-pieksy-room-check-in-time').slideUp();
 		}
 	}
     

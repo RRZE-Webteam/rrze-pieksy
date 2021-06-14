@@ -1,10 +1,10 @@
 <?php
 
-namespace RRZE\RSVP\Auth;
+namespace RRZE\Pieksy\Auth;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Functions;
+use RRZE\Pieksy\Functions;
 
 use SimpleSAML\Auth\Simple as SimpleSAMLAuthSimple;
 use SimpleSAML\Session as Session;
@@ -59,14 +59,14 @@ final class IdM extends Auth
             $customerFirstname = array_shift($displayNameAry);
             $customerLastname = implode(' ', $displayNameAry);
         } else {
-            $customerFirstname = __('No name', 'rrze-rsvp');
+            $customerFirstname = __('No name', 'rrze-pieksy');
             $customerLastname = $customerFirstname;
         }
 
         return [
             'customer_firstname' => $customerFirstname,
             'customer_lastname' => $customerLastname,
-            'customer_email' => $this->mail ? $this->mail : __('no@email', 'rrze-rsvp')
+            'customer_email' => $this->mail ? $this->mail : __('no@email', 'rrze-pieksy')
         ];
     }
 

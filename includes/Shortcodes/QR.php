@@ -1,11 +1,11 @@
 <?php
 
-namespace RRZE\RSVP\Shortcodes;
+namespace RRZE\Pieksy\Shortcodes;
 
-use RRZE\RSVP\Helper;
-use function RRZE\RSVP\Config\getShortcodeSettings;
+use RRZE\Pieksy\Helper;
+use function RRZE\Pieksy\Config\getShortcodeSettings;
 
-use function RRZE\RSVP\plugin;
+use function RRZE\Pieksy\plugin;
 
 require_once plugin()->getPath('vendor/tcpdf') . 'tcpdf_barcodes_2d.php';
 
@@ -32,7 +32,7 @@ class QR extends Shortcodes {
 
 
     public function onLoaded() {
-        add_shortcode('rsvp-qr', [$this, 'shortcodeQR'], 10, 2);
+        add_shortcode('pieksy-qr', [$this, 'shortcodeQR'], 10, 2);
     }
 
     public function shortcodeQR($atts, $content = '', $tag) {
@@ -56,19 +56,19 @@ class QR extends Shortcodes {
                 if (!empty($seat_post)) {
                     $seat_id = $seat;
                 } else {
-                    return __( 'Please enter a valid seat slug or ID', 'rrze-rsvp' );;
+                    return __( 'Please enter a valid seat slug or ID', 'rrze-pieksy' );;
                 }
             }
             $permalink = get_permalink($seat_id);
 
             $qr = new TCPDF2DBarcode($permalink, 'QRCODE,H');
-            $output = '<div class="rsvp-qr-container">' . $qr->getBarcodeSVGcode(3, 3, $color='black') . '</div>';
+            $output = '<div class="pieksy-qr-container">' . $qr->getBarcodeSVGcode(3, 3, $color='black') . '</div>';
         } else {
-            return __( 'Please specify a seat ID in your Shortcode.', 'rrze-rsvp' );
+            return __( 'Please specify a seat ID in your Shortcode.', 'rrze-pieksy' );
         }
 
-        wp_enqueue_style('rrze-rsvp-shortcode');
-        //wp_enqueue_script('rrze-rsvp-shortcode');
+        wp_enqueue_style('rrze-pieksy-shortcode');
+        //wp_enqueue_script('rrze-pieksy-shortcode');
 
         return $output;
     }

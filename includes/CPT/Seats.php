@@ -4,12 +4,12 @@
  * Custom Post Type Seat
  * ------------------------------------------------------------------------- */
 
-namespace RRZE\RSVP\CPT;
+namespace RRZE\Pieksy\CPT;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Capabilities;
-use RRZE\RSVP\Functions;
+use RRZE\Pieksy\Capabilities;
+use RRZE\Pieksy\Functions;
 
 class Seats
 {
@@ -39,34 +39,34 @@ class Seats
 	public function seats_post_type()
 	{
 		$labels = [
-			'name'					=> _x('Seats', 'Post type general name', 'rrze-rsvp'),
-			'singular_name'			=> _x('Seat', 'Post type singular name', 'rrze-rsvp'),
-			'menu_name'				=> _x('Seats', 'Admin Menu text', 'rrze-rsvp'),
-			'name_admin_bar'		=> _x('Seat', 'Add New on Toolbar', 'rrze-rsvp'),
-			'add_new'				=> __('Add New', 'rrze-rsvp'),
-			'add_new_item'			=> __('Add New Seat', 'rrze-rsvp'),
-			'new_item'				=> __('New Seat', 'rrze-rsvp'),
-			'edit_item'				=> __('Edit Seat', 'rrze-rsvp'),
-			'view_item'				=> __('View Seat', 'rrze-rsvp'),
-			'all_items'				=> __('All Seats', 'rrze-rsvp'),
-			'search_items'			=> __('Search Seats', 'rrze-rsvp'),
-			'not_found'				=> __('No Seats found.', 'rrze-rsvp'),
-			'not_found_in_trash'	=> __('No Seats found in Trash.', 'rrze-rsvp'),
-			'featured_image'		=> _x('Seat Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-			'set_featured_image'	=> _x('Set seat image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-			'remove_featured_image'	=> _x('Remove seat image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-			'use_featured_image'	=> _x('Use as Seat image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-			'archives'				=> _x('Seat archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'rrze-rsvp'),
-			'insert_into_item'		=> _x('Insert into Seat', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'rrze-rsvp'),
-			'uploaded_to_this_item'	=> _x('Uploaded to this Seat', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'rrze-rsvp'),
-			'filter_items_list'		=> _x('Filter Seats list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'rrze-rsvp'),
-			'items_list_navigation'	=> _x('Seats list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'rrze-rsvp'),
-			'items_list'			=> _x('Seats list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'rrze-rsvp'),
+			'name'					=> _x('Seats', 'Post type general name', 'rrze-pieksy'),
+			'singular_name'			=> _x('Seat', 'Post type singular name', 'rrze-pieksy'),
+			'menu_name'				=> _x('Seats', 'Admin Menu text', 'rrze-pieksy'),
+			'name_admin_bar'		=> _x('Seat', 'Add New on Toolbar', 'rrze-pieksy'),
+			'add_new'				=> __('Add New', 'rrze-pieksy'),
+			'add_new_item'			=> __('Add New Seat', 'rrze-pieksy'),
+			'new_item'				=> __('New Seat', 'rrze-pieksy'),
+			'edit_item'				=> __('Edit Seat', 'rrze-pieksy'),
+			'view_item'				=> __('View Seat', 'rrze-pieksy'),
+			'all_items'				=> __('All Seats', 'rrze-pieksy'),
+			'search_items'			=> __('Search Seats', 'rrze-pieksy'),
+			'not_found'				=> __('No Seats found.', 'rrze-pieksy'),
+			'not_found_in_trash'	=> __('No Seats found in Trash.', 'rrze-pieksy'),
+			'featured_image'		=> _x('Seat Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+			'set_featured_image'	=> _x('Set seat image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+			'remove_featured_image'	=> _x('Remove seat image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+			'use_featured_image'	=> _x('Use as Seat image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+			'archives'				=> _x('Seat archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'rrze-pieksy'),
+			'insert_into_item'		=> _x('Insert into Seat', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'rrze-pieksy'),
+			'uploaded_to_this_item'	=> _x('Uploaded to this Seat', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'rrze-pieksy'),
+			'filter_items_list'		=> _x('Filter Seats list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'rrze-pieksy'),
+			'items_list_navigation'	=> _x('Seats list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'rrze-pieksy'),
+			'items_list'			=> _x('Seats list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'rrze-pieksy'),
 		];
 
 		$args = [
-			'label' => __('Seat', 'rrze-rsvp'),
-			'description' => __('Add and edit seat informations', 'rrze-rsvp'),
+			'label' => __('Seat', 'rrze-pieksy'),
+			'description' => __('Add and edit seat informations', 'rrze-pieksy'),
 			'labels' => $labels,
 			'supports'                  => ['title', 'author'],
 			'hierarchical' 				=> false,
@@ -92,13 +92,13 @@ class Seats
 	public function seats_taxonomies()
 	{
 		$labels_equipment = array(
-			'name'				=> _x('Equipment', 'taxonomy general name', 'rrze-rsvp'),
-			'singular_name'		=> _x('Equipment', 'taxonomy singular name', 'rrze-rsvp'),
+			'name'				=> _x('Equipment', 'taxonomy general name', 'rrze-pieksy'),
+			'singular_name'		=> _x('Equipment', 'taxonomy singular name', 'rrze-pieksy'),
 		);
 		$args_equipment = array(
 			'labels' => $labels_equipment,
 			'hierarchical' => true,
-			'rewrite' => 'rrze-rsvp-equipment',
+			'rewrite' => 'rrze-pieksy-equipment',
 			'capabilities' => [
 				'manage_terms'  => 'edit_seats',
 				'edit_terms'    => 'edit_seats',
@@ -106,22 +106,22 @@ class Seats
 				'assign_terms'  => 'edit_seats'
 			]
 		);
-		register_taxonomy('rrze-rsvp-equipment', 'seat', $args_equipment);
+		register_taxonomy('rrze-pieksy-equipment', 'seat', $args_equipment);
 	}
 
 	public function columns($columns)
 	{
 		$columns = array(
 			'cb' => $columns['cb'],
-			'title' => __('Seat', 'rrze-rsvp'),
-			'room' => __('Room', 'rrze-rsvp')
+			'title' => __('Seat', 'rrze-pieksy'),
+			'room' => __('Room', 'rrze-pieksy')
 		);
 		return $columns;
 	}
 
 	public function customColumn($column, $post_id)
 	{
-		$roomId = get_post_meta($post_id, 'rrze-rsvp-seat-room', true);
+		$roomId = get_post_meta($post_id, 'rrze-pieksy-seat-room', true);
 		if ('title' === $column) {
 			echo get_the_title($post_id);
 		}
@@ -145,8 +145,8 @@ class Seats
 			return;
 		}
 
-		$allRooms = __('Show all rooms', 'rrze-rsvp');
-		$selectedRoom = (string) filter_input(INPUT_GET, 'rrze-rsvp-seat-room', FILTER_SANITIZE_STRING);
+		$allRooms = __('Show all rooms', 'rrze-pieksy');
+		$selectedRoom = (string) filter_input(INPUT_GET, 'rrze-pieksy-seat-room', FILTER_SANITIZE_STRING);
 
 		$seatIds = get_posts([
 			'post_type' => 'seat',
@@ -157,13 +157,13 @@ class Seats
 		$seatRooms = [];
 
 		foreach ($seatIds as $seatId) {
-			$roomId = get_post_meta($seatId, 'rrze-rsvp-seat-room', true);
+			$roomId = get_post_meta($seatId, 'rrze-pieksy-seat-room', true);
 			$seatRooms[$roomId] = get_the_title($roomId);
 		}
 
 		if ($seatRooms) {
 			Functions::sortArrayKeepKeys($seatRooms);
-			echo Functions::getSelectHTML('rrze-rsvp-seat-room', $allRooms, $seatRooms, $selectedRoom);
+			echo Functions::getSelectHTML('rrze-pieksy-seat-room', $allRooms, $seatRooms, $selectedRoom);
 		}
 	}
 
@@ -177,7 +177,7 @@ class Seats
 			return $query;
 		}
 
-		$roomId = filter_input(INPUT_GET, 'rrze-rsvp-seat-room', FILTER_VALIDATE_INT);
+		$roomId = filter_input(INPUT_GET, 'rrze-pieksy-seat-room', FILTER_VALIDATE_INT);
 
 		if (!$roomId) {
 			return $query;
@@ -186,7 +186,7 @@ class Seats
 		$meta_query = [];
 		$seatId = get_posts([
 			'post_type' => 'seat',
-			'meta_key' => 'rrze-rsvp-seat-room',
+			'meta_key' => 'rrze-pieksy-seat-room',
 			'meta_value' => $roomId,
 			'numberposts' => 1,
 			'fields' => 'ids'
@@ -194,7 +194,7 @@ class Seats
 
 		if (isset($seatId[0])) {
 			$meta_query[] = array(
-				'key' => 'rrze-rsvp-seat-room',
+				'key' => 'rrze-pieksy-seat-room',
 				'value' => $roomId
 			);
 		}

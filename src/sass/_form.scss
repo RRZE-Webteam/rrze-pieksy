@@ -1,9 +1,9 @@
 /*
-RSVP Form Adjustments
+Pieksy Form Adjustments
 */
 
 
-.rrze-rsvp {
+.rrze-pieksy {
      #content & form,
     form {
 	border: none;
@@ -51,10 +51,10 @@ RSVP Form Adjustments
             display: inline-block;
         }
     }
-    .rsvp-time-select label {
+    .pieksy-time-select label {
         min-width: 0;
     }
-    .rsvp-seat-select {
+    .pieksy-seat-select {
         margin-bottom: 1em;
         @media (min-width: 480px) {
             display: flex;
@@ -64,20 +64,20 @@ RSVP Form Adjustments
             min-width: 0;
         }
     }
-    .rsvp-item-info {
+    .pieksy-item-info {
         border: 1px solid #dde5f0;
         padding: 10px;
         margin-bottom: 1em;
     }
-    .rsvp-seat-container {
+    .pieksy-seat-container {
         margin-bottom: 1em;
     }
-    input#rsvp_dsgvo {
+    input#pieksy_dsgvo {
         display: block;
         float: left;
         margin-right: 10px;
     }
-    label[for="rsvp_dsgvo"] {
+    label[for="pieksy_dsgvo"] {
         display: block;
         margin-right: 0;
         margin-bottom: 20px;

@@ -1,12 +1,12 @@
 <?php
 
-namespace RRZE\RSVP\CPT;
+namespace RRZE\Pieksy\CPT;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Main;
-use RRZE\RSVP\Capabilities;
-use RRZE\RSVP\Functions;
+use RRZE\Pieksy\Main;
+use RRZE\Pieksy\Capabilities;
+use RRZE\Pieksy\Functions;
 
 /**
  * Laden und definieren der Posttypes
@@ -65,7 +65,7 @@ class CPT extends Main
     public function bookingMenu()
     {
         $cpts = array_keys(Capabilities::getCurrentCptArgs());
-        $hiddenTitle = 'rrze-rsvp-submenu-hidden';
+        $hiddenTitle = 'rrze-pieksy-submenu-hidden';
 
         foreach ($cpts as $cpt) {
             $cpt_obj = get_post_type_object($cpt);
@@ -88,16 +88,16 @@ class CPT extends Main
 
         add_submenu_page(
             'edit.php?post_type=booking',
-            __('Equipment', 'rrze-rsvp'),
-            __('Equipment', 'rrze-rsvp'),
+            __('Equipment', 'rrze-pieksy'),
+            __('Equipment', 'rrze-pieksy'),
             'edit_seats',
-            'edit-tags.php?taxonomy=rrze-rsvp-equipment&post_type=seat'
+            'edit-tags.php?taxonomy=rrze-pieksy-equipment&post_type=seat'
         );
 
         add_submenu_page(
             'edit.php?post_type=booking',
-            __('Room occupancy for today', 'rrze-rsvp'),
-            __('Room occupancy', 'rrze-rsvp'),
+            __('Room occupancy for today', 'rrze-pieksy'),
+            __('Room occupancy', 'rrze-pieksy'),
             'edit_seats',
             'occupancy',
             [$this, 'getOccupancyPage']
@@ -141,11 +141,11 @@ class CPT extends Main
 
         if ($current_screen->post_type == 'seat') {
             if ($pagenow == 'edit-tags.php') {
-                $submenu_file = 'edit-tags.php?taxonomy=rrze-rsvp-equipment&post_type=seat';
+                $submenu_file = 'edit-tags.php?taxonomy=rrze-pieksy-equipment&post_type=seat';
             }
 
             if ($pagenow == 'term.php') {
-                $submenu_file = 'edit-tags.php?taxonomy=rrze-rsvp-equipment&post_type=seat';
+                $submenu_file = 'edit-tags.php?taxonomy=rrze-pieksy-equipment&post_type=seat';
             }
 
             $parent_file = 'edit.php?post_type=booking';
@@ -157,14 +157,14 @@ class CPT extends Main
     public function getOccupancyPage()
     {
         echo '<div class="wrap">'
-            . '<h1>' . esc_html_x('Room occupancy for today', 'admin page title', 'rrze-rsvp') . '</h1>'
+            . '<h1>' . esc_html_x('Room occupancy for today', 'admin page title', 'rrze-pieksy') . '</h1>'
 
             . '<div class="tablenav top">'
             . '<div class="alignleft actions bulkactions">'
-            . '<label for="select_room" class="screen-reader-text">' . __('Room', 'rrze-rsvp') . '</label>'
+            . '<label for="select_room" class="screen-reader-text">' . __('Room', 'rrze-pieksy') . '</label>'
             . '<form action="" method="post" class="occupancy">'
-            . '<select id="rsvp_room_id" name="rsvp_room_id">'
-            . '<option>&mdash; ' . __('Please select room', 'rrze-rsvp') . ' &mdash;</option>';
+            . '<select id="pieksy_room_id" name="pieksy_room_id">'
+            . '<option>&mdash; ' . __('Please select room', 'rrze-pieksy') . ' &mdash;</option>';
 
         $rooms = get_posts([
             'post_type' => 'room',
@@ -180,8 +180,8 @@ class CPT extends Main
         echo '</select></form>'
             . '<div id="loading"><i class="fa fa-refresh fa-spin fa-4x"></i></div>'
             . '</div>'
-            . '<div class="rsvp-occupancy-links"></div>'
-            . '<div class="rsvp-occupancy-container"></div>'
+            . '<div class="pieksy-occupancy-links"></div>'
+            . '<div class="pieksy-occupancy-container"></div>'
             . '</div>';
     }
 
@@ -248,20 +248,20 @@ class CPT extends Main
 
     public function shortcodeHelper()
     {
-        add_meta_box('rrze-rsvp-room-shortcode-helper', esc_html__('Shortcodes', 'rrze-rsvp'), [$this, 'shortcodeHelperCallback'], 'room', 'side', 'high');
+        add_meta_box('rrze-pieksy-room-shortcode-helper', esc_html__('Shortcodes', 'rrze-pieksy'), [$this, 'shortcodeHelperCallback'], 'room', 'side', 'high');
     }
 
     public function shortcodeHelperCallback()
     {
-        printf('<p class="description">%s</p>', __('You can display a booking form or a table with the available time slots for this room by adding one of the following shortcodes to any page:', 'rrze-rsvp'));
-        printf('<h3 style="margin-bottom: 0">%s</h3>', __('Booking Form', 'rrze-rsvp'));
-        printf('<p><code>[rsvp-booking room="%s"]</code></p>', get_the_ID());
-        printf('<p>%s</p>', __('Add <code>days="20"</code> to overwrite the number of days you can book a seat in advance.', 'rrze-rsvp'));
-//        printf('<p>%s</p>', __('Add <code>sso="false"</code> overwrite to SSO settings for this room.', 'rrze-rsvp'));
-        printf('<h3 style="margin-bottom: 0">%s</h3>', __('Availability Table', 'rrze-rsvp'));
-        printf('<p><code>[rsvp-availability room="%s"]</code></p>', get_the_ID());
-        printf('<p>%s</p>', __('Add <code>booking_link="true"</code> to link the available timeslots to the pre-filled booking form.', 'rrze-rsvp'));
-        printf('<p>%s</p>', __('Add <code>days="20"</code> to overwrite the default number of days.', 'rrze-rsvp'));
+        printf('<p class="description">%s</p>', __('You can display a booking form or a table with the available time slots for this room by adding one of the following shortcodes to any page:', 'rrze-pieksy'));
+        printf('<h3 style="margin-bottom: 0">%s</h3>', __('Booking Form', 'rrze-pieksy'));
+        printf('<p><code>[pieksy-booking room="%s"]</code></p>', get_the_ID());
+        printf('<p>%s</p>', __('Add <code>days="20"</code> to overwrite the number of days you can book a seat in advance.', 'rrze-pieksy'));
+//        printf('<p>%s</p>', __('Add <code>sso="false"</code> overwrite to SSO settings for this room.', 'rrze-pieksy'));
+        printf('<h3 style="margin-bottom: 0">%s</h3>', __('Availability Table', 'rrze-pieksy'));
+        printf('<p><code>[pieksy-availability room="%s"]</code></p>', get_the_ID());
+        printf('<p>%s</p>', __('Add <code>booking_link="true"</code> to link the available timeslots to the pre-filled booking form.', 'rrze-pieksy'));
+        printf('<p>%s</p>', __('Add <code>days="20"</code> to overwrite the default number of days.', 'rrze-pieksy'));
     }
 
     public function archiveShowAllRooms($query) {

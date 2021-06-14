@@ -1,21 +1,21 @@
 <?php
 
 /*
-Plugin Name:     RRZE RSVP
-Plugin URI:      https://github.com/RRZE-Webteam/rrze-rsvp
-Description:     FAU Reservation Tool
-Version:         2.6.3
+Plugin Name:     RRZE Pieksy
+Plugin URI:      https://github.com/RRZE-Webteam/rrze-pieksy
+Description:     FAU Reservation Tool for vaccinations
+Version:         0.0.1
 Author:          RRZE-Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v2
 License URI:     http://www.gnu.org/licenses/gpl-2.0.html
 Domain Path:     /languages
-Text Domain:     rrze-rsvp
+Text Domain:     rrze-pieksy
 */
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
-use RRZE\RSVP\CPT\CPT;
+use RRZE\Pieksy\CPT\CPT;
 
 defined('ABSPATH') || exit;
 
@@ -52,7 +52,7 @@ add_action('plugins_loaded', __NAMESPACE__ . '\loaded');
  */
 function loadTextdomain()
 {
-    load_plugin_textdomain('rrze-rsvp', false, sprintf('%s/languages/', dirname(plugin_basename(__FILE__))));
+    load_plugin_textdomain('rrze-pieksy', false, sprintf('%s/languages/', dirname(plugin_basename(__FILE__))));
 }
 
 /**
@@ -63,9 +63,9 @@ function systemRequirements(): string
 {
     $error = '';
     if (version_compare(PHP_VERSION, RRZE_PHP_VERSION, '<')) {
-        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-rsvp'), PHP_VERSION, RRZE_PHP_VERSION);
+        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-pieksy'), PHP_VERSION, RRZE_PHP_VERSION);
     } elseif (version_compare($GLOBALS['wp_version'], RRZE_WP_VERSION, '<')) {
-        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-rsvp'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
+        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-pieksy'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
     }
     return $error;
 }
@@ -134,7 +134,7 @@ function loaded()
                 $tag = is_plugin_active_for_network(plugin()->getBaseName()) ? 'network_admin_notices' : 'admin_notices';
                 add_action($tag, function () use ($pluginName, $error) {
                     printf(
-                        '<div class="notice notice-error"><p>' . __('Plugins: %1$s: %2$s', 'rrze-rsvp') . '</p></div>',
+                        '<div class="notice notice-error"><p>' . __('Plugins: %1$s: %2$s', 'rrze-pieksy') . '</p></div>',
                         esc_html($pluginName),
                         esc_html($error)
                     );

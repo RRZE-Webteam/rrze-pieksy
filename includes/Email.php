@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -52,10 +52,10 @@ class Email
         }
 
         $roomMeta = get_post_meta($booking['room']);
-        $sendToEmail = isset($roomMeta['rrze-rsvp-room-send-to-email']) ? $roomMeta['rrze-rsvp-room-send-to-email'][0] : '';
+        $sendToEmail = isset($roomMeta['rrze-pieksy-room-send-to-email']) ? $roomMeta['rrze-pieksy-room-send-to-email'][0] : '';
         $to = $recipient == 'admin' ? $this->options->email_notification_email : $booking['guest_email'];
-        $bookingMode = isset($roomMeta['rrze-rsvp-room-bookingmode']) ? $roomMeta['rrze-rsvp-room-bookingmode'][0] : '';
-        $autoConfirmation = isset($roomMeta['rrze-rsvp-room-auto-confirmation']) ? Functions::getBoolValueFromAtt($roomMeta['rrze-rsvp-room-auto-confirmation'][0]) : false;
+        $bookingMode = isset($roomMeta['rrze-pieksy-room-bookingmode']) ? $roomMeta['rrze-pieksy-room-bookingmode'][0] : '';
+        $autoConfirmation = isset($roomMeta['rrze-pieksy-room-auto-confirmation']) ? Functions::getBoolValueFromAtt($roomMeta['rrze-pieksy-room-auto-confirmation'][0]) : false;
         $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
         $showConfirmationButton = false;
         $showCheckinButton = false;
@@ -78,9 +78,9 @@ class Email
             case 'customerConfirmed':
                 if ($adminConfirmationRequired) {
                     if ($recipient == 'admin') {
-                        $subject = _x('[RSVP] Confirm new booking', 'Mail Subject for room admin: new booking received', 'rrze-rsvp');
-                        $subject_en = '[RSVP] Confirm new booking';
-                        $text = __('You received a new request for a booking.', 'rrze-rsvp');
+                        $subject = _x('[Pieksy] Confirm new booking', 'Mail Subject for room admin: new booking received', 'rrze-pieksy');
+                        $subject_en = '[Pieksy] Confirm new booking';
+                        $text = __('You received a new request for a booking.', 'rrze-pieksy');
                         $text_en = 'You received a new request for a booking.';
                         $showConfirmationButton = true;
                         $showCancelButton = true;
@@ -104,9 +104,9 @@ class Email
                 break;
             case 'adminConfirmationRequired':
                 if ($recipient == 'admin') {
-                    $subject = _x('[RSVP] Confirm new booking', 'Mail Subject for room admin: new booking received', 'rrze-rsvp');
-                    $subject_en = '[RSVP] Confirm new booking';
-                    $text = __('You received a new request for a booking.', 'rrze-rsvp');
+                    $subject = _x('[Pieksy] Confirm new booking', 'Mail Subject for room admin: new booking received', 'rrze-pieksy');
+                    $subject_en = '[Pieksy] Confirm new booking';
+                    $text = __('You received a new request for a booking.', 'rrze-pieksy');
                     $text_en = 'You received a new request for a booking.';
                     $showConfirmationButton = true;
                     $showCancelButton = true;
@@ -129,16 +129,16 @@ class Email
                 $status = 'confirmed';
                 break;
             case 'newBooking':
-                $subject = _x('[RSVP] New booking', 'Mail Subject for room admin: new booking received', 'rrze-rsvp');
-                $subject_en = '[RSVP] New booking';
-                $text = __('You received a new booking.', 'rrze-rsvp');
+                $subject = _x('[Pieksy] New booking', 'Mail Subject for room admin: new booking received', 'rrze-pieksy');
+                $subject_en = '[Pieksy] New booking';
+                $text = __('You received a new booking.', 'rrze-pieksy');
                 $text_en = 'You received a new booking.';
                 break;
             case 'bookingCancelled':
                 if ($recipient == 'admin') {
-                    $subject = __('[RSVP] Booking cancelled', 'rrze-rsvp');
-                    $subject_en = '[RSVP] Booking cancelled';
-                    $text = __('A booking has been cancelled by the customer.', 'rrze-rsvp');
+                    $subject = __('[Pieksy] Booking cancelled', 'rrze-pieksy');
+                    $subject_en = '[Pieksy] Booking cancelled';
+                    $text = __('A booking has been cancelled by the customer.', 'rrze-pieksy');
                     $text_en = 'A booking has been cancelled by the customer.';
                 } elseif ($recipient == 'customer') {
                     $subject = $this->options->email_cancel_subject;
@@ -165,9 +165,9 @@ class Email
                 $status = 'checked-in';
                 break;
             case 'bookingCheckedOut':
-                $subject = __('Seat checked out', 'rrze-rsvp');
+                $subject = __('Seat checked out', 'rrze-pieksy');
                 $subject_en = 'Seat checked out';
-                $text = __('A customer has checked out from a seat:', 'rrze-rsvp');
+                $text = __('A customer has checked out from a seat:', 'rrze-pieksy');
                 $text_en = 'A customer has checked out from a seat:';
                 break;
             default:
@@ -204,26 +204,26 @@ class Email
         $data['time_en'] = $booking['time_en'];
         $data['room_name'] = $booking['room_name'];
         $data['seat_name'] = ($bookingMode != 'consultation') ? $booking['seat_name'] : '';
-        $data['customer']['name'] = sprintf('%s: %s %s', __('Name', 'rrze-rsvp'), $booking['guest_firstname'], $booking['guest_lastname']);
-        $data['customer']['email'] = sprintf('%s: %s', __('Email', 'rrze-rsvp'), $booking['guest_email']);
+        $data['customer']['name'] = sprintf('%s: %s %s', __('Name', 'rrze-pieksy'), $booking['guest_firstname'], $booking['guest_lastname']);
+        $data['customer']['email'] = sprintf('%s: %s', __('Email', 'rrze-pieksy'), $booking['guest_email']);
 
         // Confirmation Button
         if ($showConfirmationButton) {
             $data['show_confirm_button'] = true;
             if ($recipient == 'admin') {
                 $data['confirm_url'] = Functions::bookingReplyUrl('confirm', sprintf('%s-%s', $bookingId, $booking['start']), $bookingId);
-                $data['confirm_text'] = __("Please confirm the customer's booking.", 'rrze-rsvp');
+                $data['confirm_text'] = __("Please confirm the customer's booking.", 'rrze-pieksy');
                 $data['confirm_text_en'] = "Please confirm the customer's booking.";
-                $data['alt_confirm_text'] = __("Please confirm the customer's booking.", 'rrze-rsvp');
+                $data['alt_confirm_text'] = __("Please confirm the customer's booking.", 'rrze-pieksy');
                 $data['alt_confirm_text_en'] = "Please confirm the customer's booking.";
             } else {
                 $data['confirm_url'] = Functions::bookingReplyUrl('confirm', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-                $data['confirm_text'] = __('Please confirm your booking now.', 'rrze-rsvp');
+                $data['confirm_text'] = __('Please confirm your booking now.', 'rrze-pieksy');
                 $data['confirm_text_en'] = 'Please confirm your booking now.';
-                $data['alt_confirm_text'] = __('Please confirm your booking now.', 'rrze-rsvp');
+                $data['alt_confirm_text'] = __('Please confirm your booking now.', 'rrze-pieksy');
                 $data['alt_confirm_text_en'] = 'Please confirm your booking now.';
             }
-            $data['confirm_btn'] = _x('Confirm', 'Booking', 'rrze-rsvp');
+            $data['confirm_btn'] = _x('Confirm', 'Booking', 'rrze-pieksy');
             $data['confirm_btn_en'] = 'Confirm';
         } else {
             $data['show_confirm_button'] = false;
@@ -241,12 +241,12 @@ class Email
 
             } else {
                 $data['cancel_url'] = Functions::bookingReplyUrl('cancel', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-                $data['cancel_text'] = __('Please cancel your booking in time if your plans change.', 'rrze-rsvp');
+                $data['cancel_text'] = __('Please cancel your booking in time if your plans change.', 'rrze-pieksy');
                 $data['cancel_text_en'] = 'Please cancel your booking in time if your plans change.';
-                $data['alt_cancel_text'] = __('Please cancel your booking in time if your plans change.', 'rrze-rsvp');
+                $data['alt_cancel_text'] = __('Please cancel your booking in time if your plans change.', 'rrze-pieksy');
                 $data['alt_cancel_text_en'] = 'Please cancel your booking in time if your plans change.';
             }
-            $data['cancel_btn'] = _x('Cancel', 'Booking', 'rrze-rsvp');
+            $data['cancel_btn'] = _x('Cancel', 'Booking', 'rrze-pieksy');
             $data['cancel_btn_en'] = 'Cancel';
 
         } else {
@@ -257,12 +257,12 @@ class Email
         if ($showCheckinButton) {
             $data['show_checkin_btn'] = true;
             $data['checkin_url'] = Functions::bookingReplyUrl('checkin', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-            $data['checkin_btn'] = __('Check In', 'rrze-rsvp');
+            $data['checkin_btn'] = __('Check In', 'rrze-pieksy');
             $data['checkin_btn_en'] = 'Check In';
-            $forceCheckin = isset($roomMeta['rrze-rsvp-room-force-to-checkin']) ? $roomMeta['rrze-rsvp-room-force-to-checkin'][0] : '';
+            $forceCheckin = isset($roomMeta['rrze-pieksy-room-force-to-checkin']) ? $roomMeta['rrze-pieksy-room-force-to-checkin'][0] : '';
 
             if ($forceCheckin) {
-                $checkInTime = isset($roomMeta['rrze-rsvp-room-check-in-time']) ? $roomMeta['rrze-rsvp-room-check-in-time'][0] : '';
+                $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
                 if ($checkInTime == '') {
                     $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
                     $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
@@ -278,14 +278,14 @@ class Email
                 }
                 $checkInLimit = Functions::timeFormat($timeStampCheckIn);
                 $checkInLimit_en = date('g:i a', $timeStampCheckIn);
-                $data['checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-rsvp'), $checkInLimit);
+                $data['checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
                 $data['checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
-                $data['alt_checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-rsvp'), $checkInLimit);
+                $data['alt_checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
                 $data['alt_checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
             } else {
-                $data['checkin_text'] = __('Please check-in your booking on site.', 'rrze-rsvp');
+                $data['checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
                 $data['checkin_text_en'] = 'Please check-in your booking on site.';
-                $data['alt_checkin_text'] = __('Please check-in your booking on site.', 'rrze-rsvp');
+                $data['alt_checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
                 $data['alt_checkin_text_en'] = 'Please check-in your booking on site.';
             }
         } else {
@@ -296,11 +296,11 @@ class Email
         if ($showCheckoutButton) {
             $data['show_checkout_btn'] = true;
             $data['checkout_url'] = Functions::bookingReplyUrl('checkout', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-            $data['checkout_btn'] = __('Check Out', 'rrze-rsvp');
+            $data['checkout_btn'] = __('Check Out', 'rrze-pieksy');
             $data['checkout_btn_en'] = 'Check Out';
-            $data['checkout_text'] = __('Please check out when you leave the site.', 'rrze-rsvp');
+            $data['checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
             $data['checkout_text_en'] = 'Please check out when you leave the site.';
-            $data['alt_checkout_text'] = __('Please check out when you leave the site.', 'rrze-rsvp');
+            $data['alt_checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
             $data['alt_checkout_text_en'] = 'Please check out when you leave the site.';
         } else {
             $data['show_checkout_btn'] = false;
@@ -327,10 +327,10 @@ class Email
 
         // Send ICS to separate address if requested
         if (is_email($sendToEmail) && ($status == 'confirmed') && in_array($bookingMode, ['reservation', 'consultation', 'no-check'])) {
-            $subject = __('New confirmed booking', 'rrze-rsvp');
-            $text = __('There is a new confirmed booking for your room. Calendar file (.ics) attached.', 'rrze-rsvp');
-            $customerName = sprintf('%s: %s %s', __('Name', 'rrze-rsvp'), $booking['guest_firstname'], $booking['guest_lastname']);
-            $customerEmail = sprintf('%s: %s', __('Email', 'rrze-rsvp'), $booking['guest_email']);
+            $subject = __('New confirmed booking', 'rrze-pieksy');
+            $text = __('There is a new confirmed booking for your room. Calendar file (.ics) attached.', 'rrze-pieksy');
+            $customerName = sprintf('%s: %s %s', __('Name', 'rrze-pieksy'), $booking['guest_firstname'], $booking['guest_lastname']);
+            $customerEmail = sprintf('%s: %s', __('Email', 'rrze-pieksy'), $booking['guest_email']);
 
             $data['subject'] = $subject;
             $data['text'] = $text;

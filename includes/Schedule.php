@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -37,8 +37,8 @@ class Schedule
     {
         add_action('wp', [$this, 'activateScheduledEvents']);
         add_filter('cron_schedules', [$this, 'customCronSchedules']);
-        add_action('rrze_rsvp_every5minutes_event', [$this, 'Every5MinutesEvent']);
-        add_action('rrze_rsvp_daily_event', [$this, 'dailyEvent']);
+        add_action('rrze_pieksy_every5minutes_event', [$this, 'Every5MinutesEvent']);
+        add_action('rrze_pieksy_daily_event', [$this, 'dailyEvent']);
     }
 
     /**
@@ -49,9 +49,9 @@ class Schedule
      */
     public function customCronSchedules(array $schedules): array
     {
-        $schedules['rrze_rsvp_every5minutes'] = [
+        $schedules['rrze_pieksy_every5minutes'] = [
             'interval' => 5 * MINUTE_IN_SECONDS,
-            'display' => __('Every five minutes', 'rrze-rsvp')
+            'display' => __('Every five minutes', 'rrze-pieksy')
         ];
         return $schedules;
     }
@@ -63,11 +63,11 @@ class Schedule
      */
     public function activateScheduledEvents()
     {
-        if (!wp_next_scheduled('rrze_rsvp_every5minutes_event')) {
-            wp_schedule_event(time(), 'rrze_rsvp_every5minutes', 'rrze_rsvp_every5minutes_event');
+        if (!wp_next_scheduled('rrze_pieksy_every5minutes_event')) {
+            wp_schedule_event(time(), 'rrze_pieksy_every5minutes', 'rrze_pieksy_every5minutes_event');
         }
-        if (!wp_next_scheduled('rrze_rsvp_daily_event')) {
-            wp_schedule_event(time(), 'daily', 'rrze_rsvp_daily_event');
+        if (!wp_next_scheduled('rrze_pieksy_daily_event')) {
+            wp_schedule_event(time(), 'daily', 'rrze_pieksy_daily_event');
         }
     }
 
@@ -111,7 +111,7 @@ class Schedule
             'nopaging'          => true,
             'meta_query'        => [
                 [
-                    'key'       => 'rrze-rsvp-booking-start',
+                    'key'       => 'rrze-pieksy-booking-start',
                     'value'     => $timeStampBefore,
                     'compare'   => '<'
                 ]
@@ -151,7 +151,7 @@ class Schedule
             ],
             'meta_query'        => [
                 [
-                    'key'       => 'rrze-rsvp-booking-status',
+                    'key'       => 'rrze-pieksy-booking-status',
                     'value'     => ['cancelled'],
                     'compare'   => 'IN'
                 ]
@@ -193,7 +193,7 @@ class Schedule
             ],
             'meta_query'        => [
                 'booking_status_clause' => [
-                    'key'       => 'rrze-rsvp-booking-status',
+                    'key'       => 'rrze-pieksy-booking-status',
                     'value'     => 'booked',
                     'compare'   => '='
                 ]
@@ -206,12 +206,12 @@ class Schedule
             while ($query->have_posts()) {
                 $query->the_post();
                 $bookingId = get_the_ID();
-                $seatId = get_post_meta($bookingId, 'rrze-rsvp-booking-seat', true);
-                $roomId = get_post_meta($seatId, 'rrze-rsvp-seat-room', true);
-                if (get_post_meta($roomId, 'rrze-rsvp-room-force-to-confirm', true)) {
-                    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'cancelled');
+                $seatId = get_post_meta($bookingId, 'rrze-pieksy-booking-seat', true);
+                $roomId = get_post_meta($seatId, 'rrze-pieksy-seat-room', true);
+                if (get_post_meta($roomId, 'rrze-pieksy-room-force-to-confirm', true)) {
+                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
                     $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled', 'notconfirmed');
-                    do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+                    do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
                 }
             }
             wp_reset_postdata();
@@ -235,7 +235,7 @@ class Schedule
             'meta_query'        => [
                 'relation'      => 'AND',
                 'booking_status_clause' => [
-                    'key'       => 'rrze-rsvp-booking-status',
+                    'key'       => 'rrze-pieksy-booking-status',
                     'value'     => ['confirmed'],
                     'compare'   => 'IN'
                 ],
@@ -251,14 +251,14 @@ class Schedule
                 $booking = Functions::getBooking($bookingId);
                 $roomId = $booking['room'];
                 $roomMeta = get_post_meta($roomId);
-                $bookingMode = isset($roomMeta['rrze-rsvp-room-bookingmode']) ? $roomMeta['rrze-rsvp-room-bookingmode'][0] : '';
-                $checkInRequired = isset($roomMeta['rrze-rsvp-room-force-to-checkin']) ? Functions::getBoolValueFromAtt($roomMeta['rrze-rsvp-room-force-to-checkin'][0]) : false;
+                $bookingMode = isset($roomMeta['rrze-pieksy-room-bookingmode']) ? $roomMeta['rrze-pieksy-room-bookingmode'][0] : '';
+                $checkInRequired = isset($roomMeta['rrze-pieksy-room-force-to-checkin']) ? Functions::getBoolValueFromAtt($roomMeta['rrze-pieksy-room-force-to-checkin'][0]) : false;
                 if (!$checkInRequired && !in_array($bookingMode, ['consultation', 'no-check'])) {
                     continue;
                 }
                 $bookingTimeStamp = $booking['booking_date_timestamp'];
                 $bookingStart = $booking['start'];
-                $checkInTime = isset($roomMeta['rrze-rsvp-room-check-in-time']) ? $roomMeta['rrze-rsvp-room-check-in-time'][0] : '';
+                $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
                 if ($checkInTime == '') {
                     $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
                     $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
@@ -274,12 +274,12 @@ class Schedule
                     continue;
                 }
                 if (in_array($bookingMode, ['consultation', 'no-check'])) {
-                    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-in');
-                    do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
+                    do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
                 } elseif ($checkInRequired) {
-                    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'cancelled');
+                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
                     $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled', 'notcheckedin');
-                    do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+                    do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
                 }
             }
             wp_reset_postdata();
@@ -304,12 +304,12 @@ class Schedule
             'meta_query'        => [
                 'relation'      => 'AND',
                 'booking_status_clause' => [
-                    'key'       => 'rrze-rsvp-booking-status',
+                    'key'       => 'rrze-pieksy-booking-status',
                     'value'     => ['checked-in'],
                     'compare'   => 'IN'
                 ],
                 'booking_start_clause' => [
-                    'key'       => 'rrze-rsvp-booking-end',
+                    'key'       => 'rrze-pieksy-booking-end',
                     'value'     => $timeStamp,
                     'compare'   => '<',
                     'type' => 'numeric'
@@ -322,8 +322,8 @@ class Schedule
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-                update_post_meta(get_the_ID(), 'rrze-rsvp-booking-status', 'checked-out');
-                do_action('rrze-rsvp-tracking', get_current_blog_id(), get_the_ID());
+                update_post_meta(get_the_ID(), 'rrze-pieksy-booking-status', 'checked-out');
+                do_action('rrze-pieksy-tracking', get_current_blog_id(), get_the_ID());
             }
             wp_reset_postdata();
         }

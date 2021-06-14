@@ -1,11 +1,11 @@
 <?php
 
-namespace RRZE\RSVP\Shortcodes;
+namespace RRZE\Pieksy\Shortcodes;
 
-use RRZE\RSVP\Functions;
-use RRZE\RSVP\Helper;
-use function RRZE\RSVP\Config\getShortcodeSettings;
-use function RRZE\RSVP\Config\getShortcodeDefaults;
+use RRZE\Pieksy\Functions;
+use RRZE\Pieksy\Helper;
+use function RRZE\Pieksy\Config\getShortcodeSettings;
+use function RRZE\Pieksy\Config\getShortcodeDefaults;
 
 
 
@@ -32,7 +32,7 @@ class Availability extends Shortcodes
     public function onLoaded()
     {
 
-        add_shortcode('rsvp-availability', [$this, 'shortcodeAvailability'], 10, 2);
+        add_shortcode('pieksy-availability', [$this, 'shortcodeAvailability'], 10, 2);
     }
 
     public function shortcodeAvailability($atts, $content = '', $tag)
@@ -40,26 +40,26 @@ class Availability extends Shortcodes
         $shortcode_atts = parent::shortcodeAtts($atts, $tag, $this->shortcodesettings);
         $output = '';
         $today = date('Y-m-d');
-        $nonce = wp_create_nonce('rsvp-availability');
+        $nonce = wp_create_nonce('pieksy-availability');
         $booking_link = (isset($shortcode_atts['booking_link']) && Functions::getBoolValueFromAtt($shortcode_atts['booking_link']));
         $days = sanitize_text_field($shortcode_atts['days']); // kann today, tomorrow oder eine Zahl sein (kommende X Tage)
 
         if (isset($shortcode_atts['room']) && $shortcode_atts['room'] != '') {
             $room = (int)$shortcode_atts['room'];
             if ($days == '') {
-                $bookingmode = get_post_meta($room, 'rrze-rsvp-room-bookingmode', true);
+                $bookingmode = get_post_meta($room, 'rrze-pieksy-room-bookingmode', true);
                 if ($bookingmode == 'check-only') {
                     $days = '7';
                 } else {
-                    $days = get_post_meta($room, 'rrze-rsvp-room-days-in-advance', true);
+                    $days = get_post_meta($room, 'rrze-pieksy-room-days-in-advance', true);
                 }
             }
             $availability = Functions::getRoomAvailability($room, $today, date('Y-m-d', strtotime($today . ' +' . $days . ' days')), false);
             if (!empty($availability)) {
-                $output .= '<table class="rsvp-room-availability">';
+                $output .= '<table class="pieksy-room-availability">';
                 $output .= '<tr>'
-                    . '<th scope="col" width="200">' . __('Date/Time', 'rrze-rsvp') . '</th>'
-                    . '<th scope="col">' . __('Seats available', 'rrze-rsvp') . '</th>';
+                    . '<th scope="col" width="200">' . __('Date/Time', 'rrze-pieksy') . '</th>'
+                    . '<th scope="col">' . __('Seats available', 'rrze-pieksy') . '</th>';
                 foreach ($availability as $date => $timeslot) {
                     foreach ($timeslot as $time => $seat_ids) {
                         $seat_names = [];
@@ -76,7 +76,7 @@ class Availability extends Shortcodes
                             if ($booking_link) {
                                 $permalink = get_permalink($room);
                                 $timeslot = explode('-', $time)[0];
-                                $booking_link_open = "<a href=\"$permalink?room_id=$room&seat_id=$seat_id&bookingdate=$date&timeslot=$timeslot&nonce=$nonce\" title='" . __('Book this seat/timeslot now', 'rrze-rsvp') . "' class='seat-link'>";
+                                $booking_link_open = "<a href=\"$permalink?room_id=$room&seat_id=$seat_id&bookingdate=$date&timeslot=$timeslot&nonce=$nonce\" title='" . __('Book this seat/timeslot now', 'rrze-pieksy') . "' class='seat-link'>";
                                 $booking_link_close = '</a>';
                                 $glue = '';
                             }
@@ -91,7 +91,7 @@ class Availability extends Shortcodes
                 }
                 $output .= '</table>';
             } else {
-                $output .= '<p>' . __('No seats available.', 'rrze-rsvp') . '</p>';
+                $output .= '<p>' . __('No seats available.', 'rrze-pieksy') . '</p>';
             }
         } elseif (isset($shortcode_atts['seat']) && $shortcode_atts['seat'] != '') {
             $seat = sanitize_title($shortcode_atts['seat']);
@@ -110,28 +110,28 @@ class Availability extends Shortcodes
                 if (!empty($seat_post)) {
                     $seat_id = $seat;
                 } else {
-                    return __('Please enter a valid seat slug or ID', 'rrze-rsvp');;
+                    return __('Please enter a valid seat slug or ID', 'rrze-pieksy');;
                 }
             }
-            $room_id = get_post_meta($seat_id, 'rrze-rsvp-seat-room', true);
+            $room_id = get_post_meta($seat_id, 'rrze-pieksy-seat-room', true);
             if ($days == '') {
-                $bookingmode = get_post_meta($room_id, 'rrze-rsvp-room-bookingmode', true);
+                $bookingmode = get_post_meta($room_id, 'rrze-pieksy-room-bookingmode', true);
                 if ($bookingmode == 'check-only') {
                     $days = '7';
                 } else {
-                    $days = get_post_meta($room_id, 'rrze-rsvp-room-days-in-advance', true);
+                    $days = get_post_meta($room_id, 'rrze-pieksy-room-days-in-advance', true);
                 }
             }
 
             $availability = Functions::getSeatAvailability($seat_id, $today, date('Y-m-d', strtotime($today . ' +' . $days . ' days')), false);
 
             if (empty($availability)) {
-                return __('No timeslots available for this seat.', 'rrze-rsvp');
+                return __('No timeslots available for this seat.', 'rrze-pieksy');
             } else {
-                $output .= '<div class="rrze-rsvp">'
-                    . '<table class="rsvp-seat-availability">'
-                    . '<th scope="col" width="200">' . __('Date', 'rrze-rsvp') . '</th>'
-                    . '<th scope="col">' . __('Available Time Slots', 'rrze-rsvp') . '</th>';
+                $output .= '<div class="rrze-pieksy">'
+                    . '<table class="pieksy-seat-availability">'
+                    . '<th scope="col" width="200">' . __('Date', 'rrze-pieksy') . '</th>'
+                    . '<th scope="col">' . __('Available Time Slots', 'rrze-pieksy') . '</th>';
                 foreach ($availability as $date => $timeslots) {
                     $time_output = [];
                     foreach ($timeslots as $time) {
@@ -141,7 +141,7 @@ class Availability extends Shortcodes
                         if ($booking_link) {
                             $permalink = get_permalink($room_id);
                             $timeslot = explode('-', $time)[0];
-                            $booking_link_open = "<a href=\"$permalink?room_id=$room_id&seat_id=$seat_id&bookingdate=$date&timeslot=$timeslot&nonce=$nonce\" title='" . __('Book this seat/timeslot now', 'rrze-rsvp') . "'>";
+                            $booking_link_open = "<a href=\"$permalink?room_id=$room_id&seat_id=$seat_id&bookingdate=$date&timeslot=$timeslot&nonce=$nonce\" title='" . __('Book this seat/timeslot now', 'rrze-pieksy') . "'>";
                             $booking_link_close = '</a>';
                             $glue = '';
                         }
@@ -156,12 +156,12 @@ class Availability extends Shortcodes
                     . '</div>';
             }
         } else {
-            return __('Please specify a room ID in your Shortcode.', 'rrze-rsvp');
+            return __('Please specify a room ID in your Shortcode.', 'rrze-pieksy');
         }
 
 
-        wp_enqueue_style('rrze-rsvp-shortcode');
-        //wp_enqueue_script('rrze-rsvp-shortcode');
+        wp_enqueue_style('rrze-pieksy-shortcode');
+        //wp_enqueue_script('rrze-pieksy-shortcode');
 
         return $output;
     }

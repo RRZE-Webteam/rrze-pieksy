@@ -1,14 +1,14 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\CPT\CPT;
-use RRZE\RSVP\Shortcodes\Shortcodes;
-use RRZE\RSVP\Printing\Printing;
+use RRZE\Pieksy\CPT\CPT;
+use RRZE\Pieksy\Shortcodes\Shortcodes;
+use RRZE\Pieksy\Printing\Printing;
 
-use function RRZE\RSVP\Config\getOptionName;
+use function RRZE\Pieksy\Config\getOptionName;
 
 
 /**
@@ -59,7 +59,7 @@ class Main
 		$tools = new Tools;
 		$tools->onLoaded();
 
-        $virtualPage = new VirtualPage(__('Booking', 'rrze-rsvp'), 'rsvp-booking');
+        $virtualPage = new VirtualPage(__('Booking', 'rrze-pieksy'), 'pieksy-booking');
         $virtualPage->onLoaded();
         
 		$actions = new Actions;
@@ -73,7 +73,7 @@ class Main
 			//$api->register_routes();
         });
         
-		add_action('update_option_rrze_rsvp', [$this, 'resetSettings']);
+		add_action('update_option_rrze_pieksy', [$this, 'resetSettings']);
 		
 		// RRZE Cache Plugin: Skip Cache
 		add_filter('rrzecache_skip_cache', [$this, 'skipCache']);		
@@ -94,7 +94,7 @@ class Main
 	}
 
     public function resetSettings(){
-        if (isset($_POST['rrze_rsvp']) && isset($_POST['rrze_rsvp']['reset_reset_settings']) && $_POST['rrze_rsvp']['reset_reset_settings'] == 'on'){
+        if (isset($_POST['rrze_pieksy']) && isset($_POST['rrze_pieksy']['reset_reset_settings']) && $_POST['rrze_pieksy']['reset_reset_settings'] == 'on'){
             $optionName = getOptionName();
             delete_option($optionName);
         }
@@ -105,8 +105,8 @@ class Main
 		global $post_type;
 
 		wp_enqueue_style(
-			'rrze-rsvp-admin-menu',
-			plugins_url('assets/css/rrze-rsvp-admin-menu.css', plugin()->getBasename()),
+			'rrze-pieksy-admin-menu',
+			plugins_url('assets/css/rrze-pieksy-admin-menu.css', plugin()->getBasename()),
 			[],
 			plugin()->getVersion()
 		);
@@ -116,27 +116,27 @@ class Main
 		}
 
 		wp_enqueue_style(
-			'rrze-rsvp-admin',
-			plugins_url('assets/css/rrze-rsvp-admin.css', plugin()->getBasename()),
+			'rrze-pieksy-admin',
+			plugins_url('assets/css/rrze-pieksy-admin.css', plugin()->getBasename()),
 			[],
 			plugin()->getVersion()
 		);
 
 		wp_enqueue_script(
-			'rrze-rsvp-admin',
-			plugins_url('assets/js/rrze-rsvp-admin.js', plugin()->getBasename()),
+			'rrze-pieksy-admin',
+			plugins_url('assets/js/rrze-pieksy-admin.js', plugin()->getBasename()),
 			['jquery'],
 			plugin()->getVersion()
 		);
 
-		wp_localize_script('rrze-rsvp-admin', 'rrze_rsvp_admin', array(
+		wp_localize_script('rrze-pieksy-admin', 'rrze_pieksy_admin', array(
 			'dateformat' => get_option('date_format'),
-			'text_cancel' => __('Do you want to cancel?', 'rrze-rsvp'),
-			'text_cancelled' => _x('Cancelled', 'Booking', 'rrze-rsvp'),
-			'text_confirmed' => _x('Confirmed', 'Booking', 'rrze-rsvp'),
+			'text_cancel' => __('Do you want to cancel?', 'rrze-pieksy'),
+			'text_cancelled' => _x('Cancelled', 'Booking', 'rrze-pieksy'),
+			'text_confirmed' => _x('Confirmed', 'Booking', 'rrze-pieksy'),
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			// Strings für CPT Booking Backend
-			'alert_no_seat_date' => __('Please select a seat first.', 'rrze-rsvp')
+			'alert_no_seat_date' => __('Please select a seat first.', 'rrze-pieksy')
 		));
 
 		if ($post_type == 'booking') {
@@ -146,26 +146,26 @@ class Main
 		} elseif ($post_type == 'seat') {
 			wp_dequeue_script('autosave');
 			wp_enqueue_script(
-				'rrze-rsvp-seat',
-				plugins_url('assets/js/rrze-rsvp-seat.js', plugin()->getBasename()),
+				'rrze-pieksy-seat',
+				plugins_url('assets/js/rrze-pieksy-seat.js', plugin()->getBasename()),
 				['jquery'],
 				plugin()->getVersion()
 			);
 
-			wp_localize_script('rrze-rsvp-seat', 'button_label', __('Create Seats', 'rrze-rsvp'));
+			wp_localize_script('rrze-pieksy-seat', 'button_label', __('Create Seats', 'rrze-pieksy'));
 		}
 	}
 
 	public function wpEnqueueScripts()
 	{
 		wp_register_style(
-			'rrze-rsvp-shortcode',
-			plugins_url('assets/css/rrze-rsvp.css', plugin()->getBasename()),
+			'rrze-pieksy-shortcode',
+			plugins_url('assets/css/rrze-pieksy.css', plugin()->getBasename()),
 			[],
 			plugin()->getVersion()
 		);
 		wp_register_script(
-			'rrze-rsvp-shortcode',
+			'rrze-pieksy-shortcode',
 			plugins_url('assets/js/shortcode.js', plugin()->getBasename()),
 			['jquery'],
 			plugin()->getVersion()

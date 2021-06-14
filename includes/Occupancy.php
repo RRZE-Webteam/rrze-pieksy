@@ -1,10 +1,10 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Functions;
+use RRZE\Pieksy\Functions;
 
 
 
@@ -23,20 +23,20 @@ class Occupancy{
 
     public function adminEnqueueScripts(){
         wp_enqueue_script(
-			'rrze-rsvp-occupancy',
+			'rrze-pieksy-occupancy',
 			plugins_url('assets/js/occupancy.js', plugin()->getBasename()),
 			['jquery'],
 			plugin()->getVersion()
         );    
 
-        wp_localize_script('rrze-rsvp-occupancy', 'rsvp_ajax', [
+        wp_localize_script('rrze-pieksy-occupancy', 'pieksy_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce( 'rsvp-ajax-nonce' ),
+            'nonce' => wp_create_nonce( 'pieksy-ajax-nonce' ),
         ]);
     }
 
     public function ajaxGetOccupancy() {
-        check_ajax_referer( 'rsvp-ajax-nonce', 'nonce'  );
+        check_ajax_referer( 'pieksy-ajax-nonce', 'nonce'  );
         $roomId = filter_input(INPUT_POST, 'roomId', FILTER_VALIDATE_INT);
 
         if (get_post_type($roomId) != 'room') { 
@@ -54,7 +54,7 @@ class Occupancy{
     }
 
     public function ajaxGetOccupancyLinks() {
-        check_ajax_referer( 'rsvp-ajax-nonce', 'nonce'  );
+        check_ajax_referer( 'pieksy-ajax-nonce', 'nonce'  );
         $roomId = filter_input(INPUT_POST, 'roomId', FILTER_VALIDATE_INT);
 
         if (get_post_type($roomId) != 'room') { 

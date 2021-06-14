@@ -1,10 +1,10 @@
 <?php
 
-namespace RRZE\RSVP\Auth;
+namespace RRZE\Pieksy\Auth;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Functions;
+use RRZE\Pieksy\Functions;
 
 abstract class Auth
 {

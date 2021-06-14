@@ -4,11 +4,11 @@
  * Custom Post Type Room
  * ------------------------------------------------------------------------- */
 
-namespace RRZE\RSVP\CPT;
+namespace RRZE\Pieksy\CPT;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Capabilities;
+use RRZE\Pieksy\Capabilities;
 
 class Rooms{
 
@@ -30,34 +30,34 @@ class Rooms{
     // Register Custom Post Type
     public function room_post_type(){
         $labels = [
-            'name'                  => _x('Rooms', 'Post type general name', 'rrze-rsvp'),
-            'singular_name'         => _x('Room', 'Post type singular name', 'rrze-rsvp'),
-            'menu_name'             => _x('Rooms', 'Admin Menu text', 'rrze-rsvp'),
-            'name_admin_bar'        => _x('Room', 'Add New on Toolbar', 'rrze-rsvp'),
-            'add_new'               => __('Add New', 'rrze-rsvp'),
-            'add_new_item'          => __('Add New Room', 'rrze-rsvp'),
-            'new_item'              => __('New Room', 'rrze-rsvp'),
-            'edit_item'             => __('Edit Room', 'rrze-rsvp'),
-            'view_item'             => __('View Room', 'rrze-rsvp'),
-            'all_items'             => __('All Rooms', 'rrze-rsvp'),
-            'search_items'          => __('Search Rooms', 'rrze-rsvp'),
-            'not_found'             => __('No Rooms found.', 'rrze-rsvp'),
-            'not_found_in_trash'    => __('No Rooms found in Trash.', 'rrze-rsvp'),
-            'featured_image'        => _x('Room Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-            'set_featured_image'    => _x('Set room image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-            'remove_featured_image' => _x('Remove room image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-            'use_featured_image'    => _x('Use as Room image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'rrze-rsvp'),
-            'archives'              => _x('Room archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'rrze-rsvp'),
-            'insert_into_item'      => _x('Insert into Room', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'rrze-rsvp'),
-            'uploaded_to_this_item' => _x('Uploaded to this Room', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'rrze-rsvp'),
-            'filter_items_list'     => _x('Filter Rooms list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'rrze-rsvp'),
-            'items_list_navigation' => _x('Rooms list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'rrze-rsvp'),
-            'items_list'            => _x('Rooms list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'rrze-rsvp'),
+            'name'                  => _x('Rooms', 'Post type general name', 'rrze-pieksy'),
+            'singular_name'         => _x('Room', 'Post type singular name', 'rrze-pieksy'),
+            'menu_name'             => _x('Rooms', 'Admin Menu text', 'rrze-pieksy'),
+            'name_admin_bar'        => _x('Room', 'Add New on Toolbar', 'rrze-pieksy'),
+            'add_new'               => __('Add New', 'rrze-pieksy'),
+            'add_new_item'          => __('Add New Room', 'rrze-pieksy'),
+            'new_item'              => __('New Room', 'rrze-pieksy'),
+            'edit_item'             => __('Edit Room', 'rrze-pieksy'),
+            'view_item'             => __('View Room', 'rrze-pieksy'),
+            'all_items'             => __('All Rooms', 'rrze-pieksy'),
+            'search_items'          => __('Search Rooms', 'rrze-pieksy'),
+            'not_found'             => __('No Rooms found.', 'rrze-pieksy'),
+            'not_found_in_trash'    => __('No Rooms found in Trash.', 'rrze-pieksy'),
+            'featured_image'        => _x('Room Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+            'set_featured_image'    => _x('Set room image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+            'remove_featured_image' => _x('Remove room image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+            'use_featured_image'    => _x('Use as Room image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'rrze-pieksy'),
+            'archives'              => _x('Room archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'rrze-pieksy'),
+            'insert_into_item'      => _x('Insert into Room', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'rrze-pieksy'),
+            'uploaded_to_this_item' => _x('Uploaded to this Room', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'rrze-pieksy'),
+            'filter_items_list'     => _x('Filter Rooms list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'rrze-pieksy'),
+            'items_list_navigation' => _x('Rooms list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'rrze-pieksy'),
+            'items_list'            => _x('Rooms list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'rrze-pieksy'),
         ];
 
         $args = [
-            'label' => __('Room', 'rrze-rsvp'),
-            'description' => __('Add and edit room informations', 'rrze-rsvp'),
+            'label' => __('Room', 'rrze-pieksy'),
+            'description' => __('Add and edit room informations', 'rrze-pieksy'),
             'labels' => $labels,
             'supports'                  => ['title', 'editor', 'author', 'thumbnail'],
             'hierarchical'              => false,
@@ -83,7 +83,7 @@ class Rooms{
     public function columns($columns){
         $columns = array(
             'cb' => $columns['cb'],
-            'title' => __('Room', 'rrze-rsvp')
+            'title' => __('Room', 'rrze-pieksy')
         );
         return $columns;
     }

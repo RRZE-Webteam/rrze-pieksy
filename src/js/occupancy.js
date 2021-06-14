@@ -10,31 +10,31 @@ jQuery(document).ready(function($){
             $loading.hide();
         });
 
-        $('select#rsvp_room_id').change(updateTable);
-        $('select#rsvp_room_id').change(updateLink);
+        $('select#pieksy_room_id').change(updateTable);
+        $('select#pieksy_room_id').change(updateLink);
 });
 
 
 function updateTable() {
-    var roomId = jQuery('#rsvp_room_id').val();
+    var roomId = jQuery('#pieksy_room_id').val();
 
-    jQuery.post(rsvp_ajax.ajax_url, { //POST request
-        _ajax_nonce: rsvp_ajax.nonce, //nonce
+    jQuery.post(pieksy_ajax.ajax_url, { //POST request
+        _ajax_nonce: pieksy_ajax.nonce, //nonce
         action: "ShowOccupancy",      //action
         roomId: roomId,               //data
     }, function(result) {             //callback
-        jQuery('div.rsvp-occupancy-container').html(result);
+        jQuery('div.pieksy-occupancy-container').html(result);
     });
 }
 
 function updateLink(){
-    var roomId = jQuery('#rsvp_room_id').val();
+    var roomId = jQuery('#pieksy_room_id').val();
 
-    jQuery.post(rsvp_ajax.ajax_url, { //POST request
-        _ajax_nonce: rsvp_ajax.nonce, //nonce
+    jQuery.post(pieksy_ajax.ajax_url, { //POST request
+        _ajax_nonce: pieksy_ajax.nonce, //nonce
         action: "ShowOccupancyLinks",      //action
         roomId: roomId,               //data
     }, function(result) {             //callback
-        jQuery('div.rsvp-occupancy-links').html(result);
+        jQuery('div.pieksy-occupancy-links').html(result);
     });
 }

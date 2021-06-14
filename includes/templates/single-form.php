@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -47,7 +47,7 @@ if (Helper::isFauTheme()) {
  */
 echo $divOpen;
 
-// if ( shortcode_exists( 'rsvp-booking' ) ) {
+// if ( shortcode_exists( 'pieksy-booking' ) ) {
 //     echo 'yes, it exists';
 //     echo '<pre>';
 //     var_dump($_REQUEST);
@@ -55,10 +55,10 @@ echo $divOpen;
 //     echo 'no man, not existing.';
 // }
  
-echo do_shortcode(sprintf('[rsvp-booking%s]', $room));
+echo do_shortcode(sprintf('[pieksy-booking%s]', $room));
 
 echo $divClose;
 
-wp_enqueue_style('rrze-rsvp-shortcode');
+wp_enqueue_style('rrze-pieksy-shortcode');
 
 get_footer();

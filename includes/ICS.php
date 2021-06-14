@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -18,7 +18,7 @@ class ICS
 		$output = '';
 		$output .= "BEGIN:VCALENDAR\r\n";
 		$output .= "VERSION:2.0\r\n";
-		$output .= "PRODID:-//rrze//rsvp//EN\r\n";
+		$output .= "PRODID:-//rrze//pieksy//EN\r\n";
 		$output .= self::vevent($booking, $recipient);
 		$output .= "END:VCALENDAR\r\n";
 		return $output;
@@ -31,7 +31,7 @@ class ICS
 		$dtstampFormat = Functions::dateFormat(current_time('timestamp')) . ' ' . Functions::timeFormat(current_time('timestamp'));
 
 		$timestamp = date('ymdHi', $booking['start']);
-		$uid = md5($timestamp . date('ymdHi')) . "@rrze-rsvp";
+		$uid = md5($timestamp . date('ymdHi')) . "@rrze-pieksy";
 		$dtstamp = date('Ymd\THis');
 		$dtstart = date('Ymd\THis', $booking['start']);
 		$dtend = date('Ymd\THis', $booking['end']);
@@ -42,9 +42,9 @@ class ICS
 		$description .= !empty($booking['seat_name']) ? $booking['seat_name'] . '\\n' : '';
 		if ($recipient == 'customer') {
 			$cancelUrl = Functions::bookingReplyUrl('cancel', sprintf('%s-%s-customer', $booking['id'], $booking['start']), $booking['id']);
-			$description .= "\\n\\n" . __('Cancel Booking', 'rrze-rsvp') . ':\\n' . $cancelUrl;	
+			$description .= "\\n\\n" . __('Cancel Booking', 'rrze-pieksy') . ':\\n' . $cancelUrl;	
 		}
-		$description .= "\\n\\n" . __('Generated', 'rrze-rsvp') . ': ' . $dtstampFormat;
+		$description .= "\\n\\n" . __('Generated', 'rrze-pieksy') . ': ' . $dtstampFormat;
 
 		$output = '';
 		$output .= "BEGIN:VEVENT\r\n";

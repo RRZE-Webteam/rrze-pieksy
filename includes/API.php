@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -13,7 +13,7 @@ class API extends WP_REST_Controller
 {
     public function __construct()
     {
-        $this->namespace = 'rrze-rsvp/v1';
+        $this->namespace = 'rrze-pieksy/v1';
         $this->rest_base = 'route';
     }
 
@@ -105,7 +105,7 @@ class API extends WP_REST_Controller
         if (1 == 1) {
             return new WP_REST_Response($data, 200);
         } else {
-            return new WP_Error('code', __('message', 'rrze-rsvp'));
+            return new WP_Error('code', __('message', 'rrze-pieksy'));
         }
     }
 
@@ -124,7 +124,7 @@ class API extends WP_REST_Controller
             return new WP_REST_Response($data, 200);
         }
 
-        return new WP_Error('cant-create', __('message', 'rrze-rsvp'), array('status' => 500));
+        return new WP_Error('cant-create', __('message', 'rrze-pieksy'), array('status' => 500));
     }
 
     /**
@@ -142,7 +142,7 @@ class API extends WP_REST_Controller
             return new WP_REST_Response($data, 200);
         }
 
-        return new WP_Error('cant-update', __('message', 'rrze-rsvp'), array('status' => 500));
+        return new WP_Error('cant-update', __('message', 'rrze-pieksy'), array('status' => 500));
     }
 
     /**
@@ -160,7 +160,7 @@ class API extends WP_REST_Controller
             return new WP_REST_Response(true, 200);
         }
 
-        return new WP_Error('cant-delete', __('message', 'rrze-rsvp'), array('status' => 500));
+        return new WP_Error('cant-delete', __('message', 'rrze-pieksy'), array('status' => 500));
     }
 
     /**

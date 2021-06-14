@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -149,7 +149,7 @@ class Carbon extends DateTime
     /**
      * A test Carbon instance to be returned when now instances are created.
      *
-     * @var \RRZE\RSVP\Carbon
+     * @var \RRZE\Pieksy\Carbon
      */
     protected static $testNow;
 
@@ -880,7 +880,7 @@ class Carbon extends DateTime
      * To clear the test instance call this method using the default
      * parameter of null.
      *
-     * @param \RRZE\RSVP\Carbon|null $testNow
+     * @param \RRZE\Pieksy\Carbon|null $testNow
      */
     public static function setTestNow(Carbon $testNow = null)
     {
@@ -1355,7 +1355,7 @@ class Carbon extends DateTime
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      *
      * @return static
      */
@@ -1369,7 +1369,7 @@ class Carbon extends DateTime
     /**
      * Get the minimum instance between a given instance (default now) and the current instance.
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      *
      * @see min()
      *
@@ -1383,7 +1383,7 @@ class Carbon extends DateTime
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      *
      * @return static
      */
@@ -1397,7 +1397,7 @@ class Carbon extends DateTime
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      *
      * @see max()
      *
@@ -1491,7 +1491,7 @@ class Carbon extends DateTime
     /**
      * Checks if the passed in date is the same day as the instance current day.
      *
-     * @param \RRZE\RSVP\Carbon $dt
+     * @param \RRZE\Pieksy\Carbon $dt
      *
      * @return bool
      */
@@ -2032,7 +2032,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in years
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2047,7 +2047,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in months
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2062,7 +2062,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in weeks
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2075,7 +2075,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in days
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2091,7 +2091,7 @@ class Carbon extends DateTime
      * Get the difference in days using a filter closure
      *
      * @param Closure             $callback
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs      Get the absolute of the difference
      *
      * @return int
@@ -2105,7 +2105,7 @@ class Carbon extends DateTime
      * Get the difference in hours using a filter closure
      *
      * @param Closure             $callback
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs      Get the absolute of the difference
      *
      * @return int
@@ -2150,7 +2150,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in weekdays
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2165,7 +2165,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in weekend days using a filter
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2180,7 +2180,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in hours
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2193,7 +2193,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in minutes
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2206,7 +2206,7 @@ class Carbon extends DateTime
     /**
      * Get the difference in seconds
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      * @param bool                $abs Get the absolute of the difference
      *
      * @return int
@@ -2581,7 +2581,7 @@ class Carbon extends DateTime
     /**
      * Modify the current instance to the average of a given instance (default now) and the current instance.
      *
-     * @param \RRZE\RSVP\Carbon|null $dt
+     * @param \RRZE\Pieksy\Carbon|null $dt
      *
      * @return static
      */
@@ -2595,7 +2595,7 @@ class Carbon extends DateTime
     /**
      * Check if its the birthday. Compares the date/month values of the two dates.
      *
-     * @param \RRZE\RSVP\Carbon|null $dt The instance to compare with or null to use current day.
+     * @param \RRZE\Pieksy\Carbon|null $dt The instance to compare with or null to use current day.
      *
      * @return bool
      */
