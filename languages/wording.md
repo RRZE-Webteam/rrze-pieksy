@@ -1,4 +1,4 @@
-# Sprachkonventionen für RRZE-RSVP
+# Sprachkonventionen für rrze-pieksy
 
 | Englisch | Deutsch |
 | --- | --- |

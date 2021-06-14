@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -79,7 +79,7 @@ class Users
             return;
         }
 
-        add_role(static::BOOKING_ROLE, __('Booking Agent', 'rrze-rsvp'), ['read' => true, 'level_0' => true]);
+        add_role(static::BOOKING_ROLE, __('Booking Agent', 'rrze-pieksy'), ['read' => true, 'level_0' => true]);
 
         $currentCpts = array_keys(Capabilities::getCurrentCptArgs());
 

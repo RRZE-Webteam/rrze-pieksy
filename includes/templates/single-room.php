@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -17,10 +17,10 @@ $schedule = '';
 $weekdays = Functions::daysOfWeekAry(1);
 
 if (!empty($scheduleData)) {
-    $schedule .= '<table class="rsvp-schedule">';
+    $schedule .= '<table class="pieksy-schedule">';
     $schedule .= '<tr>'
-        . '<th>' . __('Weekday', 'rrze-rsvp') . '</th>'
-        . '<th>' . __('Time slots', 'rrze-rsvp') . '</th>';
+        . '<th>' . __('Weekday', 'rrze-pieksy') . '</th>'
+        . '<th>' . __('Time slots', 'rrze-pieksy') . '</th>';
     $schedule .= '</tr>';
     foreach ($scheduleData as $weekday => $dailySlots) {
         $schedule .= '<tr>'
@@ -40,8 +40,8 @@ if (!empty($scheduleData)) {
 }
 
 // Floorplan ID
-if (isset($meta['rrze-rsvp-room-floorplan_id']) && $meta['rrze-rsvp-room-floorplan_id'] != '') {
-    $imgID = $meta['rrze-rsvp-room-floorplan_id'][0];
+if (isset($meta['rrze-pieksy-room-floorplan_id']) && $meta['rrze-pieksy-room-floorplan_id'] != '') {
+    $imgID = $meta['rrze-pieksy-room-floorplan_id'][0];
 }
 
 get_header();
@@ -65,21 +65,21 @@ if (isset($_GET['format']) && $_GET['format'] == 'embedded') {
                 echo get_the_content(null, false, $roomId);
                 break;
             case 'floorplan':
-                if (isset($meta['rrze-rsvp-room-floorplan_id']) && $meta['rrze-rsvp-room-floorplan_id'] != '') {
+                if (isset($meta['rrze-pieksy-room-floorplan_id']) && $meta['rrze-pieksy-room-floorplan_id'] != '') {
                     echo wp_get_attachment_image($imgID, [$innerWidth, $innerHeight]);
                 } else {
-                    echo __('No floorplan available.', 'rrze-rsvp');
+                    echo __('No floorplan available.', 'rrze-pieksy');
                 }
                 break;
             case 'schedule':
                 echo $schedule;
                 break;
             case 'availability':
-                $daysInAdvance = get_post_meta($roomId, 'rrze-rsvp-room-days-in-advance', true);
+                $daysInAdvance = get_post_meta($roomId, 'rrze-pieksy-room-days-in-advance', true);
                 if (empty($daysInAdvance)) {
                     $daysInAdvance = '10';
                 }
-                echo do_shortcode('[rsvp-availability room=' . $roomId . ' days=' . $daysInAdvance . ']');
+                echo do_shortcode('[pieksy-availability room=' . $roomId . ' days=' . $daysInAdvance . ']');
                 break;
             case 'occupancy':
                 echo Functions::getOccupancyByRoomIdHTML($roomId);
@@ -96,7 +96,7 @@ if (isset($_GET['format']) && $_GET['format'] == 'embedded') {
         }
     }
 
-    wp_enqueue_style('rrze-rsvp-shortcode');
+    wp_enqueue_style('rrze-pieksy-shortcode');
     get_footer();
 
     return;
@@ -147,7 +147,7 @@ while (have_posts()) : the_post();
     }
     the_content();
 
-    if (isset($meta['rrze-rsvp-room-timeslots']) && !empty($meta['rrze-rsvp-room-timeslots'])) {
+    if (isset($meta['rrze-pieksy-room-timeslots']) && !empty($meta['rrze-pieksy-room-timeslots'])) {
 
         if ($options->general_single_room_availability_table != 'no') {
             $booking_link = '';
@@ -155,41 +155,41 @@ while (have_posts()) : the_post();
                 $booking_link = 'booking_link=true';
             }
         }
-        $daysInAdvance = get_post_meta($roomId, 'rrze-rsvp-room-days-in-advance', true);
+        $daysInAdvance = get_post_meta($roomId, 'rrze-pieksy-room-days-in-advance', true);
         if (empty($daysInAdvance)) {
             $daysInAdvance = '10';
         }
 
         if (shortcode_exists('collapsibles')) {
             $shortcode = '[collapsibles expand-all-link="true"]'
-                . '[collapse title="' . __('Schedule', 'rrze-rsvp') . '" name="schedule" load="open"]'
+                . '[collapse title="' . __('Schedule', 'rrze-pieksy') . '" name="schedule" load="open"]'
                 . $schedule
                 . '[/collapse]'
-                . '[collapse title="' . __('Current Room Occupancy', 'rrze-rsvp') . '" name="occupancy"]'
+                . '[collapse title="' . __('Current Room Occupancy', 'rrze-pieksy') . '" name="occupancy"]'
                 . Functions::getOccupancyByRoomIdNextHTML($roomId)
                 . '[/collapse]';
             if ($options->general_single_room_availability_table != 'no') {
-                $bookingmode = get_post_meta($roomId, 'rrze-rsvp-room-bookingmode', true);
+                $bookingmode = get_post_meta($roomId, 'rrze-pieksy-room-bookingmode', true);
                 if ($bookingmode != 'check-only') {
-                    $shortcode .= '[collapse title="' . __('Availability', 'rrze-rsvp') . '" name="availability"]'
-                        . do_shortcode('[rsvp-availability room=' . $roomId . ' days=' . $daysInAdvance . ' ' . $booking_link . ']')
+                    $shortcode .= '[collapse title="' . __('Availability', 'rrze-pieksy') . '" name="availability"]'
+                        . do_shortcode('[pieksy-availability room=' . $roomId . ' days=' . $daysInAdvance . ' ' . $booking_link . ']')
                         . '[/collapse]';
                 }
             }
             $shortcode .= '[/collapsibles]';
             $timetables = do_shortcode($shortcode);
         } else {
-            $timetables = '<h2>' . __('Schedule', 'rrze-rsvp') . '</h2>'
+            $timetables = '<h2>' . __('Schedule', 'rrze-pieksy') . '</h2>'
                 . $schedule
-                //. '<h3>' . __('Room occupancy for today', 'rrze-rsvp') . '</h3>';
+                //. '<h3>' . __('Room occupancy for today', 'rrze-pieksy') . '</h3>';
                 . Functions::getOccupancyByRoomIdNextHTML($roomId);
             if ($options->general_single_room_availability_table != 'no') {
 
-                $bookingmode = get_post_meta($roomId, 'rrze-rsvp-room-bookingmode', true);
+                $bookingmode = get_post_meta($roomId, 'rrze-pieksy-room-bookingmode', true);
                 if ($bookingmode != 'check-only') {
 
-                    $timetables .= '<h3>' . __('Availability', 'rrze-rsvp') . '</h3>'
-                        . do_shortcode('[rsvp-availability room=' . $roomId . ' days=' . $daysInAdvance . ' ' . $booking_link . ']');
+                    $timetables .= '<h3>' . __('Availability', 'rrze-pieksy') . '</h3>'
+                        . do_shortcode('[pieksy-availability room=' . $roomId . ' days=' . $daysInAdvance . ' ' . $booking_link . ']');
                 }
             }
         }
@@ -197,8 +197,8 @@ while (have_posts()) : the_post();
         echo $timetables;
     }
 
-    if (isset($meta['rrze-rsvp-room-floorplan_id']) && $meta['rrze-rsvp-room-floorplan_id']  != '') {
-        echo '<h2>' . __('Floor Plan', 'rrze-rsvp') . '</h2>';
+    if (isset($meta['rrze-pieksy-room-floorplan_id']) && $meta['rrze-pieksy-room-floorplan_id']  != '') {
+        echo '<h2>' . __('Floor Plan', 'rrze-pieksy') . '</h2>';
         $imgSrc = wp_get_attachment_image_src($imgID, 'full');
         $floorplan = wp_get_attachment_image($imgID, 'large');
         echo '<a href="' . $imgSrc[0] . '" class="lightbox">' . $floorplan . '</a>';
@@ -209,6 +209,6 @@ endwhile;
 
 echo $divClose;
 
-wp_enqueue_style('rrze-rsvp-shortcode');
+wp_enqueue_style('rrze-pieksy-shortcode');
 
 get_footer();

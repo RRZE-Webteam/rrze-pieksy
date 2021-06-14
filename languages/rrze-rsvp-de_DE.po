@@ -1,12 +1,12 @@
-# Copyright (C) 2020 rrze-rsvp
-# This file is distributed under the same license as the rrze-rsvp package.
+# Copyright (C) 2020 rrze-pieksy
+# This file is distributed under the same license as the rrze-pieksy package.
 msgid ""
 msgstr ""
-"Project-Id-Version: rrze-rsvp\n"
+"Project-Id-Version: rrze-pieksy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: https://github.com/RRZE-Webteam/rrze-rsvp/issues\n"
+"Report-Msgid-Bugs-To: https://github.com/RRZE-Webteam/rrze-pieksy/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:"
 "1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;"
@@ -87,8 +87,8 @@ msgstr ""
 "Bestätigungs-E-Mail."
 
 #: includes/Email.php:139
-msgid "[RSVP] Booking cancelled"
-msgstr "[RSVP] Buchung storniert"
+msgid "[Pieksy] Booking cancelled"
+msgstr "[Pieksy] Buchung storniert"
 
 #: includes/Email.php:141
 msgid "A booking has been cancelled by the customer."
@@ -204,13 +204,13 @@ msgstr "Weitere Informationen"
 
 #: includes/Tracking.php:81 includes/Tracking.php:92
 msgctxt "admin menu entry title"
-msgid "RSVP Contact tracking"
-msgstr "RSVP Kontaktverfolgung"
+msgid "Pieksy Contact tracking"
+msgstr "Pieksy Kontaktverfolgung"
 
 #: includes/Tools.php:22
 msgctxt "admin menu entry title"
-msgid "RSVP Create Seats"
-msgstr "RSVP Platzgenerator"
+msgid "Pieksy Create Seats"
+msgstr "Pieksy Platzgenerator"
 
 #: includes/CPT/Bookings.php:55
 msgctxt "Admin Menu text"
@@ -808,8 +808,8 @@ msgid "https://blogs.fau.de/webworking/"
 msgstr "https://blogs.fau.de/webworking/"
 
 #. URI of the plugin
-msgid "https://github.com/RRZE-Webteam/rrze-rsvp"
-msgstr "https://github.com/RRZE-Webteam/rrze-rsvp"
+msgid "https://github.com/RRZE-Webteam/rrze-pieksy"
+msgstr "https://github.com/RRZE-Webteam/rrze-pieksy"
 
 #: config/config.php:128
 msgid ""
@@ -930,14 +930,14 @@ msgstr "Zugang verweigert"
 
 #: includes/Email.php:81 includes/Email.php:107
 msgctxt "Mail Subject for room admin: new booking received"
-msgid "[RSVP] Confirm new booking"
-msgstr "[RSVP] Neue Buchung bestätigen"
+msgid "[Pieksy] Confirm new booking"
+msgstr "[Pieksy] Neue Buchung bestätigen"
 
 #: includes/Email.php:132
-#| msgid "[RSVP] New booking received"
+#| msgid "[Pieksy] New booking received"
 msgctxt "Mail Subject for room admin: new booking received"
-msgid "[RSVP] New booking"
-msgstr "[RSVP] Neue Buchung"
+msgid "[Pieksy] New booking"
+msgstr "[Pieksy] Neue Buchung"
 
 #: includes/API.php:108 includes/API.php:127 includes/API.php:145
 #: includes/API.php:163
@@ -1288,7 +1288,7 @@ msgstr "Bitte geben Sie eine Raum-ID im Shortcode an."
 msgid "Please specify a seat ID in your Shortcode."
 msgstr "Bitte geben Sie in Ihrem Shortcode eine Platz-ID an."
 
-#: rrze-rsvp.php:137
+#: rrze-pieksy.php:137
 #, php-format
 msgid "Plugins: %1$s: %2$s"
 msgstr "Plugins: %1$s: %2$s"
@@ -1480,24 +1480,24 @@ msgstr "Reihennummerierung"
 
 #. Name of the plugin
 #: config/config.php:139 config/config.php:140
-msgid "RRZE RSVP"
-msgstr "RRZE RSVP"
+msgid "RRZE Pieksy"
+msgstr "RRZE Pieksy"
 
 #: config/config.php:143
-msgid "RRZE RSVP Settings"
-msgstr "Einstellungen &rsaquo; RRZE RSVP"
+msgid "RRZE Pieksy Settings"
+msgstr "Einstellungen &rsaquo; RRZE Pieksy"
 
 #. Author of the plugin
 msgid "RRZE-Webteam"
 msgstr "RRZE-Webteam"
 
 #: config/config.php:579
-msgid "RSVP Availability"
-msgstr "RSVP Platzverfügbarkeit"
+msgid "Pieksy Availability"
+msgstr "Pieksy Platzverfügbarkeit"
 
 #: config/config.php:544
-msgid "RSVP Booking"
-msgstr "RSVP Buchungsformular"
+msgid "Pieksy Booking"
+msgstr "Pieksy Buchungsformular"
 
 #: includes/Shortcodes/Bookings.php:453
 msgid "Save booking"
@@ -1902,7 +1902,7 @@ msgstr "Plätze "
 msgid "The room does not exist."
 msgstr "Der Raum existiert nicht."
 
-#: rrze-rsvp.php:66
+#: rrze-pieksy.php:66
 #, php-format
 msgid ""
 "The server is running PHP version %1$s. The Plugin requires at least PHP "
@@ -1911,7 +1911,7 @@ msgstr ""
 "Der Server verwendet PHP in der Version  %1$s. Das Plugin benötigt "
 "mindestens Version %2$s."
 
-#: rrze-rsvp.php:68
+#: rrze-pieksy.php:68
 #, php-format
 msgid ""
 "The server is running WordPress version %1$s. The Plugin requires at least "

@@ -4,14 +4,14 @@
  * Custom Post Type Booking
  * ------------------------------------------------------------------------- */
 
-namespace RRZE\RSVP\CPT;
+namespace RRZE\Pieksy\CPT;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Capabilities;
-use RRZE\RSVP\Functions;
-use function RRZE\RSVP\Config\isAllowedSearchForGuest;
-// use RRZE\RSVP\Carbon;
+use RRZE\Pieksy\Capabilities;
+use RRZE\Pieksy\Functions;
+use function RRZE\Pieksy\Config\isAllowedSearchForGuest;
+// use RRZE\Pieksy\Carbon;
 
 class Bookings {
     protected $sDate;
@@ -25,9 +25,9 @@ class Bookings {
 
 
     public function __construct() {
-        $this->sDate = 'rsvp_booking_date';
-        $this->sTimeslot = 'rsvp_booking_timeslot';
-        $this->sRoom = 'rsvp_booking_room';
+        $this->sDate = 'pieksy_booking_date';
+        $this->sTimeslot = 'pieksy_booking_timeslot';
+        $this->sRoom = 'pieksy_booking_room';
     }
 
     public function onLoaded() {
@@ -51,28 +51,28 @@ class Bookings {
     // Register Custom Post Type
     public function booking_post_type() {
         $labels = [
-            'name'                      => _x('Bookings', 'Post type general name', 'rrze-rsvp'),
-            'singular_name'             => _x('Booking', 'Post type singular name', 'rrze-rsvp'),
-            'menu_name'                 => _x('Bookings', 'Admin Menu text', 'rrze-rsvp'),
-            'name_admin_bar'            => _x('Booking', 'Add New on Toolbar', 'rrze-rsvp'),
-            'add_new'                   => __('Add New', 'rrze-rsvp'),
-            'add_new_item'              => __('Add New Booking', 'rrze-rsvp'),
-            'new_item'                  => __('New Booking', 'rrze-rsvp'),
-            'edit_item'                 => __('Edit Booking', 'rrze-rsvp'),
-            'view_item'                 => __('View Booking', 'rrze-rsvp'),
-            'all_items'                 => __('All Bookings', 'rrze-rsvp'),
-            'search_items'              => __('Search Bookings', 'rrze-rsvp'),
-            'not_found'                 => __('No Bookings found.', 'rrze-rsvp'),
-            'not_found_in_trash'        => __('No Bookings found in Trash.', 'rrze-rsvp'),
-            'archives'                  => _x('Booking archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'rrze-rsvp'),
-            'filter_items_list'         => _x('Filter Bookings list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'rrze-rsvp'),
-            'items_list_navigation'     => _x('Bookings list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'rrze-rsvp'),
-            'items_list'                => _x('Bookings list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'rrze-rsvp'),
+            'name'                      => _x('Bookings', 'Post type general name', 'rrze-pieksy'),
+            'singular_name'             => _x('Booking', 'Post type singular name', 'rrze-pieksy'),
+            'menu_name'                 => _x('Bookings', 'Admin Menu text', 'rrze-pieksy'),
+            'name_admin_bar'            => _x('Booking', 'Add New on Toolbar', 'rrze-pieksy'),
+            'add_new'                   => __('Add New', 'rrze-pieksy'),
+            'add_new_item'              => __('Add New Booking', 'rrze-pieksy'),
+            'new_item'                  => __('New Booking', 'rrze-pieksy'),
+            'edit_item'                 => __('Edit Booking', 'rrze-pieksy'),
+            'view_item'                 => __('View Booking', 'rrze-pieksy'),
+            'all_items'                 => __('All Bookings', 'rrze-pieksy'),
+            'search_items'              => __('Search Bookings', 'rrze-pieksy'),
+            'not_found'                 => __('No Bookings found.', 'rrze-pieksy'),
+            'not_found_in_trash'        => __('No Bookings found in Trash.', 'rrze-pieksy'),
+            'archives'                  => _x('Booking archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'rrze-pieksy'),
+            'filter_items_list'         => _x('Filter Bookings list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'rrze-pieksy'),
+            'items_list_navigation'     => _x('Bookings list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'rrze-pieksy'),
+            'items_list'                => _x('Bookings list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'rrze-pieksy'),
         ];
 
         $args = [
-            'label'                     => __('Booking', 'rrze-rsvp'),
-            'description'               => __('Add and edit Booking informations', 'rrze-rsvp'),
+            'label'                     => __('Booking', 'rrze-pieksy'),
+            'description'               => __('Add and edit Booking informations', 'rrze-pieksy'),
             'labels'                    => $labels,
             'supports'                  => ['author'], // , 'revisions'
             'hierarchical'              => false,
@@ -100,16 +100,16 @@ class Bookings {
     public function addBookingColumns($columns) {
         $columns = array();
         $columns['cb'] = true;
-        $columns['bookingdate'] = __('Date', 'rrze-rsvp');
-        $columns['bookingstart'] = __('Time', 'rrze-rsvp');
-        $columns['room'] = __('Room', 'rrze-rsvp');
-        $columns['seat'] = __('Seat', 'rrze-rsvp');
-        $columns['name'] = __('Name', 'rrze-rsvp');
-        $columns['email'] = __('Email', 'rrze-rsvp');
+        $columns['bookingdate'] = __('Date', 'rrze-pieksy');
+        $columns['bookingstart'] = __('Time', 'rrze-pieksy');
+        $columns['room'] = __('Room', 'rrze-pieksy');
+        $columns['seat'] = __('Seat', 'rrze-pieksy');
+        $columns['name'] = __('Name', 'rrze-pieksy');
+        $columns['email'] = __('Email', 'rrze-pieksy');
         if (current_user_can('read_customer_phone')) {
-            $columns['phone'] = __('Phone', 'rrze-rsvp');
+            $columns['phone'] = __('Phone', 'rrze-pieksy');
         }
-        $columns['status'] = __('Status', 'rrze-rsvp');
+        $columns['status'] = __('Status', 'rrze-pieksy');
         return $columns;
     }
 
@@ -159,27 +159,27 @@ class Bookings {
                 $status = $booking['status'];
                 $end = $booking['end'];
                 $now = current_time('timestamp');
-                $bookingDate = '<span class="booking_date">' . __('Booked on', 'rrze-rsvp') . ' ' . $booking['booking_date'] . '</span>';
+                $bookingDate = '<span class="booking_date">' . __('Booked on', 'rrze-pieksy') . ' ' . $booking['booking_date'] . '</span>';
                 $archive = ($end < $now);
                 $publish = ($booking['post_status'] == 'publish');
-                $bookingMode = get_post_meta($booking['room'], 'rrze-rsvp-room-bookingmode', true);
+                $bookingMode = get_post_meta($booking['room'], 'rrze-pieksy-room-bookingmode', true);
 
                 if ($publish && $archive) {
                     switch ($status) {
                         case 'cancelled':
-                            $button = '<span class="delete">' . _x('Cancelled', 'Booking', 'rrze-rsvp') . '</span>';
+                            $button = '<span class="delete">' . _x('Cancelled', 'Booking', 'rrze-pieksy') . '</span>';
                             break;
                         case 'booked':
-                            $button = '<span class="delete">' . _x('Booked', 'Booking', 'rrze-rsvp') . '</span>';
+                            $button = '<span class="delete">' . _x('Booked', 'Booking', 'rrze-pieksy') . '</span>';
                             break;
                         case 'confirmed':
-                            $button = '<span class="delete">' . _x('Confirmed', 'Booking', 'rrze-rsvp') . '</span>';
+                            $button = '<span class="delete">' . _x('Confirmed', 'Booking', 'rrze-pieksy') . '</span>';
                             break;
                         case 'checked-in':
-                            $button = _x('Checked-In', 'Booking', 'rrze-rsvp');
+                            $button = _x('Checked-In', 'Booking', 'rrze-pieksy');
                             break;
                         case 'checked-out':
-                            $button = _x('Checked-Out', 'Booking', 'rrze-rsvp');
+                            $button = _x('Checked-Out', 'Booking', 'rrze-pieksy');
                             break;
                         default:
                             $button = '';
@@ -189,13 +189,13 @@ class Bookings {
                     $_wpnonce = wp_create_nonce('status');
 
                     if ($status == 'cancelled') {
-                        $cancelledButton = '<button class="button button-secondary" disabled>' . _x('Cancelled', 'Booking', 'rrze-rsvp') . '</button>';
+                        $cancelledButton = '<button class="button button-secondary" disabled>' . _x('Cancelled', 'Booking', 'rrze-pieksy') . '</button>';
                         $restoreButton = sprintf(
                             '<a href="edit.php?post_type=%1$s&action=restore&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
                             'booking',
                             $booking['id'],
                             $_wpnonce,
-                            _x('Restore', 'Booking', 'rrze-rsvp')
+                            _x('Restore', 'Booking', 'rrze-pieksy')
                         );
                         $button = $cancelledButton . $restoreButton;
                     } else {
@@ -204,30 +204,30 @@ class Bookings {
                             'booking',
                             $booking['id'],
                             $_wpnonce,
-                            _x('Cancel', 'Booking', 'rrze-rsvp')
+                            _x('Cancel', 'Booking', 'rrze-pieksy')
                         );
                         $checkInButton = sprintf(
                             '<a href="edit.php?post_type=%1$s&action=checkin&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
                             'booking',
                             $booking['id'],
                             $_wpnonce,
-                            _x('Check-In', 'Booking', 'rrze-rsvp')
+                            _x('Check-In', 'Booking', 'rrze-pieksy')
                         );
                         $checkoutButton = sprintf(
                             '<a href="edit.php?post_type=%1$s&action=checkout&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
                             'booking',
                             $booking['id'],
                             $_wpnonce,
-                            _x('Check-Out', 'Booking', 'rrze-rsvp')
+                            _x('Check-Out', 'Booking', 'rrze-pieksy')
                         );
-                        $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-rsvp-room-force-to-confirm', true));
+                        $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
                         if ($bookingMode == 'check-only') {
                             switch ($status) {
                                 case 'checked-in':
-                                    $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-rsvp') . '</button>' . $checkoutButton;
+                                    $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-pieksy') . '</button>' . $checkoutButton;
                                     break;
                                 case 'checked-out':
-                                    $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-rsvp') . '</button>' . $checkInButton;
+                                    $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-pieksy') . '</button>' . $checkInButton;
                                     break;
                                 case 'booked':
                                 default:
@@ -235,20 +235,20 @@ class Bookings {
                                     break;
                             }
                         } elseif ($status == 'booked' && $forceToConfirm) {
-                            $button = _x('Waiting for customer confirmation', 'Booking', 'rrze-rsvp') . $cancelButton;
+                            $button = _x('Waiting for customer confirmation', 'Booking', 'rrze-pieksy') . $cancelButton;
                         } elseif ($status == 'confirmed') {
                             $button = $cancelButton . $checkInButton;
                         } elseif ($status == 'checked-in') {
-                            $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-rsvp') . '</button>' . $checkoutButton;
+                            $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-pieksy') . '</button>' . $checkoutButton;
                         } elseif ($status == 'checked-out') {
-                            $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-rsvp') . '</button>' . $checkInButton;
+                            $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-pieksy') . '</button>' . $checkInButton;
                         } else {
                             $button = $cancelButton . sprintf(
                                 '<a href="edit.php?post_type=%1$s&action=confirm&id=%2$d&_wpnonce=%3$s" class="button button-primary" data-id="%2$d">%4$s</a>',
                                 'booking',
                                 $booking['id'],
                                 $_wpnonce,
-                                _x('Confirm', 'Booking', 'rrze-rsvp')
+                                _x('Confirm', 'Booking', 'rrze-pieksy')
                             );
                         }                        
                     }                    
@@ -275,7 +275,7 @@ class Bookings {
         $output .= '<div class="select_timeslot_container" style="display:inline-block;padding-left: 10px;">';
         if (isset($availability[$date])) {
             $output .= '<select class="select_timeslot">'
-                . '<option value="">' . __('Select timeslot', 'rrze-rsvp') . '</option>';
+                . '<option value="">' . __('Select timeslot', 'rrze-pieksy') . '</option>';
 
             foreach ($availability[$date] as $timeslot) {
                 $time_parts = explode('-', $timeslot);
@@ -284,7 +284,7 @@ class Bookings {
             $output .= '</select>';
             //            wp_send_json($availability[$date]);
         } else {
-            $output .= __('No timeslots available for this seat/day.', 'rrze-rsvp');
+            $output .= __('No timeslots available for this seat/day.', 'rrze-pieksy');
         }
         $output .= '</div>';
         echo $output;
@@ -304,9 +304,9 @@ class Bookings {
             return;
         }
 
-        $sAllDates = __('Show all dates', 'rrze-rsvp');
-        $sAllTimeslots = __('Show all time slots', 'rrze-rsvp');
-        $sAllRoomes = __('Show all rooms', 'rrze-rsvp');
+        $sAllDates = __('Show all dates', 'rrze-pieksy');
+        $sAllTimeslots = __('Show all time slots', 'rrze-pieksy');
+        $sAllRoomes = __('Show all rooms', 'rrze-pieksy');
         $sSelectedDate = (string) filter_input(INPUT_GET, $this->sDate, FILTER_SANITIZE_STRING);
         $sSelectedTimeslot = (string) filter_input(INPUT_GET, $this->sTimeslot, FILTER_SANITIZE_STRING);
         $sSelectedRoom = (string) filter_input(INPUT_GET, $this->sRoom, FILTER_VALIDATE_INT);
@@ -324,15 +324,15 @@ class Bookings {
 
         foreach ($aBookingIds as $bookingId) {
             // 2. get unique dates
-            $bookingStart = get_post_meta($bookingId, 'rrze-rsvp-booking-start', true);
+            $bookingStart = get_post_meta($bookingId, 'rrze-pieksy-booking-start', true);
             $aBookingDates[date("Y-m-d", $bookingStart)] = Functions::dateFormat((int)$bookingStart);
 
-            $bookingEnd = get_post_meta($bookingId, 'rrze-rsvp-booking-end', true);
+            $bookingEnd = get_post_meta($bookingId, 'rrze-pieksy-booking-end', true);
             $bookingTimeslot = sprintf('%05s', Functions::timeFormat((int)$bookingStart)) . ' - ' . sprintf('%05s', Functions::timeFormat((int)$bookingEnd));
             $aBookingTimeslots[$bookingTimeslot] = $bookingTimeslot;
             // 3. get unique rooms via seat
-            $seatId = get_post_meta($bookingId, 'rrze-rsvp-booking-seat', true);
-            $roomId = get_post_meta($seatId, 'rrze-rsvp-seat-room', true);
+            $seatId = get_post_meta($bookingId, 'rrze-pieksy-booking-seat', true);
+            $roomId = get_post_meta($seatId, 'rrze-pieksy-seat-room', true);
             $aBookingRooms[$roomId] = get_the_title($roomId);
         }
 
@@ -361,7 +361,7 @@ class Bookings {
             'nopaging'          => true,
             'meta_query'        => [
                 [
-                    'key'       => 'rrze-rsvp-seat-room',
+                    'key'       => 'rrze-pieksy-seat-room',
                     'value'     => $aRoomIDs,
                     'compare'   => 'IN'
                 ]
@@ -396,7 +396,7 @@ class Bookings {
                 'nopaging'          => true,                
                 'meta_query' => array(
                     array(
-                        'key'   => 'rrze-rsvp-booking-seat',
+                        'key'   => 'rrze-pieksy-booking-seat',
                         'value' => $aSeatIDs,
                         'compare' => 'IN'
                     )),
@@ -429,10 +429,10 @@ class Bookings {
             $encryptedSearch = Functions::crypt($sSearch, 'encrypt');
 
             $encryptedFields = [
-                'rrze-rsvp-booking-guest-firstname',
-                'rrze-rsvp-booking-guest-lastname',
-                'rrze-rsvp-booking-guest-email',
-                'rrze-rsvp-booking-guest-phone',
+                'rrze-pieksy-booking-guest-firstname',
+                'rrze-pieksy-booking-guest-lastname',
+                'rrze-pieksy-booking-guest-email',
+                'rrze-pieksy-booking-guest-phone',
             ];
 
             foreach($encryptedFields as $field){
@@ -463,7 +463,7 @@ class Bookings {
         global $wpdb;
         $ret = [];
         $wpdb->query("SET time_zone = '+00:00'");
-        $sql = "SELECT post_id FROM $wpdb->postmeta WHERE (meta_key = 'rrze-rsvp-booking-start' OR meta_key = 'rrze-rsvp-booking-end') AND DATE_FORMAT(FROM_UNIXTIME(meta_value), '%Y-%m-%d') = '$myDate'";
+        $sql = "SELECT post_id FROM $wpdb->postmeta WHERE (meta_key = 'rrze-pieksy-booking-start' OR meta_key = 'rrze-pieksy-booking-end') AND DATE_FORMAT(FROM_UNIXTIME(meta_value), '%Y-%m-%d') = '$myDate'";
         $aPostIDs = $wpdb->get_results( $sql, ARRAY_N );
         foreach($aPostIDs as $postID){
             $ret[] = $postID[0];
@@ -476,7 +476,7 @@ class Bookings {
         global $wpdb;
         $ret = [];
         $wpdb->query("SET time_zone = '+00:00'");
-        $sql = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'rrze-rsvp-booking-$mode' AND DATE_FORMAT(FROM_UNIXTIME(meta_value), '%H:%i') = '$myTime'";
+        $sql = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'rrze-pieksy-booking-$mode' AND DATE_FORMAT(FROM_UNIXTIME(meta_value), '%H:%i') = '$myTime'";
         $aPostIDs = $wpdb->get_results( $sql, ARRAY_N );
         foreach($aPostIDs as $postID){
             $ret[] = $postID[0];
@@ -508,7 +508,7 @@ class Bookings {
 
             if ($aSeatIDs) {
                 $meta_query[] = array(
-                    'key' => 'rrze-rsvp-booking-seat',
+                    'key' => 'rrze-pieksy-booking-seat',
                     'value' => $aSeatIDs,
                     'compare' => 'IN'
                 );
@@ -582,24 +582,24 @@ class Bookings {
 
         switch ($orderby){
             case 'bookingdate':
-                $query->set('meta_key', 'rrze-rsvp-booking-start');
+                $query->set('meta_key', 'rrze-pieksy-booking-start');
                 $query->set('orderby', 'meta_value_num');
             break;
             // case 'email':
-            //     $query->set('meta_key', 'rrze-rsvp-booking-guest-email');
+            //     $query->set('meta_key', 'rrze-pieksy-booking-guest-email');
             //     $query->set('orderby', 'meta_value');
             // break;
             // case 'room':
-                // $query->set('meta_key', 'rrze-rsvp-booking-seat');
-                // $query->set('orderby', get_the_title(get_post_meta('meta_value', 'rrze-rsvp-seat-seat', true)));
+                // $query->set('meta_key', 'rrze-pieksy-booking-seat');
+                // $query->set('orderby', get_the_title(get_post_meta('meta_value', 'rrze-pieksy-seat-seat', true)));
                 // $query->set('orderby', 'room');
             // break;
             // case 'seat':
-            //     $query->set('meta_key', 'rrze-rsvp-booking-seat');
+            //     $query->set('meta_key', 'rrze-pieksy-booking-seat');
             //     $query->set('orderby', 'meta_value_num');
             // break;
             // case 'status':
-            //     $query->set('meta_key', 'rrze-rsvp-booking-status');
+            //     $query->set('meta_key', 'rrze-pieksy-booking-status');
             //     $query->set('orderby', get_the_title('meta_value'));
             // break;
              

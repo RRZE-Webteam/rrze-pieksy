@@ -1,10 +1,10 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Auth\{IdM, LDAP};
+use RRZE\Pieksy\Auth\{IdM, LDAP};
 
 $idm = new IdM;
 $ldapInstance = new LDAP;
@@ -12,19 +12,19 @@ $template = new Template;
 $settings = new Settings(plugin()->getFile());
 
 $email_error = filter_input(INPUT_GET, 'email_error', FILTER_VALIDATE_INT);
-$email_error = ($email_error ? '<p class="error-message">' . __('Please login to the account you have used to book this seat.', 'rrze-rsvp') . '</p><br><br>' : '');
+$email_error = ($email_error ? '<p class="error-message">' . __('Please login to the account you have used to book this seat.', 'rrze-pieksy') . '</p><br><br>' : '');
 
 
 $roomID = isset($_GET['room_id']) ? absint($_GET['room_id']) : 0;
 if (!$roomID && isset($_GET['id'])){
     // get room ID from booking via seat
     $bookingID = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-    $seatID = get_post_meta($bookingID, 'rrze-rsvp-booking-seat', true);
-    $roomID = get_post_meta($seatID, 'rrze-rsvp-seat-room', true);
+    $seatID = get_post_meta($bookingID, 'rrze-pieksy-booking-seat', true);
+    $roomID = get_post_meta($seatID, 'rrze-pieksy-seat-room', true);
 }
 
-$ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($roomID, 'rrze-rsvp-room-sso-required', true));
-$ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($roomID, 'rrze-rsvp-room-ldap-required', true));
+$ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($roomID, 'rrze-pieksy-room-sso-required', true));
+$ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($roomID, 'rrze-pieksy-room-ldap-required', true));
 $ldapRequired = $ldapRequired && $settings->getOption('ldap', 'server') ? true : false;
 
 $loginDenied = '';
@@ -36,13 +36,13 @@ if ($ldapRequired && isset($_POST['submit_ldap'])) {
         wp_redirect($redirectUrl);
         exit;
     } else {
-        $loginDenied = '<br><p class="error-message">' . __('Login denied', 'rrze-rsvp') . '</p>';
+        $loginDenied = '<br><p class="error-message">' . __('Login denied', 'rrze-pieksy') . '</p>';
     }
 }
 
 if ($ssoRequired && $idm->simplesamlAuth) {
     $loginUrl = $idm->getLoginURL();
-    $idmLogin = sprintf(__('<a href="%s">Please login with your IdM username</a>.', 'rrze-rsvp'), $loginUrl);
+    $idmLogin = sprintf(__('<a href="%s">Please login with your IdM username</a>.', 'rrze-pieksy'), $loginUrl);
 }
 
 get_header();
@@ -83,11 +83,11 @@ if (Helper::isFauTheme()) {
 /*
  * Eigentlicher Content
  */
-$title = __('Authentication Required', 'rrze-rsvp');
+$title = __('Authentication Required', 'rrze-pieksy');
 echo $divOpen;
 
 echo <<<DIVEND
-<div class="rrze-rsvp-booking-reply rrze-rsvp">
+<div class="rrze-pieksy-booking-reply rrze-pieksy">
     <div class="container">    
         <h2>$title</h2>
         $email_error
@@ -96,11 +96,11 @@ DIVEND;
 $sOr = '';
 if ($ssoRequired) {
     echo "<p>$idmLogin</p>";
-    $sOr = '<br><strong>' . __('Oder', 'rrze-rsvp') . '</strong><br>&nbsp;<br>';
+    $sOr = '<br><strong>' . __('Oder', 'rrze-pieksy') . '</strong><br>&nbsp;<br>';
 }
 
 if ($ldapRequired) {
-    $headline = $sOr . __('Please login with your UB-AD username', 'rrze-rsvp') . ':' . $loginDenied;
+    $headline = $sOr . __('Please login with your UB-AD username', 'rrze-pieksy') . ':' . $loginDenied;
     echo <<<FORMEND
     $headline
         <form action="#" method="POST">
@@ -113,6 +113,6 @@ FORMEND;
 
 echo $divClose;
 
-wp_enqueue_style('rrze-rsvp-shortcode');
+wp_enqueue_style('rrze-pieksy-shortcode');
 
 get_footer();

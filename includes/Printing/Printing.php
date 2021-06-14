@@ -1,12 +1,12 @@
 <?php
 
-namespace RRZE\RSVP\Printing;
+namespace RRZE\Pieksy\Printing;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Settings;
-use function RRZE\RSVP\plugin;
-use RRZE\RSVP\Printing\PDF;
+use RRZE\Pieksy\Settings;
+use function RRZE\Pieksy\plugin;
+use RRZE\Pieksy\Printing\PDF;
 
 
 class Printing {
@@ -32,7 +32,7 @@ class Printing {
 
     public function addRowActions( $actions, $post ) {
         if ($post->post_type == 'seat' || $post->post_type == 'room'){
-            $actions['generate-pdf'] = '<a href="?'. $post->post_type . '='. $post->ID . '&generate_pdf" title="" rel="permalink" target="_blank">' . __( 'Generate PDF', 'rrze-rsvp') . '</a>';
+            $actions['generate-pdf'] = '<a href="?'. $post->post_type . '='. $post->ID . '&generate_pdf" title="" rel="permalink" target="_blank">' . __( 'Generate PDF', 'rrze-pieksy') . '</a>';
         }
         return $actions;
     }    
@@ -48,7 +48,7 @@ class Printing {
                 $room_id = filter_input(INPUT_GET, 'room', FILTER_VALIDATE_INT);
                 // get seats for this room
                 $aSeats = get_posts([
-                    'meta_key'   => 'rrze-rsvp-seat-room',
+                    'meta_key'   => 'rrze-pieksy-seat-room',
                     'meta_value' => $room_id,
                     'post_type' => 'seat',
                     'fields' => 'ids',
@@ -58,15 +58,15 @@ class Printing {
                 ]);
                 if (!$aSeats){
                     // wp_redirect(get_admin_url() . 'edit.php?post_type=room&seatCnt=0');
-                    echo __('No seats found', 'rrze-rsvp');
+                    echo __('No seats found', 'rrze-pieksy');
                     exit;
                 }
             }
         }elseif (isset($_POST['generate_pdf'])){
             // Click on button "Generate PDF for x seats" which is generated after click on bulk actions on wp-admin/edit.php?post_type=seat or wp-admin/edit.php?post_type=room
-            $seat_ids = get_option('rsvp_pdf_ids');
+            $seat_ids = get_option('pieksy_pdf_ids');
             if (!$seat_ids){
-                echo __('No seats found', 'rrze-rsvp');
+                echo __('No seats found', 'rrze-pieksy');
                 exit;
             }
             $aSeats = json_decode($seat_ids);
@@ -77,7 +77,7 @@ class Printing {
             $pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
             // $pdf->SetCreator(PDF_CREATOR);
             $pdf->SetAuthor('RRZE-Webteam');
-            $pdf->SetTitle('RRZE-RSVP');
+            $pdf->SetTitle('rrze-pieksy');
             // $pdf->SetSubject('');
             // $pdf->SetKeywords('PDF, Booking');
     
@@ -121,11 +121,11 @@ class Printing {
                 $pdf->Line(PDF_MARGIN_LEFT, $pdf->GetY() - 5, $pdf->getPageWidth() - PDF_MARGIN_RIGHT, $pdf->GetY() - 5);
 
                 // room data:
-                $room_post_id = get_post_meta($seat_post_id, 'rrze-rsvp-seat-room', true);
+                $room_post_id = get_post_meta($seat_post_id, 'rrze-pieksy-seat-room', true);
                 $room = get_post($room_post_id);
 
                 // Room title
-                $pdf->MultiCell($w, 5, __('Room', 'rrze-rsvp') . ':', 0, 'L', 0);
+                $pdf->MultiCell($w, 5, __('Room', 'rrze-pieksy') . ':', 0, 'L', 0);
                 $pdf->SetFont('helvetica', '', 26, '', true);
                 if (isset($room->post_title)){
                     $pdf->MultiCell($w, 5, $room->post_title, 0, 'L', 0);
@@ -137,7 +137,7 @@ class Printing {
                 $pdf->SetXY($x + $w + $columnMargin, $y);
                 $seat_title = html_entity_decode(get_the_title($seat_post_id));
                 $pdf->SetFont('helvetica', '', 12, '', true);
-                $pdf->MultiCell(0, 5, __('Seat', 'rrze-rsvp') . ':', 0, 'L', 0);
+                $pdf->MultiCell(0, 5, __('Seat', 'rrze-pieksy') . ':', 0, 'L', 0);
                 $x = $pdf->GetX();
                 $y = $pdf->GetY();
                 $pdf->SetXY($x + $w + $columnMargin, $y);
@@ -150,9 +150,9 @@ class Printing {
                 $yRoomSeat = ($yRoom < $ySeat ? $ySeat : $yRoom) + $ySpace;
                 $y = 0;
                 if ($this->options->pdf_room_address == 'on'){
-                    $room_street = get_post_meta($room_post_id, 'rrze-rsvp-room-street', true);
-                    $room_zip = get_post_meta($room_post_id, 'rrze-rsvp-room-zip', true);
-                    $room_city = get_post_meta($room_post_id, 'rrze-rsvp-room-city', true);
+                    $room_street = get_post_meta($room_post_id, 'rrze-pieksy-room-street', true);
+                    $room_zip = get_post_meta($room_post_id, 'rrze-pieksy-room-zip', true);
+                    $room_city = get_post_meta($room_post_id, 'rrze-pieksy-room-city', true);
                     $pdf->MultiCell(0, 5, $room_street . "\n" . $room_zip . ' ' . $room_city, 0, 'L', 0, 1, '', $yRoomSeat, true, 0);
                 }
     
@@ -169,9 +169,9 @@ class Printing {
                 // 2DO: check file-type + set x/y
                 // $y = 0;
                 // if ($this->options->pdf_room_floorplan == 'on'){
-                //     $floorplan = get_post_meta($room_post_id, 'rrze-rsvp-room-floorplan');
+                //     $floorplan = get_post_meta($room_post_id, 'rrze-pieksy-room-floorplan');
                 //     if (isset($floorplan) && isset($floorplan[0])) {
-                //         $pdf->MultiCell(0, 5, __('Floor Plan', 'rrze-rsvp') . ':', 0, 'L', 0, 1, '', $pdf->GetY(), true, 0);
+                //         $pdf->MultiCell(0, 5, __('Floor Plan', 'rrze-pieksy') . ':', 0, 'L', 0, 1, '', $pdf->GetY(), true, 0);
                 //         $pdf->Image($floorplan[0], $x='', $y, $w, $h, 'JPG', '', '', false, 300, '', false, false, 0, $fitbox, false, false);
                 //         $y = 10;
                 //     }
@@ -196,9 +196,9 @@ class Printing {
                 // Seat equiptment
                 if ($this->options->pdf_seat_equipment == 'on'){
                     $html = '';
-                    $aEquipment = get_the_terms($seat_post_id, 'rrze-rsvp-equipment');
+                    $aEquipment = get_the_terms($seat_post_id, 'rrze-pieksy-equipment');
                     if ($aEquipment){
-                        $html = '<strong>' . __('Equipment:', 'rrze-rsvp') . '</strong><ul>';
+                        $html = '<strong>' . __('Equipment:', 'rrze-pieksy') . '</strong><ul>';
                         foreach($aEquipment as $equipment){
                             $html .= '<li>' . $equipment->name . '</li>';
                         }
@@ -208,14 +208,14 @@ class Printing {
                 }
             }
     
-            $pdf_file_name = 'rrze-rsvp-' . date('Y-m-d-His') . '.pdf';
+            $pdf_file_name = 'rrze-pieksy-' . date('Y-m-d-His') . '.pdf';
             $pdf->Output($pdf_file_name, 'I');
             exit;
         }
     }
     
     public function addBulkActions($bulk_actions) {
-        $bulk_actions['generate-pdf'] = __( 'Generate PDF', 'rrze-rsvp');
+        $bulk_actions['generate-pdf'] = __( 'Generate PDF', 'rrze-pieksy');
         return $bulk_actions;
     }
 
@@ -233,7 +233,7 @@ class Printing {
             // get seats for each selected room
             foreach ( $post_ids as $post_id ){
                 $seat_ids = get_posts([
-                    'meta_key'   => 'rrze-rsvp-seat-room',
+                    'meta_key'   => 'rrze-pieksy-seat-room',
                     'meta_value' => $post_id,
                     'post_type' => 'seat',
                     'fields' => 'ids',
@@ -247,8 +247,8 @@ class Printing {
             $aSeats = $post_ids;
         }
 
-        // store $post_ids for seats in option 'rsvp-pdf-ids'
-        update_option('rsvp_pdf_ids', json_encode($aSeats));
+        // store $post_ids for seats in option 'pieksy-pdf-ids'
+        update_option('pieksy_pdf_ids', json_encode($aSeats));
 
         $redirect_to = add_query_arg('seatCnt', count($aSeats), $redirect_to);
         return $redirect_to;
@@ -260,10 +260,10 @@ class Printing {
             if ($cnt){
                 printf( '<div id="message" class="notice notice-info is-dismissible">' 
                     . '<form method="post" id="as-fdpf-form" target="_blank"><button class="button button-primary" type="submit" name="generate_pdf" value="generate">' 
-                    . _n( 'Generate PDF for %s seat', 'Generate PDF for %s seats', $cnt, 'rrze-rsvp') 
+                    . _n( 'Generate PDF for %s seat', 'Generate PDF for %s seats', $cnt, 'rrze-pieksy') 
                     . '</button></form>' . '</div>', $cnt );
             }else{
-                print( '<div id="message" class="notice notice-error is-dismissible">' . __('No seats found', 'rrze-rsvp') . '</div>');
+                print( '<div id="message" class="notice notice-error is-dismissible">' . __('No seats found', 'rrze-pieksy') . '</div>');
 
             }
         }

@@ -1,11 +1,11 @@
 <?php
 
-namespace RRZE\RSVP\Auth;
+namespace RRZE\Pieksy\Auth;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Settings;
-use function RRZE\RSVP\plugin;
+use RRZE\Pieksy\Settings;
+use function RRZE\Pieksy\plugin;
 
 final class LDAP extends Auth
 {
@@ -29,7 +29,7 @@ final class LDAP extends Auth
 
     protected $sessionTimeout = 10 * MINUTE_IN_SECONDS;
 
-    protected $sessionName = 'rrze_rsvp';
+    protected $sessionName = 'rrze_pieksy';
 
     protected $ldapUid = '';
 
@@ -77,7 +77,7 @@ final class LDAP extends Auth
     {
         $this->logout();
         return [
-            'customer_email' => $this->mail ? $this->mail : __('no@email', 'rrze-rsvp')
+            'customer_email' => $this->mail ? $this->mail : __('no@email', 'rrze-pieksy')
         ];
     }
 
@@ -155,6 +155,6 @@ final class LDAP extends Auth
     private function logError(string $method)
     {
         $msg = 'LDAP-error ' . ldap_errno($this->connection) . ' ' . ldap_error($this->connection) . " using $method | server = {$this->server}:{$this->port}";
-        do_action('rrze.log.error', 'rrze-rsvp : ' . $msg);
+        do_action('rrze.log.error', 'rrze-pieksy : ' . $msg);
     }
 }

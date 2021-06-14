@@ -1,17 +1,17 @@
 <?php
 
-namespace RRZE\RSVP\Shortcodes;
+namespace RRZE\Pieksy\Shortcodes;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Shortcodes\Bookings;
-use RRZE\RSVP\Shortcodes\Availability;
-use RRZE\RSVP\Shortcodes\QR;
+use RRZE\Pieksy\Shortcodes\Bookings;
+use RRZE\Pieksy\Shortcodes\Availability;
+use RRZE\Pieksy\Shortcodes\QR;
 
-use RRZE\RSVP\Auth\{Auth, IdM, LDAP};
+use RRZE\Pieksy\Auth\{Auth, IdM, LDAP};
 
-use function RRZE\RSVP\Config\getShortcodeSettings;
-use function RRZE\RSVP\plugin;
+use function RRZE\Pieksy\Config\getShortcodeSettings;
+use function RRZE\Pieksy\plugin;
 
 /**
  * Laden und definieren der Shortcodes
@@ -95,7 +95,7 @@ class Shortcodes{
         global $post;
         if (isset($_GET['require-auth']) && wp_verify_nonce($_GET['require-auth'], 'require-auth')) {
             return sprintf('%sincludes/templates/auth/single-auth.php', plugin()->getDirectory());
-        } elseif (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'rsvp-availability')) {
+        } elseif (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'pieksy-availability')) {
             return sprintf('%sincludes/templates/single-form.php', plugin()->getDirectory());
         } elseif ($post->post_type == 'room') {
             return dirname($this->pluginFile) . '/includes/templates/single-room.php';
@@ -113,7 +113,7 @@ class Shortcodes{
             return;
         }
         
-        if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'rrze-rsvp-seat-check-inout')) {
+        if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'rrze-pieksy-seat-check-inout')) {
             $isAuth = false;
             if ($this->idm->isAuthenticated()) {
                 $isAuth = true;

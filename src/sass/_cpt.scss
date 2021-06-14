@@ -1,4 +1,4 @@
-.rsvp-occupancy-container {
+.pieksy-occupancy-container {
     background: #fff;
     padding: 10px;
 }
@@ -16,7 +16,7 @@ body.embedded {
     }
 }
 
-table.rsvp-room-occupancy {
+table.pieksy-room-occupancy {
     border-collapse: collapse;
     td, th {
         border: 1px solid darkgrey;
@@ -58,7 +58,7 @@ table.rsvp-room-occupancy {
     }
 }
 
-table.rsvp-schedule {
+table.pieksy-schedule {
     width: auto;
     td {
         min-width: 150px;
@@ -68,7 +68,7 @@ table.rsvp-schedule {
     }
 }
 
-table.rsvp-room-availability {
+table.pieksy-room-availability {
     td:last-child {
         border-right: 1px solid #e9edf2;
     }

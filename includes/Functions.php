@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -67,7 +67,7 @@ class Functions
     {
         $output = '';
 
-        $duration = get_post_meta($room_id, 'rrze-rsvp-room-days-in-advance', true);
+        $duration = get_post_meta($room_id, 'rrze-pieksy-room-days-in-advance', true);
         $timestamp = current_time('timestamp');
         $today = date('Y-m-d', $timestamp);
         $start = $today;
@@ -76,18 +76,18 @@ class Functions
         $aRoomAvailability = self::getRoomAvailability($room_id, $start, $end);
 
         if (!$aRoomAvailability){
-            return '<span class="rrze-rsvp-occupancy-title">' . sprintf(__('This room has no available seat within %u days.', 'rrze-rsvp'), $duration) . '</span>';
+            return '<span class="rrze-pieksy-occupancy-title">' . sprintf(__('This room has no available seat within %u days.', 'rrze-pieksy'), $duration) . '</span>';
         }
 
         if (isset($aRoomAvailability[$today])){
             // we have a seat for today
-            $output = '<span class="rrze-rsvp-occupancy-title">' . __('Room occupancy for today', 'rrze-rsvp') . '</span>';
+            $output = '<span class="rrze-pieksy-occupancy-title">' . __('Room occupancy for today', 'rrze-pieksy') . '</span>';
             $output .= self::getOccupancyByRoomIdHTML($room_id, true);
         } else {
             // return the next available timeslots
             $nextAvailableDay = array_key_first($aRoomAvailability);
             $countSeats = count(array_values($aRoomAvailability[$nextAvailableDay])[0]);
-            $output = '<span class="rrze-rsvp-occupancy-title">' . __('This room has no available seat for today.', 'rrze-rsvp') . ' ' . _n('The next available seat is on', 'The next available seats are on', $countSeats, 'rrze-rsvp') . ' ' . self::dateFormat(strtotime($nextAvailableDay)) . '</span>';
+            $output = '<span class="rrze-pieksy-occupancy-title">' . __('This room has no available seat for today.', 'rrze-pieksy') . ' ' . _n('The next available seat is on', 'The next available seats are on', $countSeats, 'rrze-pieksy') . ' ' . self::dateFormat(strtotime($nextAvailableDay)) . '</span>';
             $output .= self::getOccupancyByRoomIdHTML($room_id, true, strtotime($nextAvailableDay) );
         }
         return $output;
@@ -109,10 +109,10 @@ class Functions
         $seats_slots = self::getOccupancyByRoomId($room_id, $from_now, $timestamp);
 
         if ($seats_slots){
-	    $output = '<table class="rsvp-room-occupancy"><tr>';
-            $output .= '<th>' . __( 'Seat', 'rrze-rsvp' ) . '</th>';
+	    $output = '<table class="pieksy-room-occupancy"><tr>';
+            $output .= '<th>' . __( 'Seat', 'rrze-pieksy' ) . '</th>';
             foreach($seats_slots['room_slots'] as $room_slot){
-                $output .= '<th scope="col"><span class="rrze-rsvp-timeslot">' . str_replace('-', ' - ', $room_slot) . '</span></th>';
+                $output .= '<th scope="col"><span class="rrze-pieksy-timeslot">' . str_replace('-', ' - ', $room_slot) . '</span></th>';
             }
             $output .= '</tr>';
             $aRoomSlots = $seats_slots['room_slots'];
@@ -129,7 +129,7 @@ class Functions
             }
 	    $output .= '</table>';
         }else{
-            $output = '<div class="alert">' . __('This room has no seats for today.', 'rrze-rsvp') . '</div>';
+            $output = '<div class="alert">' . __('This room has no seats for today.', 'rrze-pieksy') . '</div>';
         }
        
 
@@ -175,7 +175,7 @@ class Functions
             'post_type' => 'seat',
             'post_status' => 'publish',
             'nopaging' => true,
-            'meta_key' => 'rrze-rsvp-seat-room',
+            'meta_key' => 'rrze-pieksy-seat-room',
             'meta_value' => $room_id,
             // 'fields' => 'ids',
             'orderby'=> 'title', 
@@ -217,10 +217,10 @@ class Functions
         $seats_slots = self::getOccupancyByRoomIdAdmin($room_id);
 
         if ($seats_slots){
-	    $output = '<table class="rsvp-room-occupancy"><tr>';
-            $output .= '<th>' . __( 'Seat', 'rrze-rsvp' ) . '</th>';
+	    $output = '<table class="pieksy-room-occupancy"><tr>';
+            $output .= '<th>' . __( 'Seat', 'rrze-pieksy' ) . '</th>';
             foreach($seats_slots['room_slots'] as $room_slot){
-                $output .= '<th scope="col"><span class="rrze-rsvp-timeslot">' . $room_slot . '</span></th>';
+                $output .= '<th scope="col"><span class="rrze-pieksy-timeslot">' . $room_slot . '</span></th>';
             }
             $output .= '</tr>';
             $aRoomSlots = $seats_slots['room_slots'];
@@ -236,7 +236,7 @@ class Functions
             }
 	    $output .= '</table>';
         }else{
-	    $output = '<div class="alert">' . __('This room has no seats for today.', 'rrze-rsvp') . '</div>';
+	    $output = '<div class="alert">' . __('This room has no seats for today.', 'rrze-pieksy') . '</div>';
         }
         
 
@@ -274,7 +274,7 @@ class Functions
             'post_type' => 'seat',
             'post_status' => 'publish',
             'nopaging' => true,
-            'meta_key' => 'rrze-rsvp-seat-room',
+            'meta_key' => 'rrze-pieksy-seat-room',
             'meta_value' => $roomId,
             'fields' => 'ids',
             'orderby'=> 'title', 
@@ -291,16 +291,16 @@ class Functions
                 'fields' => 'ids',
                 'meta_query' => [
                     [
-                        'key' => 'rrze-rsvp-booking-seat',
+                        'key' => 'rrze-pieksy-booking-seat',
                         'value'   => $seatId,
                     ],
                     [
-                        'key' => 'rrze-rsvp-booking-status',
+                        'key' => 'rrze-pieksy-booking-status',
                         'value'   => ['confirmed', 'checked-in'],
                         'compare' => 'IN'
                     ],
                     [
-                        'key'     => 'rrze-rsvp-booking-start',
+                        'key'     => 'rrze-pieksy-booking-start',
                         'value' => array(strtotime($today), strtotime($end)),
                         'compare' => 'BETWEEN',
                         'type' => 'numeric'
@@ -312,8 +312,8 @@ class Functions
                 foreach ( $aBookingIds as $bookingId ){
                     // set booking-status as value of key "startTime-endTime"
                     $aBookingMeta = get_post_meta($bookingId);
-                    $timespan = date('H:i', $aBookingMeta['rrze-rsvp-booking-start'][0]) . ' - ' . date('H:i', $aBookingMeta['rrze-rsvp-booking-end'][0]);
-                    $data[$seatId][$timespan] = $aBookingMeta['rrze-rsvp-booking-status'][0];
+                    $timespan = date('H:i', $aBookingMeta['rrze-pieksy-booking-start'][0]) . ' - ' . date('H:i', $aBookingMeta['rrze-pieksy-booking-end'][0]);
+                    $data[$seatId][$timespan] = $aBookingMeta['rrze-pieksy-booking-status'][0];
                 }
             }
 
@@ -327,7 +327,7 @@ class Functions
     public static function getOccupancyLinks(int $roomId): string
     {
         $url = esc_url(get_permalink($roomId));
-        return '<span class="rrze-rsvp-occupancylinktitle">' . __('Links to display the current room occupancy', 'rrze-rsvp') . '</span>: <span class="rrze-rsvp-occupancylink"><a href="' . $url . '" target="_blank">' . __('Normal website', 'rrze-rsvp') . '</a></span> <span class="rrze-rsvp-occupancylink"><a href="' . $url . '?format=embedded&show=occupancy_nextavailable" target="_blank">' . __('Website for public displays', 'rrze-rsvp') . '</a></span>';
+        return '<span class="rrze-pieksy-occupancylinktitle">' . __('Links to display the current room occupancy', 'rrze-pieksy') . '</span>: <span class="rrze-pieksy-occupancylink"><a href="' . $url . '" target="_blank">' . __('Normal website', 'rrze-pieksy') . '</a></span> <span class="rrze-pieksy-occupancylink"><a href="' . $url . '?format=embedded&show=occupancy_nextavailable" target="_blank">' . __('Website for public displays', 'rrze-pieksy') . '</a></span>';
     }
     
 
@@ -340,10 +340,10 @@ class Functions
         }
 
         $data['id'] = $post->ID;
-        $data['status'] = get_post_meta($post->ID, 'rrze-rsvp-booking-status', true);
-        $data['start'] = absint(get_post_meta($post->ID, 'rrze-rsvp-booking-start', true));
+        $data['status'] = get_post_meta($post->ID, 'rrze-pieksy-booking-status', true);
+        $data['start'] = absint(get_post_meta($post->ID, 'rrze-pieksy-booking-start', true));
         $start = new Carbon(date('Y-m-d H:i:s', $data['start']), wp_timezone());
-        $end = absint(get_post_meta($post->ID, 'rrze-rsvp-booking-end', true));
+        $end = absint(get_post_meta($post->ID, 'rrze-pieksy-booking-end', true));
         $data['end'] = $end ? $end : $start->endOfDay()->getTimestamp();
         $data['date'] = self::dateFormat((int)$data['start']);
         $data['time'] = self::timeFormat((int)$data['start']) . ' - ' . self::timeFormat((int)$data['end']);
@@ -353,21 +353,21 @@ class Functions
         $data['booking_date_timestamp'] = strtotime($post->post_date);
         $data['booking_date'] = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($post->post_date));
 
-        $data['seat'] = get_post_meta($post->ID, 'rrze-rsvp-booking-seat', true);
+        $data['seat'] = get_post_meta($post->ID, 'rrze-pieksy-booking-seat', true);
         $data['seat_name'] = !empty($data['seat']) ? get_the_title($data['seat']) : '';
 
-        $data['room'] = get_post_meta($data['seat'], 'rrze-rsvp-seat-room', true);
+        $data['room'] = get_post_meta($data['seat'], 'rrze-pieksy-seat-room', true);
         $data['room_name'] = get_the_title($data['room']);
-        $data['room_street'] = get_post_meta($data['room'], 'rrze-rsvp-room-street', true);
-        $data['room_zip'] = get_post_meta($data['room'], 'rrze-rsvp-room-zip', true);
-        $data['room_city'] = get_post_meta($data['room'], 'rrze-rsvp-room-city', true);
+        $data['room_street'] = get_post_meta($data['room'], 'rrze-pieksy-room-street', true);
+        $data['room_zip'] = get_post_meta($data['room'], 'rrze-pieksy-room-zip', true);
+        $data['room_city'] = get_post_meta($data['room'], 'rrze-pieksy-room-city', true);
 
-        $data['notes'] = get_post_meta($post->ID, 'rrze-rsvp-booking-notes', true);
+        $data['notes'] = get_post_meta($post->ID, 'rrze-pieksy-booking-notes', true);
 
-        $data['guest_firstname'] = Functions::crypt(get_post_meta($post->ID, 'rrze-rsvp-booking-guest-firstname', true), 'decrypt');
-        $data['guest_lastname'] = Functions::crypt(get_post_meta($post->ID, 'rrze-rsvp-booking-guest-lastname', true), 'decrypt');
-        $data['guest_email'] = Functions::crypt(get_post_meta($post->ID, 'rrze-rsvp-booking-guest-email', true), 'decrypt');
-        $data['guest_phone'] = Functions::crypt(get_post_meta($post->ID, 'rrze-rsvp-booking-guest-phone', true), 'decrypt');
+        $data['guest_firstname'] = Functions::crypt(get_post_meta($post->ID, 'rrze-pieksy-booking-guest-firstname', true), 'decrypt');
+        $data['guest_lastname'] = Functions::crypt(get_post_meta($post->ID, 'rrze-pieksy-booking-guest-lastname', true), 'decrypt');
+        $data['guest_email'] = Functions::crypt(get_post_meta($post->ID, 'rrze-pieksy-booking-guest-email', true), 'decrypt');
+        $data['guest_phone'] = Functions::crypt(get_post_meta($post->ID, 'rrze-pieksy-booking-guest-phone', true), 'decrypt');
 
         $data['post_status'] = $post->post_status;
 
@@ -377,9 +377,9 @@ class Functions
 	public static function isBookingArchived(int $postId): bool
 	{
 		$now = current_time('timestamp');
-		$start = absint(get_post_meta($postId, 'rrze-rsvp-booking-start', true));
+		$start = absint(get_post_meta($postId, 'rrze-pieksy-booking-start', true));
 		$start = new Carbon(date('Y-m-d H:i:s', $start), wp_timezone());
-		$end = absint(get_post_meta($postId, 'rrze-rsvp-booking-end', true));
+		$end = absint(get_post_meta($postId, 'rrze-pieksy-booking-end', true));
 		$end = $end ? $end : $start->endOfDay()->getTimestamp();
 		return ($end < $now);
 	}
@@ -400,9 +400,9 @@ class Functions
 
 	public static function canDeleteBooking(int $postId): bool
 	{
-		$start = absint(get_post_meta($postId, 'rrze-rsvp-booking-start', true));
+		$start = absint(get_post_meta($postId, 'rrze-pieksy-booking-start', true));
 		$start = new Carbon(date('Y-m-d H:i:s', $start), wp_timezone());
-		$status = get_post_meta($postId, 'rrze-rsvp-booking-status', true);
+		$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
 		if (
 			self::isBookingArchived($postId)
 			&& !(in_array($status, ['checked-in', 'checked-out']) || $start->endOfDay()->gt(new Carbon('now')))
@@ -422,7 +422,7 @@ class Functions
             'nopaging'          => true,
             'meta_query'        => [
                 [
-                    'key'       => 'rrze-rsvp-booking-seat',
+                    'key'       => 'rrze-pieksy-booking-seat',
                     'value'     => $postId,
                     'compare'   => '='
                 ]
@@ -444,7 +444,7 @@ class Functions
             'nopaging'          => true,
             'meta_query'        => [
                 [
-                    'key'       => 'rrze-rsvp-booking-seat',
+                    'key'       => 'rrze-pieksy-booking-seat',
                     'value'     => $seats,
                     'compare'   => 'IN'
                 ]
@@ -462,7 +462,7 @@ class Functions
             'nopaging'          => true,
             'meta_query'        => [
                 [
-                    'key'       => 'rrze-rsvp-seat-room',
+                    'key'       => 'rrze-pieksy-seat-room',
                     'value'     => $roomId,
                     'compare'   => '='
                 ]
@@ -474,7 +474,7 @@ class Functions
     public static function bookingReplyUrl(string $action, string $password, int $id): string
     {
         $hash = self::crypt($password);
-        return get_site_url() . "/rsvp-booking/?booking-reply=" . $hash . "&id=" . $id . "&action=" . $action;
+        return get_site_url() . "/pieksy-booking/?booking-reply=" . $hash . "&id=" . $id . "&action=" . $action;
     }    
 
     public static function crypt(string $string, string $action = 'encrypt')
@@ -518,13 +518,13 @@ class Functions
         // Array aus verfügbaren Timeslots des Raumes erstellen
         $slots = self::getRoomSchedule($room_id, true);
         $room_meta = get_post_meta($room_id);
-        $days_blocked_raw = isset($room_meta['rrze-rsvp-room-days-closed']) ? $room_meta['rrze-rsvp-room-days-closed'][0] : '';
+        $days_blocked_raw = isset($room_meta['rrze-pieksy-room-days-closed']) ? $room_meta['rrze-pieksy-room-days-closed'][0] : '';
         $days_blocked = explode("\n", str_replace("\r", '', $days_blocked_raw));
         // Array aus bereits gebuchten Plätzen im Zeitraum erstellen
-        $bookingMode = isset($room_meta['rrze-rsvp-room-bookingmode']) ? $room_meta['rrze-rsvp-room-bookingmode'][0] : '';
+        $bookingMode = isset($room_meta['rrze-pieksy-room-bookingmode']) ? $room_meta['rrze-pieksy-room-bookingmode'][0] : '';
         $args_seats = ['post_type' => 'seat',
             'post_status' => 'publish',
-            'meta_key' => 'rrze-rsvp-seat-room',
+            'meta_key' => 'rrze-pieksy-seat-room',
             'meta_value' => $room_id,
             'orderby' => 'date',
             'order' => 'ASC',];
@@ -550,16 +550,16 @@ class Functions
                 'nopaging' => true,
                 'meta_query' => [
                     [
-                        'key' => 'rrze-rsvp-booking-seat',
+                        'key' => 'rrze-pieksy-booking-seat',
                         'value'   => $seat->ID,
                     ],
                     [
-                        'key' => 'rrze-rsvp-booking-status',
+                        'key' => 'rrze-pieksy-booking-status',
                         'value'   => ['confirmed', 'checked-in'],
                         'compare' => 'IN'
                     ],
                     [
-                        'key'     => 'rrze-rsvp-booking-start',
+                        'key'     => 'rrze-pieksy-booking-start',
                         'value' => array(strtotime($start), strtotime($end)),
                         'compare' => 'BETWEEN',
                         'type' => 'numeric'
@@ -568,7 +568,7 @@ class Functions
             ]);
             foreach ($bookings as $booking) {
                 $booking_meta = get_post_meta($booking->ID);
-                $booking_start = $booking_meta['rrze-rsvp-booking-start'][0];
+                $booking_start = $booking_meta['rrze-pieksy-booking-start'][0];
                 //$seats_booked[$seat->ID][date('Y-m-d', $booking_date)] = $booking_time;
                 $seats_booked[$booking_start][] = $seat->ID;
             }
@@ -662,9 +662,9 @@ class Functions
         $timeslots_booked = [];
 
         // Array aus verfügbaren Timeslots des Raumes erstellen
-        $room_id = get_post_meta($seat, 'rrze-rsvp-seat-room', true);
+        $room_id = get_post_meta($seat, 'rrze-pieksy-seat-room', true);
         $slots = self::getRoomSchedule($room_id, true);
-        $days_blocked_raw = get_post_meta($room_id, 'rrze-rsvp-room-days-closed', true);
+        $days_blocked_raw = get_post_meta($room_id, 'rrze-pieksy-room-days-closed', true);
         $days_blocked = explode("\n", str_replace("\r", '', $days_blocked_raw));
         // Array aus bereits gebuchten Plätzen im Zeitraum erstellen
         if ($start == $end) {
@@ -677,16 +677,16 @@ class Functions
             'meta_query' => [
                 'relation' => 'AND',
                 [
-                    'key' => 'rrze-rsvp-booking-seat',
+                    'key' => 'rrze-pieksy-booking-seat',
                     'value'   => $seat,
                 ],
                 [
-                    'key' => 'rrze-rsvp-booking-status',
+                    'key' => 'rrze-pieksy-booking-status',
                     'value'   => ['booked', 'confirmed', 'checked-in'],
                     'compare' => 'IN'
                 ],
                 [
-                    'key'     => 'rrze-rsvp-booking-start',
+                    'key'     => 'rrze-pieksy-booking-start',
                     'value' => array(strtotime($start), strtotime($end)),
                     'compare' => 'BETWEEN',
                     'type' => 'numeric'
@@ -696,7 +696,7 @@ class Functions
 
         foreach ($bookings as $booking) {
             $booking_meta = get_post_meta($booking->ID);
-            $booking_start = $booking_meta['rrze-rsvp-booking-start'][0];
+            $booking_start = $booking_meta['rrze-pieksy-booking-start'][0];
             $timeslots_booked[] = $booking_start;
         }
 
@@ -787,27 +787,27 @@ class Functions
     public static function getRoomSchedule($room_id, $with_duration = false)
     {
         $schedule = [];
-        $room_timeslots = get_post_meta($room_id, 'rrze-rsvp-room-timeslots', true);
+        $room_timeslots = get_post_meta($room_id, 'rrze-pieksy-room-timeslots', true);
         if (is_array($room_timeslots)) {
             foreach ($room_timeslots as $week) {
-                if (isset($week['rrze-rsvp-room-weekday'])) {
-                    foreach ($week[ 'rrze-rsvp-room-weekday' ] as $day) {
-                        if (isset($week[ 'rrze-rsvp-room-starttime' ]) && isset($week[ 'rrze-rsvp-room-endtime' ])) {
-                            $valid_from = ((isset($week[ 'rrze-rsvp-room-timeslot-valid-from' ]) && $week[ 'rrze-rsvp-room-timeslot-valid-from' ] != '') ? $week[ 'rrze-rsvp-room-timeslot-valid-from' ] : 'unlimited');
-                            $valid_to   = ((isset($week[ 'rrze-rsvp-room-timeslot-valid-to' ]) && $week[ 'rrze-rsvp-room-timeslot-valid-to' ] != '') ? strtotime(
+                if (isset($week['rrze-pieksy-room-weekday'])) {
+                    foreach ($week[ 'rrze-pieksy-room-weekday' ] as $day) {
+                        if (isset($week[ 'rrze-pieksy-room-starttime' ]) && isset($week[ 'rrze-pieksy-room-endtime' ])) {
+                            $valid_from = ((isset($week[ 'rrze-pieksy-room-timeslot-valid-from' ]) && $week[ 'rrze-pieksy-room-timeslot-valid-from' ] != '') ? $week[ 'rrze-pieksy-room-timeslot-valid-from' ] : 'unlimited');
+                            $valid_to   = ((isset($week[ 'rrze-pieksy-room-timeslot-valid-to' ]) && $week[ 'rrze-pieksy-room-timeslot-valid-to' ] != '') ? strtotime(
                                 '+23 hours, +59 minutes',
-                                intval($week[ 'rrze-rsvp-room-timeslot-valid-to' ])
+                                intval($week[ 'rrze-pieksy-room-timeslot-valid-to' ])
                             ) : 'unlimited');
                             if ($with_duration == true) {
-                                $schedule[ $day ][ $valid_from . '-' . $valid_to . '-' . $week[ 'rrze-rsvp-room-starttime' ] . '-' . $week[ 'rrze-rsvp-room-endtime' ] ][ 'start' ] = $week[ 'rrze-rsvp-room-starttime' ];
-                                $schedule[ $day ][ $valid_from . '-' . $valid_to . '-' . $week[ 'rrze-rsvp-room-starttime' ] . '-' . $week[ 'rrze-rsvp-room-endtime' ] ][ 'end' ]   = $week[ 'rrze-rsvp-room-endtime' ];
+                                $schedule[ $day ][ $valid_from . '-' . $valid_to . '-' . $week[ 'rrze-pieksy-room-starttime' ] . '-' . $week[ 'rrze-pieksy-room-endtime' ] ][ 'start' ] = $week[ 'rrze-pieksy-room-starttime' ];
+                                $schedule[ $day ][ $valid_from . '-' . $valid_to . '-' . $week[ 'rrze-pieksy-room-starttime' ] . '-' . $week[ 'rrze-pieksy-room-endtime' ] ][ 'end' ]   = $week[ 'rrze-pieksy-room-endtime' ];
                             } else {
                                 $now = current_time('timestamp');
                                 if (($valid_from != 'unlimited' && $valid_to != 'unlimited' && $now >= $valid_from && $now <= $valid_to)
                                     || ($valid_from != 'unlimited' && $valid_to == 'unlimited' && $now >= $valid_from)
                                     || ($valid_from == 'unlimited' && $valid_to != 'unlimited' && $now <= $valid_to)
                                     || ($valid_from == 'unlimited' && $valid_to == 'unlimited')) {
-                                    $schedule[ $day ][ $week[ 'rrze-rsvp-room-starttime' ] ] = $week[ 'rrze-rsvp-room-endtime' ];
+                                    $schedule[ $day ][ $week[ 'rrze-pieksy-room-starttime' ] ] = $week[ 'rrze-pieksy-room-endtime' ];
                                 }
                             }
                         }

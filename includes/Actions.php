@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
@@ -56,33 +56,33 @@ class Actions
 			$this->ajaxResult(['result' => false]);
 		}
 
-		$autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-rsvp-room-auto-confirmation', true));
+		$autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-auto-confirmation', true));
         $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
-		$status = get_post_meta($bookingId, 'rrze-rsvp-booking-status', true);
+		$status = get_post_meta($bookingId, 'rrze-pieksy-booking-status', true);
 
         if (in_array($status, ['booked', 'customer-confirmed']) && $action == 'confirm') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'confirmed');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'confirmed');
             $bookingConfirmed = true;
             $this->email->doEmail('adminConfirmed', 'customer', $bookingId);
         } elseif ($status == 'booked' && $action == 'custom-confirm') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'customer-confirmed');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
             $bookingConfirmed = true;
             $this->email->doEmail('customerConfirmed', 'customer', $bookingId,'customer-confirmed');
             if ($adminConfirmationRequired) {
                 $this->email->doEmail('customerConfirmed', 'admin', $bookingId, 'customer-confirmed');
             }
         } elseif (in_array($status, ['booked', 'confirmed']) && $action == 'cancel') {
-			update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'cancelled');
+			update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
             $this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled');
 		} elseif (in_array($status, ['booked', 'customer-confirmed', 'confirmed', 'checked-out']) && $action == 'checkin') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-in');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
         } elseif ($booking['status'] == 'checked-in' && $action == 'checkout') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-out');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-out');
         } else {
 			$this->ajaxResult(['result' => false]);
 		}
 
-		do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 
 		$this->ajaxResult(['result' => true]);
 	}
@@ -98,55 +98,55 @@ class Actions
 				return;
 			}
 
-			$status = get_post_meta($bookingId, 'rrze-rsvp-booking-status', true);
+			$status = get_post_meta($bookingId, 'rrze-pieksy-booking-status', true);
 
 			$booking = Functions::getBooking($bookingId);
 			if (!$booking) {
 				return;
 			}
 
-            $bookingMode = get_post_meta($booking['room'], 'rrze-rsvp-room-bookingmode', true);
-            $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-rsvp-room-force-to-confirm', true));
-            $autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-rsvp-room-auto-confirmation', true));
+            $bookingMode = get_post_meta($booking['room'], 'rrze-pieksy-room-bookingmode', true);
+            $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
+            $autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-auto-confirmation', true));
             $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
 
             if (in_array($status, ['booked', 'customer-confirmed']) && $action == 'confirm') {
-                update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'confirmed');
+                update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'confirmed');
                 $bookingConfirmed = true;
                 $this->email->doEmail('adminConfirmed', 'customer', $bookingId);
             } elseif ($status == 'booked' && $action == 'custom-confirm') {
-                update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'customer-confirmed');
+                update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
                 $bookingConfirmed = true;
                 $this->email->doEmail('customerConfirmed', 'customer', $bookingId, 'customer-confirmed');
                 if ($adminConfirmationRequired) {
                     $this->email->doEmail('customerConfirmed', 'admin', $bookingId, 'customer-confirmed');
                 }
             } elseif (in_array($status, ['booked', 'confirmed']) && $action == 'cancel') {
-				update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'cancelled');
+				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
 				$this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled');
 			} elseif ($status == 'cancelled' && $action == 'restore') {
                 if ($forceToConfirm) {
-                    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'customer-confirmed');
+                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
                 } else {
-                    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'booked');
+                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
                 }
 			} elseif ((in_array($status, ['checked-out', 'confirmed']) || $bookingMode == 'check-only') && $action == 'checkin') {
 			    $now = current_time('timestamp');
                 $offset = 15 * MINUTE_IN_SECONDS;
                 if ($now < ($booking['start'] - $offset) || $now > $booking['end']) {
                     wp_die(
-                        __('Booking can only be checked in between 15 minutes before the start of the timeslot and the end of the timeslot.', 'rrze-rsvp'),
-                        __('Update Error', 'rrze-rsvp'),
+                        __('Booking can only be checked in between 15 minutes before the start of the timeslot and the end of the timeslot.', 'rrze-pieksy'),
+                        __('Update Error', 'rrze-pieksy'),
                         ['back_link' => true]
                     );
                 } else {
-                    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-in');
+                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
                 }
 			} elseif ($status == 'checked-in' && $action == 'checkout') {
-			    update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-out');
+			    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-out');
 			}
 
-			do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+			do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 
 			wp_redirect(get_admin_url() . 'edit.php?post_type=booking');
 			exit;
@@ -194,7 +194,7 @@ class Actions
 						get_delete_post_link($post->ID),
 						/* translators: %s: Post title. */
 						esc_attr(sprintf(__('Move &#8220;%s&#8221; to the Trash'), $title)),
-						_x('Delete', 'Booking', 'rrze-rsvp')
+						_x('Delete', 'Booking', 'rrze-pieksy')
 					);
 				} else {
 					$actions['delete'] = sprintf(
@@ -249,7 +249,7 @@ class Actions
 						get_delete_post_link($post->ID),
 						/* translators: %s: Post title. */
 						esc_attr(sprintf(__('Move &#8220;%s&#8221; to the Trash'), $title)),
-						_x('Delete', 'Room|Seat', 'rrze-rsvp')
+						_x('Delete', 'Room|Seat', 'rrze-pieksy')
 					);
 				} else {
 					$actions['delete'] = sprintf(
@@ -274,9 +274,9 @@ class Actions
 	public function bookingBulkActions($actions)
 	{
 		$actions = [];
-		$actions['cancel_booking'] = _x('Cancel', 'Booking', 'rrze-rsvp');
+		$actions['cancel_booking'] = _x('Cancel', 'Booking', 'rrze-pieksy');
 		if (EMPTY_TRASH_DAYS) {
-			$actions['trash_booking'] = _x('Delete', 'Booking', 'rrze-rsvp');
+			$actions['trash_booking'] = _x('Delete', 'Booking', 'rrze-pieksy');
 		} else {
 			$actions['delete_booking'] = __('Delete Permanently');
 		}
@@ -292,7 +292,7 @@ class Actions
 		$generatePdfAction= !empty($actions['generate-pdf']) ? $actions['generate-pdf'] : '';
 		$actions = [];
 		if (EMPTY_TRASH_DAYS) {
-			$actions["trash_{$post_type}"] = _x('Delete', 'Booking', 'rrze-rsvp');
+			$actions["trash_{$post_type}"] = _x('Delete', 'Booking', 'rrze-pieksy');
 		} else {
 			$actions["delete_{$post_type}"] = __('Delete Permanently');
 		}
@@ -314,16 +314,16 @@ class Actions
 						unset($postIds[$key]);
 						continue;
 					}
-					$status = get_post_meta($postId, 'rrze-rsvp-booking-status', true);
+					$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
 					if (wp_check_post_lock($postId)) {
 						$locked++;
 						unset($postIds[$key]);
 						continue;
 					}
 					if (!Functions::isBookingArchived($postId) && in_array($status, ['booked', 'confirmed'])) {
-						update_post_meta($postId, 'rrze-rsvp-booking-status', 'cancelled');
+						update_post_meta($postId, 'rrze-pieksy-booking-status', 'cancelled');
 						$this->email->doEmail('bookingCancelled', 'customer', $postId);
-						do_action('rrze-rsvp-tracking', get_current_blog_id(), $postId);
+						do_action('rrze-pieksy-tracking', get_current_blog_id(), $postId);
 						$cancelled++;
 					} else {
 						unset($postIds[$key]);
@@ -587,31 +587,31 @@ class Actions
 			$trash = isset($_REQUEST['trash']) ? $_REQUEST['trash'] : '';
 			$delete = isset($_REQUEST['delete']) ? $_REQUEST['delete'] : '';
 	
-			//$requestStatus = isset($_REQUEST['rrze-rsvp-booking-status']) ? $_REQUEST['rrze-rsvp-booking-status'] : '';
-			$requestSeat = isset($_REQUEST['rrze-rsvp-booking-seat']) ? $_REQUEST['rrze-rsvp-booking-seat'] : '';
+			//$requestStatus = isset($_REQUEST['rrze-pieksy-booking-status']) ? $_REQUEST['rrze-pieksy-booking-status'] : '';
+			$requestSeat = isset($_REQUEST['rrze-pieksy-booking-seat']) ? $_REQUEST['rrze-pieksy-booking-seat'] : '';
 	
-			//$status = get_post_meta($postId, 'rrze-rsvp-booking-status', true);
-			$seat = get_post_meta($postId, 'rrze-rsvp-booking-seat', true);
+			//$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
+			$seat = get_post_meta($postId, 'rrze-pieksy-booking-seat', true);
 	
 			$isArchive = Functions::isBookingArchived($postId);
 			$canDelete = Functions::canDeleteBooking($postId);
 	
 			if ($trash || $delete) {
 				if (!$canDelete) {
-					$errorMessage = __('This item cannot be deleted.', 'rrze-rsvp');
+					$errorMessage = __('This item cannot be deleted.', 'rrze-pieksy');
 				}
 			} elseif (
 				$isArchive 
 				|| ($requestSeat != $seat)
 			) {
-				$errorMessage = __('This item cannot be updated.', 'rrze-rsvp');
+				$errorMessage = __('This item cannot be updated.', 'rrze-pieksy');
             }
 		}
 
 		if ($errorMessage) {
 			wp_die(
 				$errorMessage,
-				__('Update Error', 'rrze-rsvp'),
+				__('Update Error', 'rrze-pieksy'),
 				['back_link' => true]
 			);
 		}
@@ -628,28 +628,28 @@ class Actions
 	// 		$trash = isset($_REQUEST['trash']) ? $_REQUEST['trash'] : '';
 	// 		$delete = isset($_REQUEST['delete']) ? $_REQUEST['delete'] : '';
 	
-	// 		//$requestStatus = isset($_REQUEST['rrze-rsvp-booking-status']) ? $_REQUEST['rrze-rsvp-booking-status'] : '';
-	// 		$requestSeat = isset($_REQUEST['rrze-rsvp-booking-seat']) ? $_REQUEST['rrze-rsvp-booking-seat'] : '';
+	// 		//$requestStatus = isset($_REQUEST['rrze-pieksy-booking-status']) ? $_REQUEST['rrze-pieksy-booking-status'] : '';
+	// 		$requestSeat = isset($_REQUEST['rrze-pieksy-booking-seat']) ? $_REQUEST['rrze-pieksy-booking-seat'] : '';
 	
-	// 		//$status = get_post_meta($postId, 'rrze-rsvp-booking-status', true);
-	// 		$seat = get_post_meta($post_id, 'rrze-rsvp-booking-seat', true);
+	// 		//$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
+	// 		$seat = get_post_meta($post_id, 'rrze-pieksy-booking-seat', true);
 	
 	// 		$isArchive = Functions::isBookingArchived($post_id);
 	// 		$canDelete = Functions::canDeleteBooking($post_id);
 	
 	// 		if ($trash || $delete) {
 	// 			if (!$canDelete) {
-	// 				$errorMessage = __('This item cannot be deleted.', 'rrze-rsvp');
+	// 				$errorMessage = __('This item cannot be deleted.', 'rrze-pieksy');
 	// 			}
 	// 		} elseif ( $isArchive  || ($requestSeat != $seat) ) {
-	// 			$errorMessage = __('This item cannot be updated.', 'rrze-rsvp');
+	// 			$errorMessage = __('This item cannot be updated.', 'rrze-pieksy');
 	// 		}			
 	// 	}
 
 	// 	if ($errorMessage) {
 	// 		wp_die(
 	// 			$errorMessage,
-	// 			__('Update Error', 'rrze-rsvp'),
+	// 			__('Update Error', 'rrze-pieksy'),
 	// 			['back_link' => true]
 	// 		);
 	// 	}
@@ -658,10 +658,10 @@ class Actions
 	protected function isSeatAvailable()
 	{
 		$errorMessage = '';
-		$seatId = isset($_REQUEST['rrze-rsvp-booking-seat']) ? $_REQUEST['rrze-rsvp-booking-seat'] : '';
-		$bookingStart = isset($_REQUEST['rrze-rsvp-booking-start']) ? $_REQUEST['rrze-rsvp-booking-start'] : '';
+		$seatId = isset($_REQUEST['rrze-pieksy-booking-seat']) ? $_REQUEST['rrze-pieksy-booking-seat'] : '';
+		$bookingStart = isset($_REQUEST['rrze-pieksy-booking-start']) ? $_REQUEST['rrze-pieksy-booking-start'] : '';
 		$bookingStart = is_array($bookingStart) ? $bookingStart['date'] . ' ' . $bookingStart['time'] : '';
-		$bookingEnd = isset($_REQUEST['rrze-rsvp-booking-end']) ? $_REQUEST['rrze-rsvp-booking-end'] : '';
+		$bookingEnd = isset($_REQUEST['rrze-pieksy-booking-end']) ? $_REQUEST['rrze-pieksy-booking-end'] : '';
 		$bookingEnd = is_array($bookingEnd) ? $bookingEnd['date'] . ' ' . $bookingEnd['time'] : '';
 
         $args = [
@@ -671,16 +671,16 @@ class Actions
             'nopaging' => true,
             'meta_query' => [
                 [
-                    'key' => 'rrze-rsvp-booking-seat',
+                    'key' => 'rrze-pieksy-booking-seat',
                     'value' => $seatId,
                 ],
                 [
-                    'key' => 'rrze-rsvp-booking-status',
+                    'key' => 'rrze-pieksy-booking-status',
                     'value' => ['booked', 'confirmed', 'checked-in'],
                     'compare' => 'IN'
                 ],
                 [
-                    'key' => 'rrze-rsvp-booking-start',
+                    'key' => 'rrze-pieksy-booking-start',
                     'value' => [strtotime($bookingStart), strtotime($bookingEnd)],
                     'compare' => 'BETWEEN',
                     'type' => 'numeric'
@@ -690,7 +690,7 @@ class Actions
         $query = new \WP_Query($args);
 
         if ($query->have_posts()) {
-            $errorMessage = __('Seat unavailable.', 'rrze-rsvp'); 
+            $errorMessage = __('Seat unavailable.', 'rrze-pieksy'); 
             wp_reset_postdata();
 		}
 						
@@ -717,34 +717,34 @@ class Actions
         if ( !$canDelete ){
 			// prevent delete
             if ( isset($_REQUEST['trash']) || isset($_REQUEST['delete']) || ( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) ){
-				$errorMessage = __('This item is used in a booking and cannot be deleted.', 'rrze-rsvp');
+				$errorMessage = __('This item is used in a booking and cannot be deleted.', 'rrze-pieksy');
 			}
 
 			// prevent status change
             if (in_array($post_data['post_status'], ['private', 'draft', 'future'])){
-				$errorMessage = __('This item is used in a booking and cannot be set to draft, to private or scheduled to be published in a future date.', 'rrze-rsvp');
+				$errorMessage = __('This item is used in a booking and cannot be set to draft, to private or scheduled to be published in a future date.', 'rrze-pieksy');
 			}
 
 			// prevent password protection
             if ($post_data['post_password']){
-				$errorMessage = __('This item is used in a booking and cannot be password protected.', 'rrze-rsvp');
+				$errorMessage = __('This item is used in a booking and cannot be password protected.', 'rrze-pieksy');
 			}
         }
 
         if ($post_data['post_type'] == 'room') {
-            $oldTimeslots = get_post_meta($post_id, 'rrze-rsvp-room-timeslots', true);
-            $newTimeslots = isset($_POST['rrze-rsvp-room-timeslots']) ? $_POST['rrze-rsvp-room-timeslots'] : [];
+            $oldTimeslots = get_post_meta($post_id, 'rrze-pieksy-room-timeslots', true);
+            $newTimeslots = isset($_POST['rrze-pieksy-room-timeslots']) ? $_POST['rrze-pieksy-room-timeslots'] : [];
 
             if (!empty($newTimeslots)) {
                 foreach ($newTimeslots as $k => $newTimeslot) {
-                    if ($newTimeslot['rrze-rsvp-room-starttime'] > $newTimeslot['rrze-rsvp-room-endtime']) {
+                    if ($newTimeslot['rrze-pieksy-room-starttime'] > $newTimeslot['rrze-pieksy-room-endtime']) {
                         $errorTimeslots['invalid'][] = $k + 1;
                     }
                 }
                 if (isset($errorTimeslots['invalid'])) {
-                    $_POST['rrze-rsvp-room-timeslots'] = $oldTimeslots;
+                    $_POST['rrze-pieksy-room-timeslots'] = $oldTimeslots;
                     $sTimeslots = implode(' and ', $errorTimeslots['invalid']);
-                    $errorMessage = sprintf(_n('Unable to save post: End time must be greater than start time in timeslot no. %s.', 'Unable to save post: End time must be greater than start time in timeslots no. %s.', count($errorTimeslots['invalid']), 'rrze-rsvp'), $sTimeslots);
+                    $errorMessage = sprintf(_n('Unable to save post: End time must be greater than start time in timeslot no. %s.', 'Unable to save post: End time must be greater than start time in timeslots no. %s.', count($errorTimeslots['invalid']), 'rrze-pieksy'), $sTimeslots);
                 }
             }
         }
@@ -755,7 +755,7 @@ class Actions
 
 			wp_die(
 				$errorMessage,
-				__('Update Error', 'rrze-rsvp'),
+				__('Update Error', 'rrze-pieksy'),
 				['back_link' => true]
             );
         }
@@ -771,14 +771,14 @@ class Actions
 			return;
 		}
 
-		if (!isset($_POST['rrze-rsvp-booking-status'])) {
+		if (!isset($_POST['rrze-pieksy-booking-status'])) {
 			return;
 		}
 
 		$bookingId = $post->ID;
 		$booking = Functions::getBooking($bookingId);
 
-		$bookingStatus = sanitize_text_field($_POST['rrze-rsvp-booking-status']);
+		$bookingStatus = sanitize_text_field($_POST['rrze-pieksy-booking-status']);
 
 		$bookingBooked = ($bookingStatus == 'booked');
 		$bookingConfirmed = ($bookingStatus == 'confirmed');
@@ -786,13 +786,13 @@ class Actions
 		$bookingCheckedIn = ($bookingStatus == 'checked-in');
 		$bookingCheckedOut = ($bookingStatus == 'checked-out');
 
-		$bookingMode = get_post_meta($booking['room'], 'rrze-rsvp-room-bookingmode', true);
-		$forceToConfirm = get_post_meta($booking['room'], 'rrze-rsvp-room-force-to-confirm', true);
+		$bookingMode = get_post_meta($booking['room'], 'rrze-pieksy-room-bookingmode', true);
+		$forceToConfirm = get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true);
 
 		if (($bookingBooked || $bookingCancelled) && $bookingStatus == 'confirmed') {
-			update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'confirmed');
+			update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'confirmed');
 			if ($forceToConfirm) {
-				update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'booked');
+				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
 				$this->email->doEmail('adminConfirmed', 'customer', $bookingId);
 			} else {
 				$this->email->doEmail('adminConfirmed', 'customer', $bookingId);
@@ -807,7 +807,7 @@ class Actions
 			return;
 		}
 
-		do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 	}
 
 
@@ -821,11 +821,11 @@ class Actions
 
 		    $canDelete = Functions::canDeleteSeat($post->ID);
             if ( !$canDelete ){
-                $roomId = get_post_meta($post->ID, 'rrze-rsvp-seat-room', true);
-                if (isset($_POST['rrze-rsvp-seat-room'])  && $_POST['rrze-rsvp-seat-room'] != $roomId){
+                $roomId = get_post_meta($post->ID, 'rrze-pieksy-seat-room', true);
+                if (isset($_POST['rrze-pieksy-seat-room'])  && $_POST['rrze-pieksy-seat-room'] != $roomId){
                     // roomId is about to be changed -> set old roomId
-                    $_POST['rrze-rsvp-seat-room'] = $roomId;
-                    $errorMessage = __('This seat is used in a booking and cannot be assigned to a different room.', 'rrze-rsvp');
+                    $_POST['rrze-pieksy-seat-room'] = $roomId;
+                    $errorMessage = __('This seat is used in a booking and cannot be assigned to a different room.', 'rrze-pieksy');
                 }
             }
         }
@@ -833,7 +833,7 @@ class Actions
         if ($errorMessage) {
             wp_die(
                 $errorMessage,
-                __('Update Error', 'rrze-rsvp'),
+                __('Update Error', 'rrze-pieksy'),
                 ['back_link' => true]
             );
         }
@@ -842,7 +842,7 @@ class Actions
 
 	public function bookingReply(){
         global $post;
-		if (!is_a($post, '\WP_Post') || !is_page() || $post->post_name != "rsvp-booking") {
+		if (!is_a($post, '\WP_Post') || !is_page() || $post->post_name != "pieksy-booking") {
 			return;
 		}
 
@@ -855,8 +855,8 @@ class Actions
 		}
 
 		wp_enqueue_style(
-			'rrze-rsvp-booking-reply',
-			plugins_url('assets/css/rrze-rsvp.css', plugin()->getBasename()),
+			'rrze-pieksy-booking-reply',
+			plugins_url('assets/css/rrze-pieksy.css', plugin()->getBasename()),
 			[],
 			plugin()->getVersion()
 		);
@@ -897,29 +897,29 @@ class Actions
         $bookingCheckedOut = ($booking['status'] == 'checked-out');
 		$alreadyDone = false;
 
-		$autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-rsvp-room-auto-confirmation', true));
+		$autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-auto-confirmation', true));
         $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
 
         if (($bookingBooked || $bookingCustomerConfirmed) && $action == 'confirm') {
-			update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'confirmed');
+			update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'confirmed');
 			$bookingConfirmed = true;
 			$this->email->doEmail('adminConfirmed', 'customer', $bookingId);
         } elseif ($bookingBooked && $action == 'custom-confirm') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'customer-confirmed');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
             $bookingConfirmed = true;
             $this->email->doEmail('customerConfirmed', 'customer', $bookingId,'customer-confirmed');
             if ($adminConfirmationRequired) {
                 $this->email->doEmail('customerConfirmed', 'admin', $bookingId, 'customer-confirmed');
             }
 		} elseif (($bookingBooked || $bookingCustomerConfirmed) && $action == 'cancel') {
-			update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'cancelled');
+			update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
 			$bookingCancelled = true;
 			$this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled');
 		} elseif (($bookingBooked || $bookingCustomerConfirmed || $bookingConfirmed || $bookingCheckedOut) && $action == 'checkin') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-in');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
             $bookingCheckedIn = true;
         } elseif ($bookingCheckedIn && $action == 'checkout') {
-            update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-out');
+            update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-out');
             $bookingCheckedOut = true;
         } else {
 			$alreadyDone = true;
@@ -928,31 +928,31 @@ class Actions
 		$data = [];
 
 		if (!$alreadyDone && $bookingConfirmed) {
-			$data['title'] = __('Booking Confirmed', 'rrze-rsvp');
-			$data['text'] = sprintf(__('The booking has been %s', 'rrze-rsvp'), _x('confirmed', 'Booking', 'rrze-rsvp'));
-			$data['customer_has_received_an_email'] = __('Your customer has received an email confirmation.', 'rrze-rsvp');
+			$data['title'] = __('Booking Confirmed', 'rrze-pieksy');
+			$data['text'] = sprintf(__('The booking has been %s', 'rrze-pieksy'), _x('confirmed', 'Booking', 'rrze-pieksy'));
+			$data['customer_has_received_an_email'] = __('Your customer has received an email confirmation.', 'rrze-pieksy');
 			$response = 'confirmed';
 		} elseif (!$alreadyDone && $bookingCancelled) {
-			$data['title'] = __('Booking Cancelled', 'rrze-rsvp');
-			$data['text'] = sprintf(__('The booking has been %s', 'rrze-rsvp'), _x('cancelled', 'Booking', 'rrze-rsvp'));
-			$data['customer_has_received_an_email'] = __('Your customer has received an email cancellation.', 'rrze-rsvp');
+			$data['title'] = __('Booking Cancelled', 'rrze-pieksy');
+			$data['text'] = sprintf(__('The booking has been %s', 'rrze-pieksy'), _x('cancelled', 'Booking', 'rrze-pieksy'));
+			$data['customer_has_received_an_email'] = __('Your customer has received an email cancellation.', 'rrze-pieksy');
 			$response = 'cancelled';
 		} elseif ($alreadyDone && $bookingConfirmed) {
-			$data['title'] = __('Booking Confirmed', 'rrze-rsvp');
-			$data['text'] = sprintf(__('The booking has already been %s.', 'rrze-rsvp'), _x('confirmed', 'Booking', 'rrze-rsvp'));
+			$data['title'] = __('Booking Confirmed', 'rrze-pieksy');
+			$data['text'] = sprintf(__('The booking has already been %s.', 'rrze-pieksy'), _x('confirmed', 'Booking', 'rrze-pieksy'));
 			$response = 'confirmed';
 		} elseif ($alreadyDone && $bookingCancelled) {
-			$data['title'] = __('Booking Cancelled', 'rrze-rsvp');
-			$data['text'] = sprintf(__('The booking has already been %s.', 'rrze-rsvp'), _x('cancelled', 'Booking', 'rrze-rsvp'));
+			$data['title'] = __('Booking Cancelled', 'rrze-pieksy');
+			$data['text'] = sprintf(__('The booking has already been %s.', 'rrze-pieksy'), _x('cancelled', 'Booking', 'rrze-pieksy'));
 			$response = 'cancelled';
 		} else {
-			$data['title'] = __('Action not available', 'rrze-rsvp');
-			$data['text'] = __('No action was taken.', 'rrze-rsvp');
+			$data['title'] = __('Action not available', 'rrze-pieksy');
+			$data['text'] = __('No action was taken.', 'rrze-pieksy');
 			$response = 'no-action';
 		}
 
-		$customerName = sprintf('%s: %s %s', __('Name', 'rrze-rsvp'), $booking['guest_firstname'], $booking['guest_lastname']);
-		$customerEmail = sprintf('%s: %s', __('Email', 'rrze-rsvp'), $booking['guest_email']);
+		$customerName = sprintf('%s: %s %s', __('Name', 'rrze-pieksy'), $booking['guest_firstname'], $booking['guest_lastname']);
+		$customerEmail = sprintf('%s: %s', __('Email', 'rrze-pieksy'), $booking['guest_email']);
 
 		$data['already_done'] = $alreadyDone;
 		$data['no-action'] = ($response == 'no-action');
@@ -970,7 +970,7 @@ class Actions
 			return $this->template->getContent('reply/booking-admin', $data);
 		});
 
-		do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 	}
 
 	protected function bookingReplyCustomer(int $bookingId, array $booking, string $action)
@@ -979,14 +979,14 @@ class Actions
 		$end = $booking['end'];
 		$now = current_time('timestamp');
 
-		$bookingMode = get_post_meta($booking['room'], 'rrze-rsvp-room-bookingmode', true);
-		$sendCheckoutNotification = (get_post_meta($booking['room'], 'rrze-rsvp-room-checkout-notification', true) == 'on');
-        $autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-rsvp-room-auto-confirmation', true));
+		$bookingMode = get_post_meta($booking['room'], 'rrze-pieksy-room-bookingmode', true);
+		$sendCheckoutNotification = (get_post_meta($booking['room'], 'rrze-pieksy-room-checkout-notification', true) == 'on');
+        $autoConfirmation = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-auto-confirmation', true));
         $adminConfirmationRequired = $autoConfirmation ? false : true; // Verwirrende Post-Meta-Bezeichnung vereinfacht
         if ($bookingMode == 'check-only') {
             $adminConfirmationRequired = false;
         }
-		$userConfirmed = (get_post_meta($bookingId, 'rrze-rsvp-customer-status', true) == 'confirmed' || $booking['status'] == 'customer-confirmed'); // post-meta 'rrze-rsvp-customer-status' wegen Abwärtskompatibilität vor 12/2020
+		$userConfirmed = (get_post_meta($bookingId, 'rrze-pieksy-customer-status', true) == 'confirmed' || $booking['status'] == 'customer-confirmed'); // post-meta 'rrze-pieksy-customer-status' wegen Abwärtskompatibilität vor 12/2020
 		$bookingBooked = ($booking['status'] == 'booked');
 		$bookingConfirmed = ($booking['status'] == 'confirmed');
 		$bookingCheckedIn = ($booking['status'] == 'checked-in');
@@ -997,13 +997,13 @@ class Actions
 			$this->email->doEmail('customerConfirmed', 'customer', $bookingId);
 			if ($adminConfirmationRequired) {
                 $this->email->doEmail('adminConfirmationRequired', 'admin', $bookingId);
-                update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'customer-confirmed');
+                update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
             } else {
-                update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'confirmed');
+                update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'confirmed');
             }
 			$userConfirmed = true;
 		} elseif (!$bookingCancelled && !$bookingCheckedOut && $action == 'maybe-cancel') {
-			update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'cancelled');
+			update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
 			if (Functions::getBoolValueFromAtt($this->options->email_notification_if_cancel) == true) {
                 $this->email->doEmail('bookingCancelled', 'admin', $bookingId);
             }
@@ -1011,13 +1011,13 @@ class Actions
 		} elseif (!$bookingCancelled && !$bookingCheckedIn && ($bookingConfirmed || $bookingCheckedOut) && $action == 'checkin') {
 			$offset = 15 * MINUTE_IN_SECONDS;
 			if (($start - $offset) <= $now && $end >= $now) {
-				update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-in');
+				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
 				$bookingCheckedIn = true;
 			}
 		} elseif (!$bookingCancelled && !$bookingCheckedOut && $bookingCheckedIn && $action == 'checkout') {
             $offset = 15 * MINUTE_IN_SECONDS;
             if (($start - $offset) <= $now && $end >= $now) {
-				update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-out');
+				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-out');
                 if ($sendCheckoutNotification) {
                     $this->email->doEmail('bookingCheckedOut', 'admin', $bookingId);
                 }
@@ -1058,64 +1058,64 @@ class Actions
 		$data['time_en'] = $booking['time_en'];
 
 		$cancelUrl = Functions::bookingReplyUrl('maybe-cancel', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-		$data['cancel_btn'] = sprintf('<a href="%s" class="button button-cancel">%s</a>', $cancelUrl, _x('Cancel', 'Booking', 'rrze-rsvp'));
+		$data['cancel_btn'] = sprintf('<a href="%s" class="button button-cancel">%s</a>', $cancelUrl, _x('Cancel', 'Booking', 'rrze-pieksy'));
 		$data['cancel_btn_en'] = sprintf('<a href="%s" class="button button-cancel">Cancel</a>', $cancelUrl);
 
 		switch ($response) {
 			case 'maybe-cancel':
-				$data['booking_cancel'] = __('Cancel Booking', 'rrze-rsvp');
-				$data['really_want_to_cancel_the_booking'] = __('Do you really want to cancel your booking?', 'rrze-rsvp');
+				$data['booking_cancel'] = __('Cancel Booking', 'rrze-pieksy');
+				$data['really_want_to_cancel_the_booking'] = __('Do you really want to cancel your booking?', 'rrze-pieksy');
 				$data['booking_cancel_en'] = 'Cancel Booking';
 				$data['really_want_to_cancel_the_booking_en'] = 'Do you really want to cancel your booking?';
 				$data['class_cancelled'] = ($action == 'cancel') ? 'cancelled' : '';
 				break;
 			case 'cancelled':
-				$data['booking_cancelled'] = __('Booking Cancelled', 'rrze-rsvp');
-				$data['booking_has_been_cancelled'] = __('Your booking has been cancelled. Please contact us to find a different arrangement.', 'rrze-rsvp');
+				$data['booking_cancelled'] = __('Booking Cancelled', 'rrze-pieksy');
+				$data['booking_has_been_cancelled'] = __('Your booking has been cancelled. Please contact us to find a different arrangement.', 'rrze-pieksy');
 				$data['booking_cancelled_en'] = 'Booking Cancelled';
 				$data['booking_has_been_cancelled_en'] = 'Your booking has been cancelled. Please contact us to find a different arrangement.';
 				$data['class_cancelled'] = ($action == 'cancel') ? 'cancelled' : '';
 				break;
 			case 'already-cancelled':
-				$data['booking_cancelled'] = __('Booking Cancelled', 'rrze-rsvp');
-				$data['booking_has_been_cancelled'] = __('The booking is already canceled.', 'rrze-rsvp');
+				$data['booking_cancelled'] = __('Booking Cancelled', 'rrze-pieksy');
+				$data['booking_has_been_cancelled'] = __('The booking is already canceled.', 'rrze-pieksy');
 				$data['booking_cancelled_en'] = 'Booking Cancelled';
 				$data['booking_has_been_cancelled_en'] = 'The booking is already canceled.';
 				$data['class_cancelled'] = ($action == 'cancel') ? 'cancelled' : '';
 				break;
 			case 'confirmed':
-				$data['booking_confirmed'] = __('Booking Confirmed', 'rrze-rsvp');
-				$data['thank_for_confirming'] = __('Thank you for confirming your booking.', 'rrze-rsvp');
+				$data['booking_confirmed'] = __('Booking Confirmed', 'rrze-pieksy');
+				$data['thank_for_confirming'] = __('Thank you for confirming your booking.', 'rrze-pieksy');
 				$data['booking_confirmed_en'] = 'Booking Confirmed';
 				$data['thank_for_confirming_en'] = 'Thank you for confirming your booking.';
 				break;
 			case 'cannot-checked-in':
-				$data['booking_check_in'] = __('Booking Check In', 'rrze-rsvp');
-				$data['checkin_is_not_possible'] = __('Check in is not possible at this time.', 'rrze-rsvp');
+				$data['booking_check_in'] = __('Booking Check In', 'rrze-pieksy');
+				$data['checkin_is_not_possible'] = __('Check in is not possible at this time.', 'rrze-pieksy');
 				$data['booking_check_in_en'] = 'Booking Check In';
 				$data['checkin_is_not_possible_en'] = 'Check in is not possible at this time.';
 				break;
 			case 'already-checked-in':
-				$data['booking_checked_in'] = __('Booking Checked In', 'rrze-rsvp');
-				$data['checkin_has_been_completed'] = __('Check in has been completed.', 'rrze-rsvp');
+				$data['booking_checked_in'] = __('Booking Checked In', 'rrze-pieksy');
+				$data['checkin_has_been_completed'] = __('Check in has been completed.', 'rrze-pieksy');
 				$data['booking_checked_in_en'] = 'Booking Checked In';
 				$data['checkin_has_been_completed_en'] = 'Check in has been completed.';
 				break;
 			case 'cannot-checked-out':
-				$data['booking_check_out'] = __('Booking Check Out', 'rrze-rsvp');
-				$data['checkout_is_not_possible'] = __('Check-out is not possible at this time.', 'rrze-rsvp');
+				$data['booking_check_out'] = __('Booking Check Out', 'rrze-pieksy');
+				$data['checkout_is_not_possible'] = __('Check-out is not possible at this time.', 'rrze-pieksy');
 				$data['booking_check_out_en'] = 'Booking Check Out';
 				$data['checkout_is_not_possible_en'] = 'Check-out is not possible at this time.';
 				break;
 			case 'already-checked-out':
-				$data['booking_checked_out'] = __('Booking Checked Out', 'rrze-rsvp');
-				$data['checkout_has_been_completed'] = __('Check-out has been completed.', 'rrze-rsvp');
+				$data['booking_checked_out'] = __('Booking Checked Out', 'rrze-pieksy');
+				$data['checkout_has_been_completed'] = __('Check-out has been completed.', 'rrze-pieksy');
 				$data['booking_checked_out_en'] = 'Booking Checked Out';
 				$data['checkout_has_been_completed_en'] = 'Check-out has been completed.';
 				break;
 			default:
-				$data['action_not_available'] = __('Action not available', 'rrze-rsvp');
-				$data['no_action_was_taken'] = __('No action was taken.', 'rrze-rsvp');
+				$data['action_not_available'] = __('Action not available', 'rrze-pieksy');
+				$data['no_action_was_taken'] = __('No action was taken.', 'rrze-pieksy');
 				$data['action_not_available_en'] = 'Action not available';
 				$data['no_action_was_taken_en'] = 'No action was taken.';
 		}
@@ -1124,7 +1124,7 @@ class Actions
 			return $this->template->getContent('reply/booking-customer', $data);
 		});
 
-		do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+		do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
 	}
 
 	protected function ajaxResult(array $returnAry)
@@ -1136,19 +1136,19 @@ class Actions
 	protected function isBookingArchived(int $postId): bool
 	{
 		$now = current_time('timestamp');
-		$start = absint(get_post_meta($postId, 'rrze-rsvp-booking-start', true));
+		$start = absint(get_post_meta($postId, 'rrze-pieksy-booking-start', true));
 		$start = new Carbon(date('Y-m-d H:i:s', $start), wp_timezone());
-		$end = absint(get_post_meta($postId, 'rrze-rsvp-booking-end', true));
+		$end = absint(get_post_meta($postId, 'rrze-pieksy-booking-end', true));
 		$end = $end ? $end : $start->endOfDay()->getTimestamp();
-		$status = get_post_meta($postId, 'rrze-rsvp-booking-status', true);
+		$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
 		return (($status == 'cancelled') || ($end < $now));
 	}
 
 	protected function canDeleteBooking(int $postId): bool
 	{
-		$start = absint(get_post_meta($postId, 'rrze-rsvp-booking-start', true));
+		$start = absint(get_post_meta($postId, 'rrze-pieksy-booking-start', true));
 		$start = new Carbon(date('Y-m-d H:i:s', $start), wp_timezone());
-		$status = get_post_meta($postId, 'rrze-rsvp-booking-status', true);
+		$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
 		if (
 			$this->isBookingArchived($postId)
 			&& !(in_array($status, ['checked-in', 'checked-out']) || $start->endOfDay()->gt(new Carbon('now')))

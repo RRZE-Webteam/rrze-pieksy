@@ -1,10 +1,10 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Auth\{IdM, LDAP};
+use RRZE\Pieksy\Auth\{IdM, LDAP};
 
 use WP_Query;
 
@@ -22,17 +22,17 @@ $seatCheckInOut = null;
 $action = null;
 
 
-if (isset($_GET['id']) && isset($_GET['nonce']) && wp_verify_nonce($_GET['nonce'], 'rrze-rsvp-checkin-booked-' . $_GET['id'])) {
+if (isset($_GET['id']) && isset($_GET['nonce']) && wp_verify_nonce($_GET['nonce'], 'rrze-pieksy-checkin-booked-' . $_GET['id'])) {
     $bookingId = absint($_GET['id']);
     $checkInBooking = Functions::getBooking($bookingId);
-} elseif (isset($_GET['id']) && isset($_GET['action']) && isset($_GET['nonce']) && wp_verify_nonce($_GET['nonce'], 'rrze-rsvp-seat-check-inout')) {
+} elseif (isset($_GET['id']) && isset($_GET['action']) && isset($_GET['nonce']) && wp_verify_nonce($_GET['nonce'], 'rrze-pieksy-seat-check-inout')) {
     $bookingId = absint($_GET['id']);
     $action = sanitize_text_field($_GET['action']);
     if ($seatCheckInOut = Functions::getBooking($bookingId)) {
         $room = $seatCheckInOut['room'];
         $customerEmail = $seatCheckInOut['guest_email'];
-        $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-rsvp-room-sso-required', true));
-        $ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-rsvp-room-ldap-required', true));
+        $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-sso-required', true));
+        $ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-ldap-required', true));
         $ldapRequired = $ldapRequired && $settings->getOption('ldap', 'server') ? true : false;
   
         $bSSO = true;
@@ -103,7 +103,7 @@ if (Helper::isFauTheme()) {
 
 echo $div_open;
 
-$nonce = wp_create_nonce('rrze-rsvp-seat-check-inout');
+$nonce = wp_create_nonce('rrze-pieksy-seat-check-inout');
 
 if ($checkInBooking) {
     $roomId = $checkInBooking['room'];
@@ -112,23 +112,23 @@ if ($checkInBooking) {
     $customEmail = $checkInBooking['guest_email'];
     $date = $checkInBooking['date'];
     $time = $checkInBooking['time'];
-    $bookingmode = get_post_meta($roomId, 'rrze-rsvp-room-bookingmode', true);
-    echo '<p><strong>' . __('Room', 'rrze-rsvp') . ':</strong> <a href="' . get_permalink($roomId) . '">' . $roomName . '</a>';
-    echo '<div class="rrze-rsvp-seat-check-inout"> <div class="container">';
+    $bookingmode = get_post_meta($roomId, 'rrze-pieksy-room-bookingmode', true);
+    echo '<p><strong>' . __('Room', 'rrze-pieksy') . ':</strong> <a href="' . get_permalink($roomId) . '">' . $roomName . '</a>';
+    echo '<div class="rrze-pieksy-seat-check-inout"> <div class="container">';
     if ($bookingmode == 'consultation') {
-        echo '<h2>' . __('Consult', 'rrze-rsvp') . '</h2>';
-        echo '<p>', __('This time slot has been reserved for you.', 'rrze-rsvp') . '</p>';
-        echo '<p>' . sprintf(__('Additional information has been sent to your email address <strong>%s</strong>.', 'rrze-rsvp'), $customEmail) . '</p>';
+        echo '<h2>' . __('Consult', 'rrze-pieksy') . '</h2>';
+        echo '<p>', __('This time slot has been reserved for you.', 'rrze-pieksy') . '</p>';
+        echo '<p>' . sprintf(__('Additional information has been sent to your email address <strong>%s</strong>.', 'rrze-pieksy'), $customEmail) . '</p>';
         echo '<p class="date">';
         echo $date . '<br>';
         echo $time;
         echo '</p>';
         echo '<p>' . $roomName . '</p>';    
     } else {
-        echo '<h2>' . __('Booking Checked In', 'rrze-rsvp') . '</h2>';
-        echo '<p>', __('Check in has been completed.', 'rrze-rsvp') . '</p>';
-        echo '<p>' . sprintf(__('Additional information has been sent to your email address <strong>%s</strong>.', 'rrze-rsvp'), $customEmail) . '</p>';
-        echo '<p>' . __('Please check out when you leave the site.', 'rrze-rsvp') . '</p>';
+        echo '<h2>' . __('Booking Checked In', 'rrze-pieksy') . '</h2>';
+        echo '<p>', __('Check in has been completed.', 'rrze-pieksy') . '</p>';
+        echo '<p>' . sprintf(__('Additional information has been sent to your email address <strong>%s</strong>.', 'rrze-pieksy'), $customEmail) . '</p>';
+        echo '<p>' . __('Please check out when you leave the site.', 'rrze-pieksy') . '</p>';
         echo '<p class="date">';
         echo $date . '<br>';
         echo $time;
@@ -141,7 +141,7 @@ if ($checkInBooking) {
             trailingslashit(get_permalink()),
             $bookingId,
             $nonce,
-            __('Check out', 'rrze-rsvp')
+            __('Check out', 'rrze-pieksy')
         );
         echo '<p>' . $link . '</p>';        
     }
@@ -153,24 +153,24 @@ if ($checkInBooking) {
     $seatName = $seatCheckInOut['seat_name'];
     $date = $seatCheckInOut['date'];
     $time = $seatCheckInOut['time'];
-    echo '<p><strong>' . __('Room:', 'rrze-rsvp') . '</strong> <a href="' . get_permalink($roomId) . '">' . $roomName . '</a>';
-    echo '<div class="rrze-rsvp-seat-check-inout"> <div class="container">';
+    echo '<p><strong>' . __('Room:', 'rrze-pieksy') . '</strong> <a href="' . get_permalink($roomId) . '">' . $roomName . '</a>';
+    echo '<div class="rrze-pieksy-seat-check-inout"> <div class="container">';
     switch ($action) {
         case 'checkin':
             if ($status == 'confirmed') {
-                update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-in');
-                do_action('rrze-rsvp-tracking', get_current_blog_id(), $bookingId);
+                update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
+                do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
             }
             $link = sprintf(
                 '<a href="%1$s?id=%2$d&action=checkout&nonce=%3$s" class="button button-checkout" data-id="%2$d">%4$s</a>',
                 trailingslashit(get_permalink()),
                 $bookingId,
                 $nonce,
-                __('Check out', 'rrze-rsvp')
+                __('Check out', 'rrze-pieksy')
             );
-            echo '<h2>' . __('Booking Checked In', 'rrze-rsvp') . '</h2>';
-            echo '<p>' . __('Check in has been completed.', 'rrze-rsvp') . '</p>';
-            echo '<p>' . __('Please check out when you leave the site.', 'rrze-rsvp') . '</p>';
+            echo '<h2>' . __('Booking Checked In', 'rrze-pieksy') . '</h2>';
+            echo '<p>' . __('Check in has been completed.', 'rrze-pieksy') . '</p>';
+            echo '<p>' . __('Please check out when you leave the site.', 'rrze-pieksy') . '</p>';
             echo '<p class="date">';
             echo $date . '<br>';
             echo $time;
@@ -181,10 +181,10 @@ if ($checkInBooking) {
             break;
         case 'checkout':
             if ($status == 'checked-in') {
-                update_post_meta($bookingId, 'rrze-rsvp-booking-status', 'checked-out');
+                update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-out');
             }
-            echo '<h2>' . __('Booking Checked Out', 'rrze-rsvp') . '</h2>';
-            echo '<p>' . __('Check-out has been completed.', 'rrze-rsvp') . '</p>';
+            echo '<h2>' . __('Booking Checked Out', 'rrze-pieksy') . '</h2>';
+            echo '<p>' . __('Check-out has been completed.', 'rrze-pieksy') . '</p>';
             echo '<p class="date checked-out">';
             echo $date . '<br>';
             echo $time;
@@ -193,8 +193,8 @@ if ($checkInBooking) {
             echo '<p>' . $seatName . '</p>';
             break;
         default:
-            echo '<h2>' . __('Booking', 'rrze-rsvp') . '</h2>';
-            echo '<p>' . __('If you reserved this seat please refer to the message sent to your email address.', 'rrze-rsvp') . '</p>';
+            echo '<h2>' . __('Booking', 'rrze-pieksy') . '</h2>';
+            echo '<p>' . __('If you reserved this seat please refer to the message sent to your email address.', 'rrze-pieksy') . '</p>';
             echo '<p class="date">';
             echo $date . '<br>';
             echo $time;
@@ -209,10 +209,10 @@ if ($checkInBooking) {
     $ssoRequired = false;
     $ldapRequired = false;
    
-    $roomId = get_post_meta($seatId, 'rrze-rsvp-seat-room', true);
+    $roomId = get_post_meta($seatId, 'rrze-pieksy-seat-room', true);
     $now = current_time('timestamp');
 
-    echo '<p><strong>' . __('Room:', 'rrze-rsvp') . '</strong> <a href="' . get_permalink($roomId) . '">' . get_the_title($roomId) . '</a>';
+    echo '<p><strong>' . __('Room:', 'rrze-pieksy') . '</strong> <a href="' . get_permalink($roomId) . '">' . get_the_title($roomId) . '</a>';
 
     $args = [
         'fields' => 'ids',
@@ -221,22 +221,22 @@ if ($checkInBooking) {
         'nopaging' => true,
         'meta_query' => [
             'booking_status_clause' => [
-                'key'       => 'rrze-rsvp-booking-status',
+                'key'       => 'rrze-pieksy-booking-status',
                 'value'     => ['confirmed', 'checked-in'],
                 'compare'   => 'IN'
             ],
             'seat_id_clause' => [
-                'key' => 'rrze-rsvp-booking-seat',
+                'key' => 'rrze-pieksy-booking-seat',
                 'value'   => $seatId,
             ],
             'booking_start_clause' => [
-                'key'     => 'rrze-rsvp-booking-start',
+                'key'     => 'rrze-pieksy-booking-start',
                 'value' => $now,
                 'compare' => '<=',
                 'type' => 'numeric'
             ],
             'booking_end_clause' => [
-                'key'     => 'rrze-rsvp-booking-end',
+                'key'     => 'rrze-pieksy-booking-end',
                 'value' => $now,
                 'compare' => '>=',
                 'type' => 'numeric'
@@ -262,14 +262,14 @@ if ($checkInBooking) {
         $seatName = $data['seat_name'];
         $date = $data['date'];
         $time = $data['time'];
-        $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-rsvp-room-sso-required', true));
-        $ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-rsvp-room-ldap-required', true));
+        $ssoRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-sso-required', true));
+        $ldapRequired = Functions::getBoolValueFromAtt(get_post_meta($room, 'rrze-pieksy-room-ldap-required', true));
         $ldapRequired = $ldapRequired && $settings->getOption('ldap', 'server') ? true : false;
     }
 
-    $bookingmode = get_post_meta($roomId, 'rrze-rsvp-room-bookingmode', true);
-    $daysInAdvance = get_post_meta($roomId, 'rrze-rsvp-room-days-in-advance', true);
-    $allowInstant = Functions::getBoolValueFromAtt(get_post_meta($roomId, 'rrze-rsvp-room-instant-check-in', true));
+    $bookingmode = get_post_meta($roomId, 'rrze-pieksy-room-bookingmode', true);
+    $daysInAdvance = get_post_meta($roomId, 'rrze-pieksy-room-days-in-advance', true);
+    $allowInstant = Functions::getBoolValueFromAtt(get_post_meta($roomId, 'rrze-pieksy-room-instant-check-in', true));
 
     //$nonceQuery = (!$ssoRequired ? '' : '&nonce=' . $nonce );
     $nonceQuery = ( !$ssoRequired && !$ldapRequired ? '' : '&nonce=' . $nonce );
@@ -280,11 +280,11 @@ if ($checkInBooking) {
             trailingslashit(get_permalink()),
             $bookingId,
             $nonceQuery,
-            __('Check in', 'rrze-rsvp')
+            __('Check in', 'rrze-pieksy')
         );
-        echo '<div class="rrze-rsvp-seat-check-inout"> <div class="container">';
-        echo '<h2>' . __('Check In', 'rrze-rsvp') . '</h2>';
-        echo '<p>' . __('This seat is currently reserved. If you have reserved this seat, please check in.', 'rrze-rsvp') . '</p>';
+        echo '<div class="rrze-pieksy-seat-check-inout"> <div class="container">';
+        echo '<h2>' . __('Check In', 'rrze-pieksy') . '</h2>';
+        echo '<p>' . __('This seat is currently reserved. If you have reserved this seat, please check in.', 'rrze-pieksy') . '</p>';
         echo '<p class="date">';
         echo $date . '<br>';
         echo $time;
@@ -299,11 +299,11 @@ if ($checkInBooking) {
             trailingslashit(get_permalink()),
             $bookingId,
             $nonceQuery,
-            __('Check out', 'rrze-rsvp')
+            __('Check out', 'rrze-pieksy')
         );
-        echo '<div class="rrze-rsvp-seat-check-inout"> <div class="container">';
-        echo '<h2>' . __('Check Out', 'rrze-rsvp') . '</h2>';
-        echo '<p>' . __('This seat is currently reserved. If you have reserved this seat, please check out when you leave the site.', 'rrze-rsvp') . '</p>';
+        echo '<div class="rrze-pieksy-seat-check-inout"> <div class="container">';
+        echo '<h2>' . __('Check Out', 'rrze-pieksy') . '</h2>';
+        echo '<p>' . __('This seat is currently reserved. If you have reserved this seat, please check out when you leave the site.', 'rrze-pieksy') . '</p>';
         echo '<p class="date">';
         echo $date . '<br>';
         echo $time;
@@ -343,7 +343,7 @@ if ($checkInBooking) {
             $roomName = get_the_title($roomId);
             $seatName = get_the_title($seatId);
             $timeslot = explode('-', $bookingStart)[0];
-            $nonce = wp_create_nonce('rsvp-availability');
+            $nonce = wp_create_nonce('pieksy-availability');
             $link = sprintf(
                 '<a href="%1$s?room_id=%2$d&seat_id=%3$d&bookingdate=%4$s&timeslot=%5$s&instant=1&nonce=%6$s" class="button button-checkin" data-id="%2$d">%7$s</a>',
                 trailingslashit(get_permalink($roomId)),
@@ -352,11 +352,11 @@ if ($checkInBooking) {
                 $day,
                 $timeslot,
                 $nonce,
-                __('Check In', 'rrze-rsvp')
+                __('Check In', 'rrze-pieksy')
             );
-            echo '<div class="rrze-rsvp-seat-check-inout"> <div class="container">';
-            echo '<h2>' . __('Check In', 'rrze-rsvp') . '</h2>';
-            echo '<p>' . __('This seat is free for instant check-in (booking and check-in in one step) for the current timeslot.', 'rrze-rsvp') . '</p>';
+            echo '<div class="rrze-pieksy-seat-check-inout"> <div class="container">';
+            echo '<h2>' . __('Check In', 'rrze-pieksy') . '</h2>';
+            echo '<p>' . __('This seat is free for instant check-in (booking and check-in in one step) for the current timeslot.', 'rrze-pieksy') . '</p>';
             echo '<p class="date">';
             echo $date . '<br>';
             echo $time;
@@ -367,25 +367,25 @@ if ($checkInBooking) {
             echo '</div> </div>';
         } else {
             if ($bookingmode == 'consultation') {
-                echo '<h2>' . __('Consultation', 'rrze-rsvp') . '</h2>';
-                echo '<p>' . __('Please reserve a time slot for a consultation.', 'rrze-rsvp') . '</p>';
+                echo '<h2>' . __('Consultation', 'rrze-pieksy') . '</h2>';
+                echo '<p>' . __('Please reserve a time slot for a consultation.', 'rrze-pieksy') . '</p>';
             } elseif ($bookingmode == 'check-only') {
-                echo '<h2>' . __('Availability information', 'rrze-rsvp') . '</h2>';
-                echo '<p>' . __('This seat is for instant check-in only and cannot be reserved. These are the next available time slots:', 'rrze-rsvp') . '</p>';
+                echo '<h2>' . __('Availability information', 'rrze-pieksy') . '</h2>';
+                echo '<p>' . __('This seat is for instant check-in only and cannot be reserved. These are the next available time slots:', 'rrze-pieksy') . '</p>';
             } else {
-                echo '<h2>' . __('Reservation', 'rrze-rsvp') . '</h2>';
-                echo '<p>' . __('Please reserve a time slot for this seat', 'rrze-rsvp') . '</p>';
+                echo '<h2>' . __('Reservation', 'rrze-pieksy') . '</h2>';
+                echo '<p>' . __('Please reserve a time slot for this seat', 'rrze-pieksy') . '</p>';
             }
             $bookingLink = $bookingmode == 'check-only' ? 'false' : 'true';
-            echo do_shortcode('[rsvp-qr seat=' . $seatId . ']');
-            echo do_shortcode(sprintf('[rsvp-availability seat=%s days=%s booking_link=%s]', $seatId, $daysInAdvance, $bookingLink));
+            echo do_shortcode('[pieksy-qr seat=' . $seatId . ']');
+            echo do_shortcode(sprintf('[pieksy-availability seat=%s days=%s booking_link=%s]', $seatId, $daysInAdvance, $bookingLink));
         }
     }
 }
 
 echo $div_close;
 
-wp_enqueue_style('rrze-rsvp-shortcode');
+wp_enqueue_style('rrze-pieksy-shortcode');
 get_footer();
 
 

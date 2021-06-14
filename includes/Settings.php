@@ -1,13 +1,13 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use function RRZE\RSVP\Config\getOptionName;
-use function RRZE\RSVP\Config\getMenuSettings;
-use function RRZE\RSVP\Config\getSections;
-use function RRZE\RSVP\Config\getFields;
+use function RRZE\Pieksy\Config\getOptionName;
+use function RRZE\Pieksy\Config\getMenuSettings;
+use function RRZE\Pieksy\Config\getSections;
+use function RRZE\Pieksy\Config\getFields;
 
 /**
  * Settings-Klasse
@@ -312,8 +312,8 @@ class Settings
                 continue;
             } 
             switch ( $this->currentTab ) {
-                case 'rrze-rsvp-reset': 
-                    $btn_label = __('Reset', 'rrze-rsvp' );
+                case 'rrze-pieksy-reset': 
+                    $btn_label = __('Reset', 'rrze-pieksy' );
                     break;
                 default: 
                     $btn_label = '';

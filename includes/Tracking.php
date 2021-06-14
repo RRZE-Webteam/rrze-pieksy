@@ -1,15 +1,15 @@
 <?php
 
-namespace RRZE\RSVP;
+namespace RRZE\Pieksy;
 
 defined('ABSPATH') || exit;
 
-use RRZE\RSVP\Settings;
+use RRZE\Pieksy\Settings;
 
 class Tracking {
-    const DB_TABLE = 'rrze_rsvp_tracking';
+    const DB_TABLE = 'rrze_pieksy_tracking';
     const DB_VERSION = '1.4.1';
-    const DB_VERSION_OPTION_NAME = 'rrze_rsvp_tracking_db_version';
+    const DB_VERSION_OPTION_NAME = 'rrze_pieksy_tracking_db_version';
 
     protected $settings;
     protected $dbVersion;
@@ -26,20 +26,20 @@ class Tracking {
 
 
     public function onLoaded() {
-        // use cases defined in https://github.com/RRZE-Webteam/rrze-rsvp/issues/110
+        // use cases defined in https://github.com/RRZE-Webteam/rrze-pieksy/issues/110
         if (is_multisite()){
             if (! function_exists('is_plugin_active_for_network')) {
                 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
             }
-            if (is_plugin_active_for_network( 'rrze-rsvp-network/rrze-rsvp-network.php' )){
-                // use case C "Multisite: mit rrze-rsvp-network":
+            if (is_plugin_active_for_network( 'rrze-pieksy-network/rrze-pieksy-network.php' )){
+                // use case C "Multisite: mit rrze-pieksy-network":
                 // Admin darf CSV NICHT erstellen
                 // SuperAdmin erstellt CSV über Menüpunkt in Network-Dashboard
                 add_action( 'admin_menu', [$this, 'add_tracking_menu_info'] );
             }else{
-                // use case A "Multisite: ohne rrze-rsvp-network":
+                // use case A "Multisite: ohne rrze-pieksy-network":
                 // Admin darf CSV erstellen
-                // use case D "Multisite: rrze-rsvp-network wird DEAKTIVIERT":
+                // use case D "Multisite: rrze-pieksy-network wird DEAKTIVIERT":
                 // Admin darf CSV (wieder) erstellen
                 add_action( 'admin_menu', [$this, 'add_tracking_menu'] );
             }
@@ -50,7 +50,7 @@ class Tracking {
             add_action( 'admin_menu', [$this, 'add_tracking_menu'] );
             $this->createTable('local');
         }
-        add_action( 'rrze-rsvp-tracking', [$this, 'doTracking'], 10, 2 );
+        add_action( 'rrze-pieksy-tracking', [$this, 'doTracking'], 10, 2 );
         add_action( 'wp_ajax_csv_pull', [$this, 'tracking_csv_pull'] );
     }
     
@@ -58,7 +58,7 @@ class Tracking {
     private static function logError(string $method){
         // uses plugin rrze-log
         global $wpdb;
-        do_action('rrze.log.error', 'rrze-rsvp ' . $method . '() returns false $wpdb->last_result= ' . json_encode($wpdb->last_result) . '| $wpdb->last_query= ' . json_encode($wpdb->last_query . '| $wpdb->last_error= ' . json_encode($wpdb->last_error)));
+        do_action('rrze.log.error', 'rrze-pieksy ' . $method . '() returns false $wpdb->last_result= ' . json_encode($wpdb->last_result) . '| $wpdb->last_query= ' . json_encode($wpdb->last_query . '| $wpdb->last_error= ' . json_encode($wpdb->last_error)));
     }
 
  
@@ -67,7 +67,7 @@ class Tracking {
         $ret = false;
         if (get_site_option($this->dbOptionName, '') != $this->dbVersion) {
             update_site_option($this->dbOptionName, $this->dbVersion);
-            do_action('rrze.log.info', 'rrze-rsvp: Tracking DB Update v' . $this->dbVersion);
+            do_action('rrze.log.info', 'rrze-pieksy: Tracking DB Update v' . $this->dbVersion);
             $ret = true;
         }
         return $ret;
@@ -77,10 +77,10 @@ class Tracking {
 
     public function add_tracking_menu() {
         $menu_id = add_management_page(
-            _x( 'Contact tracking', 'admin page title', 'rrze-rsvp' ),
-            _x( 'RSVP Contact tracking', 'admin menu entry title', 'rrze-rsvp' ),
+            _x( 'Contact tracking', 'admin page title', 'rrze-pieksy' ),
+            _x( 'Pieksy Contact tracking', 'admin menu entry title', 'rrze-pieksy' ),
             'manage_options',
-            'rrze-rsvp-tracking',
+            'rrze-pieksy-tracking',
             [$this, 'admin_page_tracking_form']
         );
     }
@@ -88,10 +88,10 @@ class Tracking {
 
     public function add_tracking_menu_info() {
         $menu_id = add_management_page(
-            _x( 'Contact tracking', 'admin page title', 'rrze-rsvp' ),
-            _x( 'RSVP Contact tracking', 'admin menu entry title', 'rrze-rsvp' ),
+            _x( 'Contact tracking', 'admin page title', 'rrze-pieksy' ),
+            _x( 'Pieksy Contact tracking', 'admin menu entry title', 'rrze-pieksy' ),
             'manage_options',
-            'rrze-rsvp-tracking',
+            'rrze-pieksy-tracking',
             [$this, 'admin_page_tracking_info']
         );
     }
@@ -107,7 +107,7 @@ class Tracking {
         $aGuests = [];
 
         echo '<div class="wrap">';
-        echo '<h1>' . esc_html_x( 'Contact tracking', 'admin page title', 'rrze-rsvp' ) . '</h1>';
+        echo '<h1>' . esc_html_x( 'Contact tracking', 'admin page title', 'rrze-pieksy' ) . '</h1>';
 
         if ( isset( $_GET['submit']) ) {
             $searchdate = filter_input(INPUT_GET, 'searchdate', FILTER_SANITIZE_STRING); // filter stimmt nicht
@@ -121,43 +121,43 @@ class Tracking {
             $aGuests = Tracking::getUsersInRoomAtDate($searchdate, $delta, $hash_guest_email, $hash_guest_phone);
 
             if ($aGuests){
-                $ajax_url = admin_url('admin-ajax.php?action=csv_pull') . '&page=rrze-rsvp-tracking&searchdate=' . urlencode($searchdate) . '&delta=' . urlencode($delta) . '&hash_guest_email=' . urlencode($hash_guest_email) . '&hash_guest_phone=' . urlencode($hash_guest_phone);
+                $ajax_url = admin_url('admin-ajax.php?action=csv_pull') . '&page=rrze-pieksy-tracking&searchdate=' . urlencode($searchdate) . '&delta=' . urlencode($delta) . '&hash_guest_email=' . urlencode($hash_guest_email) . '&hash_guest_phone=' . urlencode($hash_guest_phone);
                 echo '<div class="notice notice-success is-dismissible">'
-                    . '<h2>' . __('Guests found!', 'rrze-rsvp') . '</h2>'
-                    . "<a href='$ajax_url'>" . __('Download CSV', 'rrze-rsvp') . '</a>'
+                    . '<h2>' . __('Guests found!', 'rrze-pieksy') . '</h2>'
+                    . "<a href='$ajax_url'>" . __('Download CSV', 'rrze-pieksy') . '</a>'
                     . '</div>';
             }else{
                 echo '<div class="notice notice-success is-dismissible">'
-                    . '<h2>' . __('No guest found.', 'rrze-rsvp') . '</h2>'
+                    . '<h2>' . __('No guest found.', 'rrze-pieksy') . '</h2>'
                     . '</div>';
             }
         }
 
 
-        echo '<form id="rsvp-search-tracking" method="get">';
-        echo '<input type="hidden" name="page" value="rrze-rsvp-tracking">';
+        echo '<form id="pieksy-search-tracking" method="get">';
+        echo '<input type="hidden" name="page" value="rrze-pieksy-tracking">';
         echo '<table class="form-table" role="presentation"><tbody>';
         echo '<tr>'
-            . '<th scope="row"><label for="searchdate">' . __('Search date', 'rrze-rsvp') . '</label></th>'
+            . '<th scope="row"><label for="searchdate">' . __('Search date', 'rrze-pieksy') . '</label></th>'
             . '<td><input type="text" id="searchdate" name="searchdate" placeholder="YYYY-MM-DD" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" value="' . $searchdate . '">'
             . '</td>'
             . '</tr>';
         echo '<tr>'
-            . '<th scope="row"><label for="delta">' . '&#177; ' . __('days', 'rrze-rsvp') . '</label></th>'
+            . '<th scope="row"><label for="delta">' . '&#177; ' . __('days', 'rrze-pieksy') . '</label></th>'
             . '<td><input type="number" id="delta" name="delta" min="0" required value="' . $delta . '"></td>'
             . '</tr>';
         echo '<tr>'
-            . '<th scope="row"><label for="guest_email">' . __('Email', 'rrze-rsvp') . '</label></th>'
+            . '<th scope="row"><label for="guest_email">' . __('Email', 'rrze-pieksy') . '</label></th>'
             . '<td><input type="text" id="guest_email" name="guest_email" value="' . $guest_email . '">'
             . '</td>'
             . '</tr>';
         echo '<tr>'
-            . '<th scope="row"><label for="guest_phone">' . __('Phone', 'rrze-rsvp') . '</label></th>'
+            . '<th scope="row"><label for="guest_phone">' . __('Phone', 'rrze-pieksy') . '</label></th>'
             . '<td><input type="text" id="guest_phone" name="guest_phone" value="' . $guest_phone . '">'
             . '</td>'
             . '</tr>';
         echo '</tbody></table>';
-        echo '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="' . __('Search', 'rrze-rsvp') . '"></p>';
+        echo '<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="' . __('Search', 'rrze-pieksy') . '"></p>';
         echo '</form>';
         echo '</div>';
     }
@@ -165,8 +165,8 @@ class Tracking {
 
     public function admin_page_tracking_info() {
         echo '<div class="wrap">'
-            . '<h1>' . esc_html_x( 'Contact tracking', 'admin page title', 'rrze-rsvp' ) . '</h1>'
-            . '<span class="rrze-rsvp-tracking-info">' . $this->contact_tracking_note . '</span>'
+            . '<h1>' . esc_html_x( 'Contact tracking', 'admin page title', 'rrze-pieksy' ) . '</h1>'
+            . '<span class="rrze-pieksy-tracking-info">' . $this->contact_tracking_note . '</span>'
             . '</div>';
     }
 
@@ -235,7 +235,7 @@ class Tracking {
         $booking = Functions::getBooking($bookingID);
 
         if (!$booking) {
-            do_action('rrze.log.error', 'rrze-rsvp : BOOKING NOT FOUND | Functions::getBooking() returns [] in Tracking->insertOrUpdateTracking() with $bookingID = ' . $bookingID);
+            do_action('rrze.log.error', 'rrze-pieksy : BOOKING NOT FOUND | Functions::getBooking() returns [] in Tracking->insertOrUpdateTracking() with $bookingID = ' . $bookingID);
             return;
         }
 
@@ -243,7 +243,7 @@ class Tracking {
             return;
         }
 
-        $tableType = get_option('rsvp_tracking_tabletype');
+        $tableType = get_option('pieksy_tracking_tabletype');
         $trackingTable = Tracking::getTableName($tableType);
         $trackingID = $this->getTrackingID($blogID, $bookingID, $trackingTable);
 
@@ -264,8 +264,8 @@ class Tracking {
         global $wpdb;
         $ret = false;
 
-        $start = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-rsvp-booking-start', true));
-        $end = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-rsvp-booking-end', true));
+        $start = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-pieksy-booking-start', true));
+        $end = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-pieksy-booking-end', true));
 
         $guest_phone = preg_replace('/[^0-9]/', '', $booking['guest_phone']);
         $hash_guest_phone = Functions::crypt($guest_phone, 'encrypt');
@@ -323,8 +323,8 @@ class Tracking {
     private function updateTracking(int $trackingID, array &$booking, string $trackingTable) {
         global $wpdb;
 
-        $start = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-rsvp-booking-start', true));
-        $end = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-rsvp-booking-end', true));
+        $start = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-pieksy-booking-start', true));
+        $end = date('Y-m-d H:i:s', get_post_meta($booking['id'], 'rrze-pieksy-booking-end', true));
 
         $guest_phone = preg_replace('/[^0-9]/', '', $booking['guest_phone']);
         $hash_guest_phone = Functions::crypt($guest_phone, 'encrypt');
@@ -424,7 +424,7 @@ class Tracking {
             return [];
         }
 
-        $tableType = get_option('rsvp_tracking_tabletype');
+        $tableType = get_option('pieksy_tracking_tabletype');
         $trackingTable = Tracking::getTableName($tableType);
 
         $prepare_vals = [
@@ -493,8 +493,8 @@ class Tracking {
             return;
         }
 
-        // store $tableType we are using for this blog (because of the use cases defined in https://github.com/RRZE-Webteam/rrze-rsvp/issues/110)
-        update_option('rsvp_tracking_tabletype', $tableType, false);
+        // store $tableType we are using for this blog (because of the use cases defined in https://github.com/RRZE-Webteam/rrze-pieksy/issues/110)
+        update_option('pieksy_tracking_tabletype', $tableType, false);
 
         $charsetCollate = $wpdb->get_charset_collate();
         $trackingTable = Tracking::getTableName($tableType);
@@ -523,8 +523,8 @@ class Tracking {
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         $aRet = dbDelta($sql);
-        do_action('rrze.log.info', 'rrze-rsvp: Tracking DB Update v' . $this->dbVersion . ' | $sql = ' . json_encode($sql));
-        do_action('rrze.log.info', 'rrze-rsvp: Tracking DB Update v' . $this->dbVersion . ' | dbDelta() returned ' . json_encode($aRet));
+        do_action('rrze.log.info', 'rrze-pieksy: Tracking DB Update v' . $this->dbVersion . ' | $sql = ' . json_encode($sql));
+        do_action('rrze.log.info', 'rrze-pieksy: Tracking DB Update v' . $this->dbVersion . ' | dbDelta() returned ' . json_encode($aRet));
     }
 
 
