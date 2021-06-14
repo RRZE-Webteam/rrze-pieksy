@@ -371,10 +371,6 @@ class Bookings extends Shortcodes {
                 . '<textarea name="pieksy_comment" id="pieksy_comment"></textarea>';
         }
 
-        $output .= '<div class="form-group">'
-                    . '<input type="checkbox" value="1" id="pieksy_dsgvo" name="pieksy_dsgvo" required> '
-                    . '<label for="pieksy_dsgvo">' . $defaults['dsgvo-declaration'] . '</label>'
-                    . '</div>';
 	$output .= '</fieldset>';  
         $output .= '<button type="submit" class="btn btn-primary">' . __('Submit booking', 'rrze-pieksy') . '</button>
             </form>
@@ -971,7 +967,6 @@ class Bookings extends Shortcodes {
 
         // Redirect zur Seat-Seite, falls
         if ($status == 'checked-in') {
-            do_action('rrze-pieksy-tracking', get_current_blog_id(), $booking_id);
             $redirectUrl = add_query_arg(
                 [
                     'id' => $booking_id,

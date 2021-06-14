@@ -142,7 +142,6 @@ if ($checkInBooking) {
         case 'checkin':
             if ($status == 'confirmed') {
                 update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'checked-in');
-                do_action('rrze-pieksy-tracking', get_current_blog_id(), $bookingId);
             }
             $link = sprintf(
                 '<a href="%1$s?id=%2$d&action=checkout&nonce=%3$s" class="button button-checkout" data-id="%2$d">%4$s</a>',
