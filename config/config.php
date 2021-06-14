@@ -129,7 +129,7 @@ function defaultOptions()  {
             'room_address' => 'off',
             // 'room_floorplan' => 'off',
             'room-notes-label' => __('Additional informations', 'rrze-pieksy'),
-            'check-in-time' => '15',
+            // 'check-in-time' => '15',
             'dsgvo-declaration' => __('Ich bin damit einverstanden, dass meine Kontaktdaten für die Dauer des Vorganges der Platzbuchung und bis zu 4 Wochen danach zum Zwecke der Nachverfolgung gemäß der gesetzlichen Grundlagen zur Corona-Bekämpfung gespeichert werden dürfen. Ebenso wird Raumverantwortlichen und Veranstalter von Sprechstunden das Recht eingeräumt, während der Dauer des Buchungsprozesses und bis zum Ende des ausgewählten Termins Einblick in folgende Buchungsdaten zu nehmen: E-Mailadresse, Name, Vorname. Raumverantwortliche und Veranstalter von Sprechstunden erhalten diese Daten allein zum Zweck der Durchführung und Verwaltung des Termins gemäß §6 Abs1 a DSGVO. Die Telefonnummer wird nur zum Zwecke der Kontaktverfolgung aufgrund der gesetzlicher Grundlagen zur Pandemiebekämpfung für Gesundheitsbehörden erfasst.', 'rrze-pieksy'),
         ];
     }
@@ -184,13 +184,13 @@ function getFields(){
     
     return [
         'general' => [
-            [
-                'name'    => 'check-in-time',
-                'label'   => __('Allowed Check-In Time.', 'rrze-pieksy'),
-                'type'    => 'number',
-                'default' => $defaults['check-in-time'],
-                'sanitize_callback' => 'sanitize_natint_field',
-            ],
+            // [
+            //     'name'    => 'check-in-time',
+            //     'label'   => __('Allowed Check-In Time.', 'rrze-pieksy'),
+            //     'type'    => 'number',
+            //     'default' => $defaults['check-in-time'],
+            //     'sanitize_callback' => 'sanitize_natint_field',
+            // ],
             [
                 'name'    => 'single_room_availability_table',
                 'label'   => __('Show Availability table on Room page.', 'rrze-pieksy'),
