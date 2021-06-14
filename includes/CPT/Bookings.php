@@ -206,42 +206,44 @@ class Bookings {
                             $_wpnonce,
                             _x('Cancel', 'Booking', 'rrze-pieksy')
                         );
-                        $checkInButton = sprintf(
-                            '<a href="edit.php?post_type=%1$s&action=checkin&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
-                            'booking',
-                            $booking['id'],
-                            $_wpnonce,
-                            _x('Check-In', 'Booking', 'rrze-pieksy')
-                        );
-                        $checkoutButton = sprintf(
-                            '<a href="edit.php?post_type=%1$s&action=checkout&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
-                            'booking',
-                            $booking['id'],
-                            $_wpnonce,
-                            _x('Check-Out', 'Booking', 'rrze-pieksy')
-                        );
+                        // $checkInButton = sprintf(
+                        //     '<a href="edit.php?post_type=%1$s&action=checkin&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
+                        //     'booking',
+                        //     $booking['id'],
+                        //     $_wpnonce,
+                        //     _x('Check-In', 'Booking', 'rrze-pieksy')
+                        // );
+                        // $checkoutButton = sprintf(
+                        //     '<a href="edit.php?post_type=%1$s&action=checkout&id=%2$d&_wpnonce=%3$s" class="button">%4$s</a>',
+                        //     'booking',
+                        //     $booking['id'],
+                        //     $_wpnonce,
+                        //     _x('Check-Out', 'Booking', 'rrze-pieksy')
+                        // );
                         // $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($booking['room'], 'rrze-pieksy-room-force-to-confirm', true));
-                        if ($bookingMode == 'check-only') {
-                            switch ($status) {
-                                case 'checked-in':
-                                    $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-pieksy') . '</button>' . $checkoutButton;
-                                    break;
-                                case 'checked-out':
-                                    $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-pieksy') . '</button>' . $checkInButton;
-                                    break;
-                                case 'booked':
-                                default:
-                                    $button =  $checkInButton;
-                                    break;
-                            }
-                        // } elseif ($status == 'booked' && $forceToConfirm) {
-                        //     $button = _x('Waiting for customer confirmation', 'Booking', 'rrze-pieksy') . $cancelButton;
-                        } elseif ($status == 'confirmed') {
-                            $button = $cancelButton . $checkInButton;
-                        } elseif ($status == 'checked-in') {
-                            $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-pieksy') . '</button>' . $checkoutButton;
-                        } elseif ($status == 'checked-out') {
-                            $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-pieksy') . '</button>' . $checkInButton;
+                        // if ($bookingMode == 'check-only') {
+                        //     switch ($status) {
+                        //         case 'checked-in':
+                        //             $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-pieksy') . '</button>' . $checkoutButton;
+                        //             break;
+                        //         case 'checked-out':
+                        //             $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-pieksy') . '</button>' . $checkInButton;
+                        //             break;
+                        //         case 'booked':
+                        //         default:
+                        //             $button =  $checkInButton;
+                        //             break;
+                        //     }
+                        // // } elseif ($status == 'booked' && $forceToConfirm) {
+                        // //     $button = _x('Waiting for customer confirmation', 'Booking', 'rrze-pieksy') . $cancelButton;
+                        // } elseif ($status == 'confirmed') {
+                        if ($status == 'confirmed') {
+                            // $button = $cancelButton . $checkInButton;
+                            $button = $cancelButton;
+                        // } elseif ($status == 'checked-in') {
+                        //     $button = '<button class="button button-primary" disabled>' . _x('Checked-In', 'Booking', 'rrze-pieksy') . '</button>' . $checkoutButton;
+                        // } elseif ($status == 'checked-out') {
+                        //     $button = '<button class="button button-primary" disabled>' . _x('Checked-Out', 'Booking', 'rrze-pieksy') . '</button>' . $checkInButton;
                         } else {
                             $button = $cancelButton . sprintf(
                                 '<a href="edit.php?post_type=%1$s&action=confirm&id=%2$d&_wpnonce=%3$s" class="button button-primary" data-id="%2$d">%4$s</a>',

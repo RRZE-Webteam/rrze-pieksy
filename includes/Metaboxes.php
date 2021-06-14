@@ -323,13 +323,7 @@ class Metaboxes
                 // 'consultation' => __('Consultation', 'rrze-pieksy'),
                 // 'check-only' => __('Check-in and check-out only on site', 'rrze-pieksy'), // Nur Ein- und Auschecken vor Ort
             ),
-            'description' => 'Der Buchungsmodus legt den grundlegenden Workflow für eine Buchung fest:<br />
-    <b>Platzreservierung mit Check-In:</b> Registrierung und Anmeldung für einen Termin und einen Platz + Einchecken und Auschecken am Platz beim Erreichen des Termins + Speicherung der Daten der Teilnehmer zur Kontaktverfolgung.</br />
-    <b>Platzreservierung ohne Check-In:</b> Nur Registrierung und Anmeldung für einen Termin und einen Platz. Kein Ein-/Auschecken und somit keine Kontaktverfolgung.<br />
-    <b>Sprechstunde:</b> Wie Platzreservierung ohne Check-In, jedoch nur ein Platz pro Raum; daher nur eine Buchung pro Termin möglich. Plätze werden im Buchungsvorgang nicht angezeigt.<br />
-    (Dieser Modus eignet sich insbesondere dann, wenn man Räume der sogenannten Positivliste nutzt, in der bereits die Kontaktverfolgung durch darfichrein.de erfolgt.)<br />
-    <b>Nur Einchecken und Auschecken am Platz:</b> Keine Vorabreservierung von Plätzen.<br />
-    (Dieser Modus eignet sich nur für die reine Kontaktverfolgung und Platzbuchung am Platze. An der FAU sollte dieser Modus nur für Räume oder Ressourcen verwendet werden, die nicht bereits durch die Anwendung darfichrein.de verwaltet werden.)',
+            'description' => '',
         ));
 
         $cmb_general->add_field(array(
