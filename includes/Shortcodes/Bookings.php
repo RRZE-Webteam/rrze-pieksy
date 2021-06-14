@@ -128,6 +128,11 @@ class Bookings extends Shortcodes {
             return $output;
         }
 
+        $data = $this->idm->getCustomerData();
+        if (!empty($data['customer_email']) && !empty($postID) && ($output = $this->isNotUniqueBooking($postID, $data['customer_email']))){
+            return $output;
+        }
+
         $shortcode_atts = parent::shortcodeAtts($atts, $tag, $this->shortcodesettings);
         $input_room = sanitize_title($shortcode_atts[ 'room' ]);
         if (is_numeric($input_room)) {
@@ -307,7 +312,8 @@ class Bookings extends Shortcodes {
 	    $output .= '<fieldset>';  
         $output .= '<legend>' . __('Your data', 'rrze-pieksy') . ' <span class="notice-required">('. __('Required','rrze-pieksy'). ')</span></legend>';
         if ($this->sso) {
-            $data = $this->idm->getCustomerData();
+            // $data = $this->idm->getCustomerData();
+
             $output .= '<input type="hidden" value="' . $data['customer_lastname'] . '" id="pieksy_lastname" name="pieksy_lastname">';
             $output .= '<input type="hidden" value="' . $data['customer_firstname'] . '" id="pieksy_firstname" name="pieksy_firstname">';
             $output .= '<input type="hidden" value="' . $data['customer_email'] . '" id="pieksy_email" name="pieksy_email">';
@@ -319,38 +325,38 @@ class Bookings extends Shortcodes {
                 . '</div>';
         }
 
-        if (!$this->sso) {
-            $error = isset($fieldErrors['pieksy_lastname']) ? ' error' : '';
-            $value = isset($fieldErrors['pieksy_lastname']['value']) ? $fieldErrors['pieksy_lastname']['value'] : '';
-            $message = isset($fieldErrors['pieksy_lastname']['message']) ? $fieldErrors['pieksy_lastname']['message'] : '';    
-            $output .= '<div class="form-group' . $error . '"><label for="pieksy_lastname">'
-                . __('Last name', 'rrze-pieksy') . '</label>'
-                . '<input type="text" name="pieksy_lastname" value="' . $value . '" id="pieksy_lastname" required aria-required="true">'
-                . '<div class="error-message">' . $message . '</div>'
-                . '</div>';
+        // if (!$this->sso) {
+        //     $error = isset($fieldErrors['pieksy_lastname']) ? ' error' : '';
+        //     $value = isset($fieldErrors['pieksy_lastname']['value']) ? $fieldErrors['pieksy_lastname']['value'] : '';
+        //     $message = isset($fieldErrors['pieksy_lastname']['message']) ? $fieldErrors['pieksy_lastname']['message'] : '';    
+        //     $output .= '<div class="form-group' . $error . '"><label for="pieksy_lastname">'
+        //         . __('Last name', 'rrze-pieksy') . '</label>'
+        //         . '<input type="text" name="pieksy_lastname" value="' . $value . '" id="pieksy_lastname" required aria-required="true">'
+        //         . '<div class="error-message">' . $message . '</div>'
+        //         . '</div>';
 
-            $error = isset($fieldErrors['pieksy_firstname']) ? ' error' : '';
-            $value = isset($fieldErrors['pieksy_firstname']['value']) ? $fieldErrors['pieksy_firstname']['value'] : '';
-            $message = isset($fieldErrors['pieksy_firstname']['message']) ? $fieldErrors['pieksy_firstname']['message'] : '';    
-            $output .= '<div class="form-group' . $error . '"><label for="pieksy_firstname">'
-                . __('First name', 'rrze-pieksy') . '</label>'
-                . '<input type="text" name="pieksy_firstname" value="' . $value . '" id="pieksy_firstname" required aria-required="true">'
-                . '<div class="error-message">' . $message . '</div>'
-                . '</div>';               
-        }
+        //     $error = isset($fieldErrors['pieksy_firstname']) ? ' error' : '';
+        //     $value = isset($fieldErrors['pieksy_firstname']['value']) ? $fieldErrors['pieksy_firstname']['value'] : '';
+        //     $message = isset($fieldErrors['pieksy_firstname']['message']) ? $fieldErrors['pieksy_firstname']['message'] : '';    
+        //     $output .= '<div class="form-group' . $error . '"><label for="pieksy_firstname">'
+        //         . __('First name', 'rrze-pieksy') . '</label>'
+        //         . '<input type="text" name="pieksy_firstname" value="' . $value . '" id="pieksy_firstname" required aria-required="true">'
+        //         . '<div class="error-message">' . $message . '</div>'
+        //         . '</div>';               
+        // }
 
-        if (!$this->sso) {
-            $error = isset($fieldErrors['pieksy_email']) ? ' error' : '';
-            $value = isset($fieldErrors['pieksy_email']['value']) ? $fieldErrors['pieksy_email']['value'] : '';
-            $message = isset($fieldErrors['pieksy_email']['message']) ? $fieldErrors['pieksy_email']['message'] : '';    
-            $output .= '<div class="form-group' . $error . '"><label for="pieksy_email">'
-                . __('Email', 'rrze-pieksy') . '</label>'
-                . '<input type="email" name="pieksy_email" value="' . $value . '" '
-                . 'pattern="^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*(\.\w{2,})+$" '
-                . 'id="pieksy_email" required aria-required="true">'
-                . '<div class="error-message">' . $message . '</div>'
-                . '</div>';            
-        }
+        // if (!$this->sso) {
+        //     $error = isset($fieldErrors['pieksy_email']) ? ' error' : '';
+        //     $value = isset($fieldErrors['pieksy_email']['value']) ? $fieldErrors['pieksy_email']['value'] : '';
+        //     $message = isset($fieldErrors['pieksy_email']['message']) ? $fieldErrors['pieksy_email']['message'] : '';    
+        //     $output .= '<div class="form-group' . $error . '"><label for="pieksy_email">'
+        //         . __('Email', 'rrze-pieksy') . '</label>'
+        //         . '<input type="email" name="pieksy_email" value="' . $value . '" '
+        //         . 'pattern="^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*(\.\w{2,})+$" '
+        //         . 'id="pieksy_email" required aria-required="true">'
+        //         . '<div class="error-message">' . $message . '</div>'
+        //         . '</div>';            
+        // }
 
         $error = isset($fieldErrors['pieksy_phone']) ? ' error' : '';
         $value = isset($fieldErrors['pieksy_phone']['value']) ? $fieldErrors['pieksy_phone']['value'] : '';
@@ -374,12 +380,63 @@ class Bookings extends Shortcodes {
         . '<input type="checkbox" value="1" id="pieksy_dsgvo" name="pieksy_dsgvo" required> '
         . '<label for="pieksy_dsgvo">' . $defaults['dsgvo-declaration'] . '</label>'
         . '</div>';
-	$output .= '</fieldset>';  
+        $output .= '</fieldset>';  
         $output .= '<button type="submit" class="btn btn-primary">' . __('Submit booking', 'rrze-pieksy') . '</button>
             </form>
         </div>';
 
         return $output;
+    }
+
+    protected function isNotUniqueBooking(&$roomID, &$customer_email){
+        $data = [];
+
+        // Überprüfen ob bereits eine Buchung mit gleicher E-Mail-Adresse zu diesem Raum vorliegt
+
+        // get seats for this room
+        $seatIDs = get_posts([
+            'post_type' => 'seat',
+            'post_status' => 'publish',
+            'nopaging' => true,
+            'meta_key' => 'rrze-pieksy-seat-room',
+            'meta_value' => $roomID,
+            'fields' => 'ids',
+            'orderby'=> 'title', 
+            'order' => 'ASC'
+        ]);
+
+        $check_args = [
+            'post_type' => 'booking',
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key' => 'rrze-pieksy-booking-guest-email',
+                    'value' => Functions::crypt($customer_email, 'encrypt')
+                ],
+                [
+                    'key' => 'rrze-pieksy-booking-status',
+                    'value' => ['booked', 'customer-confirmed', 'confirmed', 'checked-in'],
+                    'compare' => 'IN',
+                ],
+                [
+                    'key' => 'rrze-pieksy-booking-seat',
+                    'value' => $seatIDs,
+                    'compare' => 'IN',
+                ],
+            ],
+            'nopaging' => true,
+        ];
+        $check_bookings = get_posts($check_args);
+
+        if (!empty($check_bookings)) {
+            $data['multiple_booking_error'] = true;        
+            $data['multiple_booking'] = __('Booking', 'rrze-pieksy');
+            $data['message'] = __('Error: you already have a reservation.', 'rrze-pieksy');
+    
+            return $this->template->getContent('shortcode/booking-error', $data);
+        }else{
+            return '';
+        }
     }
 
     protected function ssoAuthenticationError(){
