@@ -406,20 +406,20 @@ class Metaboxes
             'classes' => ['hide-no-check', 'hide-consultation', 'hide-check-only']
         ));
 
-        $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
-        $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
-        $cmb_general->add_field(array(
-            'name' => __('Allowed Check-In Time (minutes)', 'rrze-pieksy'),
-            'desc' => sprintf(__('You can specify an allowed check-in time for this room. If "Check-In required" is checked, the system will cancel the booking after this time. Default is %s minutes.', 'rrze-pieksy'), $settingsCheckInTime),
-            'id'   => 'rrze-pieksy-room-check-in-time',
-            'type' => 'text',
-            'attributes' => array(
-                'type' => 'number',
-                'min' => '5',
-            ),
-            'default' => $settingsCheckInTime,
-            'classes' => ['hide-no-check', 'hide-consultation', 'hide-check-only']
-        ));
+        // $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
+        // $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
+        // $cmb_general->add_field(array(
+        //     'name' => __('Allowed Check-In Time (minutes)', 'rrze-pieksy'),
+        //     'desc' => sprintf(__('You can specify an allowed check-in time for this room. If "Check-In required" is checked, the system will cancel the booking after this time. Default is %s minutes.', 'rrze-pieksy'), $settingsCheckInTime),
+        //     'id'   => 'rrze-pieksy-room-check-in-time',
+        //     'type' => 'text',
+        //     'attributes' => array(
+        //         'type' => 'number',
+        //         'min' => '5',
+        //     ),
+        //     'default' => $settingsCheckInTime,
+        //     'classes' => ['hide-no-check', 'hide-consultation', 'hide-check-only']
+        // ));
 
         $cmb_general->add_field(array(
             'name' => __('Show notes/comment input in booking form', 'rrze-pieksy'),

@@ -1,6 +1,6 @@
 {
   "name": "rrze-pieksy",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "FAU Reservation Tool for vaccinations",
   "main": "rrze-pieksy.php",
   "textdomain": "rrze-pieksy",

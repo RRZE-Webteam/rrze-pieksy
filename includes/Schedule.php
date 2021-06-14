@@ -256,17 +256,19 @@ class Schedule
                 }
                 $bookingTimeStamp = $booking['booking_date_timestamp'];
                 $bookingStart = $booking['start'];
-                $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
-                if ($checkInTime == '') {
-                    $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
-                    $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
-                    $checkInTime = $settingsCheckInTime;
-                }
+                // $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
+                // if ($checkInTime == '') {
+                //     $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
+                //     $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
+                //     $checkInTime = $settingsCheckInTime;
+                // }
                 if ($bookingStart < $bookingTimeStamp) {
                     //Seat booked after beginning of timeslot
-                    $timeStampCheckIn = $bookingTimeStamp + ($checkInTime * MINUTE_IN_SECONDS);
+                    // $timeStampCheckIn = $bookingTimeStamp + ($checkInTime * MINUTE_IN_SECONDS);
+                    $timeStampCheckIn = $bookingTimeStamp;
                 } else {
-                    $timeStampCheckIn = $bookingStart + ($checkInTime * MINUTE_IN_SECONDS);
+                    // $timeStampCheckIn = $bookingStart + ($checkInTime * MINUTE_IN_SECONDS);
+                    $timeStampCheckIn = $bookingStart;
                 }
                 if (current_time('timestamp') < $timeStampCheckIn) {
                     continue;

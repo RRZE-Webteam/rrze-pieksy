@@ -151,7 +151,7 @@ jQuery(document).ready(function ($) {
 	var forceConfirmationChecked = forceConfirmationInput.is(':checked');
 	triggerModeVisibility(bookingMode);
 	triggerInstant(autoConfirmationChecked);
-	triggerCheckInTime(forceConfirmationChecked);
+	// triggerCheckInTime(forceConfirmationChecked);
 
 	bookingModeSelect.on('change', function() {
 		var bookingMode = $('option:selected',this).val();
@@ -163,7 +163,7 @@ jQuery(document).ready(function ($) {
 	});
 	forceConfirmationInput.click(function() {
 		var forceConfirmationChecked = $(this).is(':checked');
-		triggerCheckInTime(forceConfirmationChecked);
+		// triggerCheckInTime(forceConfirmationChecked);
 	});
 
 	function triggerModeVisibility(bookingMode){
@@ -188,13 +188,13 @@ jQuery(document).ready(function ($) {
 		}
 	}
 
-	function triggerCheckInTime(forceConfirmationChecked) {
-		if (forceConfirmationChecked === true) {
-			$('div.cmb2-id-rrze-pieksy-room-check-in-time').slideDown();
-		} else {
-			$('div.cmb2-id-rrze-pieksy-room-check-in-time').slideUp();
-		}
-	}
+	// function triggerCheckInTime(forceConfirmationChecked) {
+	// 	if (forceConfirmationChecked === true) {
+	// 		$('div.cmb2-id-rrze-pieksy-room-check-in-time').slideDown();
+	// 	} else {
+	// 		$('div.cmb2-id-rrze-pieksy-room-check-in-time').slideUp();
+	// 	}
+	// }
     
     // prevent copy & paste and disable mouse right click and cut for booking overview
     $('body.post-type-booking table.wp-list-table').bind('cut copy paste', function (e) {
