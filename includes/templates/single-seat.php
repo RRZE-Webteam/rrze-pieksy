@@ -88,6 +88,9 @@ echo $div_open;
 
 $nonce = wp_create_nonce('rrze-pieksy-seat-check-inout');
 
+echo 'BK TEST';
+exit;
+
 if ($checkInBooking) {
     $roomId = $checkInBooking['room'];
     $roomName = $checkInBooking['room_name'];

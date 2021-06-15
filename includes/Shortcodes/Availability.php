@@ -161,7 +161,6 @@ class Availability extends Shortcodes
 
 
         wp_enqueue_style('rrze-pieksy-shortcode');
-        //wp_enqueue_script('rrze-pieksy-shortcode');
 
         return $output;
     }

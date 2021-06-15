@@ -875,8 +875,6 @@ class Functions
     }
 
     public static function isNotUniqueBooking(&$roomID, &$customer_email){
-        $data = [];
-
         // Überprüfen ob bereits eine Buchung mit gleicher E-Mail-Adresse zu diesem Raum vorliegt
         // get seats for this room
         $seatIDs = get_posts([
