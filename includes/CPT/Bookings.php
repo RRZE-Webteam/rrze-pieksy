@@ -11,7 +11,6 @@ defined('ABSPATH') || exit;
 use RRZE\Pieksy\Capabilities;
 use RRZE\Pieksy\Functions;
 use function RRZE\Pieksy\Config\isAllowedSearchForGuest;
-// use RRZE\Pieksy\Carbon;
 
 class Bookings {
     protected $sDate;
@@ -32,21 +31,15 @@ class Bookings {
 
     public function onLoaded() {
         add_action('init', [$this, 'booking_post_type']);
-        // add_post_type_support( 'booking', 'page-attributes' );
-
         add_filter('months_dropdown_results', [$this, 'removeMonthsDropdown'], 10, 2);
         add_filter('manage_booking_posts_columns', [$this, 'addBookingColumns']);
         add_action('manage_booking_posts_custom_column', [$this, 'getBookingValue'], 10, 2);
         add_filter('manage_edit-booking_sortable_columns', [$this, 'addBookingSortableColumns']);
         add_action('restrict_manage_posts', [$this, 'addFilters'], 10, 1);
         add_action('wp_ajax_ShowTimeslots', [$this, 'ajaxShowTimeslots']);
-
         add_filter('parse_query', [$this, 'filterBookings'], 10);
         add_action('pre_get_posts', [$this, 'searchBookings']);
     }
-
-    
-
 
     // Register Custom Post Type
     public function booking_post_type() {
@@ -128,7 +121,6 @@ class Bookings {
     }
 
     function getBookingValue($column, $post_id) {
-        // $post = get_post($post_id);
         $booking = Functions::getBooking($post_id);
 
         switch ($column) {
@@ -248,7 +240,6 @@ class Bookings {
                 $output .= '<option value="' . $time_parts[0] . '" data-end="' . $time_parts[1] . '">' . $timeslot . '</option>';
             }
             $output .= '</select>';
-            //            wp_send_json($availability[$date]);
         } else {
             $output .= __('No timeslots available for this seat/day.', 'rrze-pieksy');
         }

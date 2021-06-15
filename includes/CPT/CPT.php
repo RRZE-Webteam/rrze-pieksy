@@ -32,11 +32,6 @@ class CPT extends Main
         add_action('admin_menu', [$this, 'bookingMenu']);
         add_filter('parent_file', [$this, 'filterParentMenu']);
         add_action('pre_get_posts', [$this, 'archiveShowAllRooms']);
-
-        // Prüfung: gibt es Buchung zu Raum oder Platz 
-        // add_action('add_meta_boxes', [$this, 'customSubmitdiv']);
-
-
         add_action('add_meta_boxes', [$this, 'shortcodeHelper']);
 
         if (isset($_GET['format']) && $_GET['format'] == 'embedded') {
@@ -75,14 +70,6 @@ class CPT extends Main
                 $cpt_obj->cap->edit_posts,         // capability
                 'edit.php?post_type=' . $cpt       // menu slug
             );
-
-            // add_submenu_page(
-            //     'edit.php?post_type=booking',
-            //     $cpt_obj->labels->name,
-            //     $hiddenTitle,
-            //     $cpt_obj->cap->edit_posts,
-            //     'post-new.php?post_type=' . $cpt
-            // );
         }
 
         add_submenu_page(
@@ -170,9 +157,7 @@ class CPT extends Main
 
     public function customSubmitdiv()
     {
-
         // um zu verhindern, dass der Admin den Status des Posts ändert oder schlimmer noch, ihn versehentlich löscht. 
-
         remove_meta_box('submitdiv', 'booking', 'core');
         add_meta_box('submitdiv', __('Publish'), [$this, 'addCustomSubmitdiv'], 'booking', 'side', 'high');
         remove_meta_box('submitdiv', 'room', 'core');
@@ -240,7 +225,6 @@ class CPT extends Main
         printf('<h3 style="margin-bottom: 0">%s</h3>', __('Booking Form', 'rrze-pieksy'));
         printf('<p><code>[pieksy-booking room="%s"]</code></p>', get_the_ID());
         printf('<p>%s</p>', __('Add <code>days="20"</code> to overwrite the number of days you can book a seat in advance.', 'rrze-pieksy'));
-//        printf('<p>%s</p>', __('Add <code>sso="false"</code> overwrite to SSO settings for this room.', 'rrze-pieksy'));
         printf('<h3 style="margin-bottom: 0">%s</h3>', __('Availability Table', 'rrze-pieksy'));
         printf('<p><code>[pieksy-availability room="%s"]</code></p>', get_the_ID());
         printf('<p>%s</p>', __('Add <code>booking_link="true"</code> to link the available timeslots to the pre-filled booking form.', 'rrze-pieksy'));

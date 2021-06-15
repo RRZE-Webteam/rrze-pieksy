@@ -217,8 +217,6 @@ class Bookings extends Shortcodes {
             } else {
             
             $scheduleinfo = '<h2>' . __('Schedule', 'rrze-pieksy') . '</h2>'
-                    //. $schedule
-                    //. '<h3>' . __('Room occupancy for today', 'rrze-pieksy') . '</h3>';
                     . Functions::getOccupancyByRoomIdNextHTML($postID);
             $alert  .= $scheduleinfo;
             
@@ -241,10 +239,6 @@ class Bookings extends Shortcodes {
         $output .= '<div class="rrze-pieksy">';
         $output .= '<form action="' . get_permalink() . '" method="post" id="pieksy_by_room" class="mode-'.$bookingMode.'">'
                     . '<div id="loading"><i class="fa fa-refresh fa-spin fa-4x"></i></div>';
-// TODO:	
-//	$output .= '<fieldset>';  
-	// FIELDSET muss noch rein oder unten <legend> raus. Wenn fieldset drin ist, ist die Ausstattungsanzeige des Sitzplatzes allerdings broken.
-	// Wahrscheinlich Problem mit dem JS?
         if ($get_instant) {
             $output .= '<div><input type="hidden" value="1" id="pieksy_instant" name="pieksy_instant"></div>';
         }
@@ -316,8 +310,6 @@ class Bookings extends Shortcodes {
 	    $output .= '<fieldset>';  
         $output .= '<legend>' . __('Your data', 'rrze-pieksy') . ' <span class="notice-required">('. __('Required','rrze-pieksy'). ')</span></legend>';
         if ($this->sso) {
-            // $data = $this->idm->getCustomerData();
-
             $output .= '<input type="hidden" value="' . $data['customer_lastname'] . '" id="pieksy_lastname" name="pieksy_lastname">';
             $output .= '<input type="hidden" value="' . $data['customer_firstname'] . '" id="pieksy_firstname" name="pieksy_firstname">';
             $output .= '<input type="hidden" value="' . $data['customer_email'] . '" id="pieksy_email" name="pieksy_email">';
@@ -328,39 +320,6 @@ class Bookings extends Shortcodes {
                 . '<p>' . __('Email', 'rrze-pieksy') . ': <strong>' . $data['customer_email'] . '</strong></p>'
                 . '</div>';
         }
-
-        // if (!$this->sso) {
-        //     $error = isset($fieldErrors['pieksy_lastname']) ? ' error' : '';
-        //     $value = isset($fieldErrors['pieksy_lastname']['value']) ? $fieldErrors['pieksy_lastname']['value'] : '';
-        //     $message = isset($fieldErrors['pieksy_lastname']['message']) ? $fieldErrors['pieksy_lastname']['message'] : '';    
-        //     $output .= '<div class="form-group' . $error . '"><label for="pieksy_lastname">'
-        //         . __('Last name', 'rrze-pieksy') . '</label>'
-        //         . '<input type="text" name="pieksy_lastname" value="' . $value . '" id="pieksy_lastname" required aria-required="true">'
-        //         . '<div class="error-message">' . $message . '</div>'
-        //         . '</div>';
-
-        //     $error = isset($fieldErrors['pieksy_firstname']) ? ' error' : '';
-        //     $value = isset($fieldErrors['pieksy_firstname']['value']) ? $fieldErrors['pieksy_firstname']['value'] : '';
-        //     $message = isset($fieldErrors['pieksy_firstname']['message']) ? $fieldErrors['pieksy_firstname']['message'] : '';    
-        //     $output .= '<div class="form-group' . $error . '"><label for="pieksy_firstname">'
-        //         . __('First name', 'rrze-pieksy') . '</label>'
-        //         . '<input type="text" name="pieksy_firstname" value="' . $value . '" id="pieksy_firstname" required aria-required="true">'
-        //         . '<div class="error-message">' . $message . '</div>'
-        //         . '</div>';               
-        // }
-
-        // if (!$this->sso) {
-        //     $error = isset($fieldErrors['pieksy_email']) ? ' error' : '';
-        //     $value = isset($fieldErrors['pieksy_email']['value']) ? $fieldErrors['pieksy_email']['value'] : '';
-        //     $message = isset($fieldErrors['pieksy_email']['message']) ? $fieldErrors['pieksy_email']['message'] : '';    
-        //     $output .= '<div class="form-group' . $error . '"><label for="pieksy_email">'
-        //         . __('Email', 'rrze-pieksy') . '</label>'
-        //         . '<input type="email" name="pieksy_email" value="' . $value . '" '
-        //         . 'pattern="^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*(\.\w{2,})+$" '
-        //         . 'id="pieksy_email" required aria-required="true">'
-        //         . '<div class="error-message">' . $message . '</div>'
-        //         . '</div>';            
-        // }
 
         $error = isset($fieldErrors['pieksy_phone']) ? ' error' : '';
         $value = isset($fieldErrors['pieksy_phone']['value']) ? $fieldErrors['pieksy_phone']['value'] : '';
@@ -439,8 +398,6 @@ class Bookings extends Shortcodes {
 
         $data = [];
         $data['multiple_booking_error'] = true;        
-        // $data['multiple_booking'] = __('Multiple Booking', 'rrze-pieksy');
-        // $data['message'] = __('<strong>You have already booked a seat for the specified time slot.</strong><br>If you want to change your booking, please cancel the existing booking first. You will find the link to do so in your confirmation email.', 'rrze-pieksy');
         $data['multiple_booking'] = __('Save booking', 'rrze-pieksy');
         $data['message'] = __('Error saving the booking.', 'rrze-pieksy');
 
@@ -451,7 +408,6 @@ class Bookings extends Shortcodes {
         if (!isset($_GET['url']) || !isset($_GET['booking']) || !wp_verify_nonce($_GET['booking'], 'seat_unavailable-' . $_GET['url'])) {
             return '';
         }
-        // $url = $_GET['url'];
         $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);
 
         if (sanitize_text_field($url) != $url) {
@@ -471,7 +427,6 @@ class Bookings extends Shortcodes {
         if (!isset($_GET['url']) || !isset($_GET['booking']) || !wp_verify_nonce($_GET['booking'], 'timeslot_unavailable-' . $_GET['url'])) {
             return '';
         }
-        // $url = $_GET['url'];
         $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);
 
         if (sanitize_text_field($url) != $url) {
@@ -534,7 +489,6 @@ class Bookings extends Shortcodes {
         $roomMeta = get_post_meta($roomId);
 
         $data['autoconfirmation'] = (isset($roomMeta['rrze-pieksy-room-auto-confirmation']) && $roomMeta['rrze-pieksy-room-auto-confirmation'][0] == 'on');
-        // $data['force_to_confirm'] = (isset($roomMeta['rrze-pieksy-room-force-to-confirm']) && $roomMeta['rrze-pieksy-room-force-to-confirm'][0] == 'on');
         $data['force_to_checkin'] = (isset($roomMeta['rrze-pieksy-room-force-to-checkin']) && $roomMeta['rrze-pieksy-room-force-to-checkin'][0] == 'on');
 
         $data['date'] = $booking['date'];
@@ -804,7 +758,6 @@ class Bookings extends Shortcodes {
             $url = urlencode(wp_get_referer());
             $redirectUrl = add_query_arg(
                 [
-                    //'url' => sprintf('%s?room_id=%s&bookingdate=%s&timeslot=%s', get_permalink(), $room_id, $booking_date, $booking_start),
                     'url' => $url,
                     'booking' => wp_create_nonce('timeslot_unavailable-' . $url),
                     'nonce' => $this->nonce
@@ -845,7 +798,6 @@ class Bookings extends Shortcodes {
 
             $redirectUrl = add_query_arg(
                 [
-                    //'url' => sprintf('%s?room_id=%s&bookingdate=%s&timeslot=%s', get_permalink(), $room_id, $booking_date, $booking_start),
                     'url' => $url,
                     'booking' => wp_create_nonce('seat_unavailable-' . $url),
                     'nonce' => $this->nonce
@@ -858,7 +810,6 @@ class Bookings extends Shortcodes {
 
         $autoconfirmation = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-auto-confirmation', true));
         $instantCheckIn = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-instant-check-in', true));
-        // $forceToConfirm = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-force-to-confirm', true));
         $forceToCheckin = Functions::getBoolValueFromAtt(get_post_meta($room_id, 'rrze-pieksy-room-force-to-checkin', true));
         $sendIcsToAdmin = get_post_meta($room_id, 'rrze-pieksy-room-send-to-email', true);
         if ($booking_mode == 'check-only') {
@@ -901,29 +852,25 @@ class Bookings extends Shortcodes {
         $timestamp = current_time('timestamp');
         $bookingMode = get_post_meta($room_id, 'rrze-pieksy-room-bookingmode', true);
 
-        // if ($forceToConfirm) {
-        //     $status = 'booked';
-        // } else {
-            if ($autoconfirmation) {
-                $status = 'confirmed';
-                switch ($bookingMode) {
-                    case 'check-only':
-                        if ($booking_date == date('Y-m-d', $timestamp) && $booking_timestamp_start < $timestamp) {
-                            $status = 'checked-in';
-                        }
-                        break;
-                    case 'reservation':
-                        if (($booking_instant || $instantCheckIn) && $booking_date == date('Y-m-d', $timestamp) && $booking_timestamp_start < $timestamp) {
-                            $status = 'checked-in';
-                        }
-                        break;
-                    default:
-                        //
-                }
-            } else {
-                $status = 'booked';
+        if ($autoconfirmation) {
+            $status = 'confirmed';
+            switch ($bookingMode) {
+                case 'check-only':
+                    if ($booking_date == date('Y-m-d', $timestamp) && $booking_timestamp_start < $timestamp) {
+                        $status = 'checked-in';
+                    }
+                    break;
+                case 'reservation':
+                    if (($booking_instant || $instantCheckIn) && $booking_date == date('Y-m-d', $timestamp) && $booking_timestamp_start < $timestamp) {
+                        $status = 'checked-in';
+                    }
+                    break;
+                default:
+                    //
             }
-        // }
+        } else {
+            $status = 'booked';
+        }
 
         update_post_meta($booking_id, 'rrze-pieksy-booking-status', $status );
         update_post_meta($booking_id, 'rrze-pieksy-booking-notes', $booking_comment);
@@ -931,53 +878,20 @@ class Bookings extends Shortcodes {
 
 
         // E-Mail senden
-        // if ($forceToConfirm) {
-        //     $this->email->doEmail('customerConfirmationRequired', 'customer', $booking_id, $status);
-        // } else {
-            if ($bookingMode == 'check-only') {
-                $this->email->doEmail('bookingCheckedIn', 'customer', $booking_id, $status);
-                if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
-                    $this->email->doEmail('newBooking', 'admin', $booking_id, $status);
-                }
-            } elseif ($autoconfirmation){
-                $this->email->doEmail('adminConfirmed', 'customer', $booking_id, $status);
-                if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
-                    $this->email->doEmail('newBooking', 'admin', $booking_id, $status);
-                }
-            } else {
-                $this->email->doEmail('adminConfirmationRequired', 'customer', $booking_id, $status);
-                $this->email->doEmail('adminConfirmationRequired', 'admin', $booking_id, $status);
+        if ($bookingMode == 'check-only') {
+            $this->email->doEmail('bookingCheckedIn', 'customer', $booking_id, $status);
+            if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
+                $this->email->doEmail('newBooking', 'admin', $booking_id, $status);
             }
-        // }
-
-
-        /*switch($bookingMode) {
-            case 'check-only':
-                if ($status == 'confirmed') {
-                    $this->email->doEmail('adminConfirmed', 'customer', $booking_id, $status);
-                    if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
-                        $this->email->doEmail('newBooking', 'admin', $booking_id, $status);
-                    }
-                }
-                break;
-            case 'reservation':
-            case 'no-check':
-            case 'consultation':
-                if ($status == 'confirmed') {
-                    $this->email->doEmail('adminConfirmed', 'customer', $booking_id, $status);
-                } elseif ($status == 'checked-in') {
-                    $this->email->doEmail('adminConfirmed', 'customer', $booking_id, $status);
-                } elseif ($status == 'booked' && $forceToConfirm) {
-                    $this->email->doEmail('customerConfirmationRequired', 'customer', $booking_id, $status);
-                } else {
-                    if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
-                        $this->email->doEmail('newBooking', 'admin', $booking_id, $status);
-                    }
-                }
-                break;
-            default:
-                //
-        }*/
+        } elseif ($autoconfirmation){
+            $this->email->doEmail('adminConfirmed', 'customer', $booking_id, $status);
+            if ($this->options->email_notification_if_new == 'yes' && $this->options->email_notification_email != '') {
+                $this->email->doEmail('newBooking', 'admin', $booking_id, $status);
+            }
+        } else {
+            $this->email->doEmail('adminConfirmationRequired', 'customer', $booking_id, $status);
+            $this->email->doEmail('adminConfirmationRequired', 'admin', $booking_id, $status);
+        }
 
         // Redirect zur Seat-Seite, falls
         if ($status == 'checked-in') {
