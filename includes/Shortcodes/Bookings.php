@@ -129,8 +129,12 @@ class Bookings extends Shortcodes {
         }
 
         $data = $this->idm->getCustomerData();
-        if (!empty($data['customer_email']) && !empty($postID) && ($output = $this->isNotUniqueBooking($postID, $data['customer_email']))){
-            return $output;
+        if (!empty($data['customer_email']) && !empty($postID) && (Functions::isNotUniqueBooking($postID, $data['customer_email']) == FALSE)){
+            $data['multiple_booking_error'] = true;        
+            $data['multiple_booking'] = __('Booking', 'rrze-pieksy');
+            $data['message'] = __('Error: you already have a reservation.', 'rrze-pieksy');
+    
+            return $this->template->getContent('shortcode/booking-error', $data);
         }
 
         $shortcode_atts = parent::shortcodeAtts($atts, $tag, $this->shortcodesettings);
@@ -388,56 +392,6 @@ class Bookings extends Shortcodes {
         return $output;
     }
 
-    protected function isNotUniqueBooking(&$roomID, &$customer_email){
-        $data = [];
-
-        // Überprüfen ob bereits eine Buchung mit gleicher E-Mail-Adresse zu diesem Raum vorliegt
-
-        // get seats for this room
-        $seatIDs = get_posts([
-            'post_type' => 'seat',
-            'post_status' => 'publish',
-            'nopaging' => true,
-            'meta_key' => 'rrze-pieksy-seat-room',
-            'meta_value' => $roomID,
-            'fields' => 'ids',
-            'orderby'=> 'title', 
-            'order' => 'ASC'
-        ]);
-
-        $check_args = [
-            'post_type' => 'booking',
-            'meta_query' => [
-                'relation' => 'AND',
-                [
-                    'key' => 'rrze-pieksy-booking-guest-email',
-                    'value' => Functions::crypt($customer_email, 'encrypt')
-                ],
-                [
-                    'key' => 'rrze-pieksy-booking-status',
-                    'value' => ['booked', 'customer-confirmed', 'confirmed', 'checked-in'],
-                    'compare' => 'IN',
-                ],
-                [
-                    'key' => 'rrze-pieksy-booking-seat',
-                    'value' => $seatIDs,
-                    'compare' => 'IN',
-                ],
-            ],
-            'nopaging' => true,
-        ];
-        $check_bookings = get_posts($check_args);
-
-        if (!empty($check_bookings)) {
-            $data['multiple_booking_error'] = true;        
-            $data['multiple_booking'] = __('Booking', 'rrze-pieksy');
-            $data['message'] = __('Error: you already have a reservation.', 'rrze-pieksy');
-    
-            return $this->template->getContent('shortcode/booking-error', $data);
-        }else{
-            return '';
-        }
-    }
 
     protected function ssoAuthenticationError(){
         if (!isset($_GET['booking']) || !wp_verify_nonce($_GET['booking'], 'sso_authentication')) {

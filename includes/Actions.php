@@ -603,6 +603,14 @@ class Actions
             }
 		}
 
+		if (empty($errorMessage) && !empty($_REQUEST['rrze-pieksy-booking-seat']) && !empty($_REQUEST['rrze-pieksy-booking-guest-email'])){
+			// check if this user has already a booking
+			$roomID = get_post_meta($_REQUEST['rrze-pieksy-booking-seat'], 'rrze-pieksy-seat-room', true);
+			if (Functions::isNotUniqueBooking($roomID, $_REQUEST['rrze-pieksy-booking-guest-email']) == FALSE){
+				$errorMessage = __('This user already has a reservation.', 'rrze-pieksy');
+			}
+		}
+
 		if ($errorMessage) {
 			wp_die(
 				$errorMessage,
@@ -612,43 +620,6 @@ class Actions
 		}
 	}
 
-	// public function preBookingUpdate($post_id, $post_data) {
-	// 	if ($post_data['post_type'] != 'booking') {
-	// 		return;
-	// 	}
-		
-	// 	$errorMessage = $this->isSeatAvailable();
-
-	// 	if (!$errorMessage) {
-	// 		$trash = isset($_REQUEST['trash']) ? $_REQUEST['trash'] : '';
-	// 		$delete = isset($_REQUEST['delete']) ? $_REQUEST['delete'] : '';
-	
-	// 		//$requestStatus = isset($_REQUEST['rrze-pieksy-booking-status']) ? $_REQUEST['rrze-pieksy-booking-status'] : '';
-	// 		$requestSeat = isset($_REQUEST['rrze-pieksy-booking-seat']) ? $_REQUEST['rrze-pieksy-booking-seat'] : '';
-	
-	// 		//$status = get_post_meta($postId, 'rrze-pieksy-booking-status', true);
-	// 		$seat = get_post_meta($post_id, 'rrze-pieksy-booking-seat', true);
-	
-	// 		$isArchive = Functions::isBookingArchived($post_id);
-	// 		$canDelete = Functions::canDeleteBooking($post_id);
-	
-	// 		if ($trash || $delete) {
-	// 			if (!$canDelete) {
-	// 				$errorMessage = __('This item cannot be deleted.', 'rrze-pieksy');
-	// 			}
-	// 		} elseif ( $isArchive  || ($requestSeat != $seat) ) {
-	// 			$errorMessage = __('This item cannot be updated.', 'rrze-pieksy');
-	// 		}			
-	// 	}
-
-	// 	if ($errorMessage) {
-	// 		wp_die(
-	// 			$errorMessage,
-	// 			__('Update Error', 'rrze-pieksy'),
-	// 			['back_link' => true]
-	// 		);
-	// 	}
-	// }
 
 	protected function isSeatAvailable()
 	{
