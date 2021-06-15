@@ -6,7 +6,6 @@ defined('ABSPATH') || exit;
 
 use RRZE\Pieksy\Shortcodes\Bookings;
 use RRZE\Pieksy\Shortcodes\Availability;
-use RRZE\Pieksy\Shortcodes\QR;
 
 use RRZE\Pieksy\Auth\{Auth, IdM};
 
@@ -38,9 +37,6 @@ class Shortcodes{
 
         $availability_shortcode = new Availability($this->pluginFile,  $this->settings);
         $availability_shortcode->onLoaded();
-
-        $qr_shortcode = new QR($this->pluginFile,  $this->settings);
-        $qr_shortcode->onLoaded();
     }
 
     public function gutenberg_init(){
