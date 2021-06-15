@@ -356,7 +356,6 @@ if ($checkInBooking) {
                 echo '<p>' . __('Please reserve a time slot for this seat', 'rrze-pieksy') . '</p>';
             }
             $bookingLink = $bookingmode == 'check-only' ? 'false' : 'true';
-            echo do_shortcode('[pieksy-qr seat=' . $seatId . ']');
             echo do_shortcode(sprintf('[pieksy-availability seat=%s days=%s booking_link=%s]', $seatId, $daysInAdvance, $bookingLink));
         }
     }

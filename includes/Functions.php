@@ -874,4 +874,52 @@ class Functions
         $queryAry = array_diff_key(array_merge($queryAry, $add), array_fill_keys($remove, ''));
         return http_build_query($queryAry);
     }
+
+    public static function isNotUniqueBooking(&$roomID, &$customer_email){
+        $data = [];
+
+        // Überprüfen ob bereits eine Buchung mit gleicher E-Mail-Adresse zu diesem Raum vorliegt
+
+        // get seats for this room
+        $seatIDs = get_posts([
+            'post_type' => 'seat',
+            'post_status' => 'publish',
+            'nopaging' => true,
+            'meta_key' => 'rrze-pieksy-seat-room',
+            'meta_value' => $roomID,
+            'fields' => 'ids',
+            'orderby'=> 'title', 
+            'order' => 'ASC'
+        ]);
+
+        $check_args = [
+            'post_type' => 'booking',
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key' => 'rrze-pieksy-booking-guest-email',
+                    'value' => Functions::crypt($customer_email, 'encrypt')
+                ],
+                [
+                    'key' => 'rrze-pieksy-booking-status',
+                    'value' => ['booked', 'customer-confirmed', 'confirmed', 'checked-in'],
+                    'compare' => 'IN',
+                ],
+                [
+                    'key' => 'rrze-pieksy-booking-seat',
+                    'value' => $seatIDs,
+                    'compare' => 'IN',
+                ],
+            ],
+            'nopaging' => true,
+        ];
+        $check_bookings = get_posts($check_args);
+
+        if (!empty($check_bookings)) {
+            return FALSE;
+        }else{
+            return TRUE;
+        }
+    }
+
 }

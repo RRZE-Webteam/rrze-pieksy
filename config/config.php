@@ -103,10 +103,6 @@ function defaultOptions()  {
             'received_subject_en' => 'Thank you for booking',
             'received_text' => __('We received your booking and we will notify you once it has been confirmed.', 'rrze-pieksy'),
             'received_text_en' => 'We received your booking and we will notify you once it has been confirmed.',
-            // 'force_to_confirm_subject' => __('Please confirm your booking', 'rrze-pieksy'),
-            // 'force_to_confirm_subject_en' => 'Please confirm your booking',
-            // 'force_to_confirm_text' => __('You are required to confirm the booking now. Please note that unconfirmed bookings automatically expire after one hour.', 'rrze-pieksy'),
-            // 'force_to_confirm_text_en' => 'You are required to confirm the booking now. Please note that unconfirmed bookings automatically expire after one hour.',                         
             'confirm_subject' => __('Your booking has been confirmed', 'rrze-pieksy'),
             'confirm_subject_en' => 'Your booking has been confirmed',            
             'confirm_text' => __('We are happy to inform you that your booking has been confirmed.', 'rrze-pieksy'),
@@ -122,14 +118,9 @@ function defaultOptions()  {
             'fau_logo' => 'on',
             'website_logo' => 'off',
             'website_url' => 'on',
-            // 'instructions_de' => 'Bitte lesen Sie den QR Code ein, um auf diesem Platz einzuchecken oder diesen Platz für einen späteren Zeitpunkt zu reservieren.',
-            // 'instructions_en' => 'Please scan the QR code to check in at this place or to reserve this place for a later date.',
             'room_text' => 'off',
-            // 'room_image' => 'off',
             'room_address' => 'off',
-            // 'room_floorplan' => 'off',
             'room-notes-label' => __('Additional informations', 'rrze-pieksy'),
-            // 'check-in-time' => '15',
             'dsgvo-declaration' => __('Ich bin damit einverstanden, dass meine Kontaktdaten für die Dauer des Vorganges der Platzbuchung und bis zu 4 Wochen danach zum Zwecke der Nachverfolgung gemäß der gesetzlichen Grundlagen zur Corona-Bekämpfung gespeichert werden dürfen. Ebenso wird Raumverantwortlichen und Veranstalter von Sprechstunden das Recht eingeräumt, während der Dauer des Buchungsprozesses und bis zum Ende des ausgewählten Termins Einblick in folgende Buchungsdaten zu nehmen: E-Mailadresse, Name, Vorname. Raumverantwortliche und Veranstalter von Sprechstunden erhalten diese Daten allein zum Zweck der Durchführung und Verwaltung des Termins gemäß §6 Abs1 a DSGVO. Die Telefonnummer wird nur zum Zwecke der Kontaktverfolgung aufgrund der gesetzlicher Grundlagen zur Pandemiebekämpfung für Gesundheitsbehörden erfasst.', 'rrze-pieksy'),
         ];
     }
@@ -164,10 +155,6 @@ function getSections()
             'id'    => 'email',
             'title' => __('E-Mail Settings', 'rrze-pieksy')
         ],
-        // [
-        //     'id'    => 'pdf',
-        //     'title' => __('QR PDF Settings', 'rrze-pieksy')
-        // ],
         [
             'id'    => 'reset',
             'title' => __('Reset Settings', 'rrze-pieksy')
@@ -184,13 +171,6 @@ function getFields(){
     
     return [
         'general' => [
-            // [
-            //     'name'    => 'check-in-time',
-            //     'label'   => __('Allowed Check-In Time.', 'rrze-pieksy'),
-            //     'type'    => 'number',
-            //     'default' => $defaults['check-in-time'],
-            //     'sanitize_callback' => 'sanitize_natint_field',
-            // ],
             [
                 'name'    => 'single_room_availability_table',
                 'label'   => __('Show Availability table on Room page.', 'rrze-pieksy'),
@@ -289,36 +269,6 @@ function getFields(){
                 'default'           => $defaults['received_text_en'],
                 'exception'         => ['locale' => 'en']
             ],  
-            // [
-            //     'name'              => 'force_to_confirm_subject',
-            //     'label'             => __('Subject for confirmation required.', 'rrze-pieksy'),
-            //     'desc'              => __('Subject of the email where confirmation of the booking by the customer is required.', 'rrze-pieksy'),
-            //     'type'              => 'text',
-            //     'default'           => $defaults['force_to_confirm_subject'],
-            //     'sanitize_callback' => 'sanitize_text_field'
-            // ],  
-            // [
-            //     'name'              => 'force_to_confirm_subject_en',
-            //     'label'             => __('Subject for confirmation required (english)', 'rrze-pieksy'),
-            //     'desc'              => __('Subject of the email where confirmation of the booking by the customer is required.', 'rrze-pieksy'),
-            //     'type'              => 'text',
-            //     'default'           => $defaults['force_to_confirm_subject_en'],
-            //     'sanitize_callback' => 'sanitize_text_field',
-            //     'exception'         => ['locale' => 'en']
-            // ], 
-            // [
-            //     'name'              => 'force_to_confirm_text',
-            //     'label'             => __('Text for confirmation required', 'rrze-pieksy'),
-            //     'type'              => 'textarea',
-            //     'default'           => $defaults['force_to_confirm_text']
-            // ],   
-            // [
-            //     'name'              => 'force_to_confirm_text_en',
-            //     'label'             => __('Text for confirmation required (english)', 'rrze-pieksy'),
-            //     'type'              => 'textarea',
-            //     'default'           => $defaults['force_to_confirm_text_en'],
-            //     'exception'         => ['locale' => 'en']
-            // ],                                                    
 	        [
                 'name'              => 'confirm_subject',
                 'label'             => __('Subject Confirmation', 'rrze-pieksy'),
@@ -414,68 +364,6 @@ function getFields(){
             'exception'         => ['locale' => 'en']
             ]         
         ],
-        // 'pdf' => [
-        //     [
-        //         'name'  => 'fau_logo',
-        //         'label' => __('Print FAU logo', 'rrze-pieksy'),
-        //         'default'           => $defaults['fau_logo'],
-        //         'type'  => 'checkbox'
-        //     ],
-        //     [
-        //         'name'  => 'website_logo',
-        //         'label' => __('Print website\'s logo or title', 'rrze-pieksy'),
-        //         'default'           => $defaults['website_logo'],
-        //         'type'  => 'checkbox'
-        //     ],
-        //     [
-        //         'name'  => 'website_url',
-        //         'label' => __('Print website\'s URL', 'rrze-pieksy'),
-        //         'default'           => $defaults['website_url'],
-        //         'type'  => 'checkbox'
-        //     ],
-        //     // [
-        //     //     'name'              => 'instructions_de',
-        //     //     'label'             => __('Instructions in German', 'rrze-pieksy'),
-        //     //     'desc'              => __('This text will be shown above the QR code.', 'rrze-pieksy'),
-        //     //     'placeholder'       => __('Instructions in German', 'rrze-pieksy'),
-        //     //     'type'              => 'textarea',
-        //     //     'default'           => $defaults['instructions_de'],
-        //     //     'sanitize_callback' => 'sanitize_text_field'
-        //     // ],
-        //     // [
-        //     //     'name'              => 'instructions_en',
-        //     //     'label'             => __('Instructions in English', 'rrze-pieksy'),
-        //     //     'desc'              => __('This text will be shown above the QR code.', 'rrze-pieksy'),
-        //     //     'placeholder'       => __('Instructions in English', 'rrze-pieksy'),
-        //     //     'type'              => 'textarea',
-        //     //     'default'           => $defaults['instructions_en'],
-        //     //     'sanitize_callback' => 'sanitize_text_field'
-        //     // ],
-        //     [
-        //         'name'  => 'room_text',
-        //         'label' => __('Print room\'s text', 'rrze-pieksy'),
-        //         'default' => $defaults['room_text'],
-        //         'type'  => 'checkbox'
-        //     ],
-        //     // [
-        //     //     'name'  => 'room_image',
-        //     //     'label' => __('Print room\'s image', 'rrze-pieksy'),
-        //     //     'default' => $defaults['room_image'],
-        //     //     'type'  => 'checkbox'
-        //     // ],
-        //     [
-        //         'name'  => 'room_address',
-        //         'label' => __('Print room\'s address', 'rrze-pieksy'),
-        //         'default' => $defaults['room_address'],
-        //         'type'  => 'checkbox'
-        //     ],
-        //     // [
-        //     //     'name'  => 'room_floorplan',
-        //     //     'label' => __('Print floor plan', 'rrze-pieksy'),
-        //     //     'default' => $defaults['room_floorplan'],
-        //     //     'type'  => 'checkbox'
-        //     // ],
-        // ],
         'reset' => [
             [
                 'name'  => 'reset_settings',
@@ -560,23 +448,6 @@ function getShortcodeSettings(){
             ],
 
         ],
-        // 'pieksy-qr' => [
-        //     'block' => [
-        //         'blocktype' => 'rrze-pieksy/pieksy-qr', // dieser Wert muss angepasst werden
-        //         'blockname' => 'pieksy-qr', // dieser Wert muss angepasst werden
-        //         'title' => 'Pieksy QR', // Der Titel, der in der Blockauswahl im Gutenberg Editor angezeigt wird
-        //         'category' => 'widgets', // Die Kategorie, in der der Block im Gutenberg Editor angezeigt wird
-        //         'icon' => 'admin-users',  // Das Icon des Blocks
-        //         'show_block' => 'content', // 'right' or 'content' : Anzeige des Blocks im Content-Bereich oder in der rechten Spalte
-        //         'message' => __( 'Find the settings on the right side', 'rrze-pieksy' ) // erscheint bei Auswahl des Blocks, wenn "show_block" auf 'right' gesetzt ist
-        //     ],
-        //     'seat' => [
-        //         'default' => 0,
-        //         'field_type' => 'text', // Art des Feldes im Gutenberg Editor
-        //         'label' => __( 'Seat ID', 'rrze-pieksy' ),
-        //         'type' => 'number' // Variablentyp der Eingabe
-        //     ],
-        // ]
     ];
 }
 
