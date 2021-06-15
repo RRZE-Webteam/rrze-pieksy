@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Pieksy
 Plugin URI:      https://github.com/RRZE-Webteam/rrze-pieksy
 Description:     FAU Reservation Tool for vaccinations
-Version:         1.0.0
+Version:         1.0.1
 Author:          RRZE-Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v2
