@@ -331,7 +331,7 @@ class Metaboxes
             'desc' => __('If SSO is enabled, the customer must log in via SSO in order to use the booking system.', 'rrze-pieksy'),
             'id'   => 'rrze-pieksy-room-sso-required',
             'type' => 'checkbox',
-            'default' => '',
+            'default' => true,
         ));
 
         $cmb_general->add_field(array(
@@ -352,7 +352,7 @@ class Metaboxes
             'desc' => __('Incoming bookings do <u>not</u> need to be confirmed by the booking managers.', 'rrze-pieksy'),
             'id'   => 'rrze-pieksy-room-auto-confirmation',
             'type' => 'checkbox',
-            'default' => '',
+            'default' => true,
             'classes' => ['hide-check-only']
         ));
 

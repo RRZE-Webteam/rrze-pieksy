@@ -9,6 +9,7 @@ Entfernt wurden die Funktionalitäten:
 - Equipments
 - Kontaktverfolgung
 - QR / PDF
+- Ein- und Auschecken
 
 Das Plugin ermöglicht das Reservieren und Stornieren von Impfterminen.
 

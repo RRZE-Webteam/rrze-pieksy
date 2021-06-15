@@ -123,11 +123,15 @@ class Actions
 				update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'cancelled');
 				$this->email->doEmail('bookingCancelled', 'customer', $bookingId, 'cancelled');
 			} elseif ($status == 'cancelled' && $action == 'restore') {
-                // if ($forceToConfirm) {
-                //     update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'customer-confirmed');
-                // } else {
-                    update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
-                // }
+				// Überprüfen ob bereits eine Buchung mit gleicher E-Mail-Adresse zu diesem Raum vorliegt
+				if (!empty($booking['room']) && !empty($booking['guest_email']) && Functions::isNotUniqueBooking($booking['room'], $booking['guest_email']) == FALSE){
+                    wp_die(
+                        __('This user already has a reservation.', 'rrze-pieksy'),
+                        __('Update Error', 'rrze-pieksy'),
+                        ['back_link' => true]
+                    );
+				}
+            	update_post_meta($bookingId, 'rrze-pieksy-booking-status', 'booked');
 			} elseif ((in_array($status, ['checked-out', 'confirmed']) || $bookingMode == 'check-only') && $action == 'checkin') {
 			    $now = current_time('timestamp');
                 $offset = 15 * MINUTE_IN_SECONDS;

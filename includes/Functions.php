@@ -641,7 +641,6 @@ class Functions
             }
             $availability[date('Y-m-d', $timestamp)][$start . '-' . $end] = $v;
         }
-//echo Helper::get_html_var_dump($availability);
         return $availability;
     }
 
@@ -879,7 +878,6 @@ class Functions
         $data = [];
 
         // Überprüfen ob bereits eine Buchung mit gleicher E-Mail-Adresse zu diesem Raum vorliegt
-
         // get seats for this room
         $seatIDs = get_posts([
             'post_type' => 'seat',
