@@ -1,1 +1,1 @@
-"use strict";jQuery(document).ready(function(t){t(".wrap .page-title-action").after("<a class='page-title-action' href='tools.php?page=rrze-pieksy-tools'>"+button_label+"</a>")});
+"use strict";jQuery(document).ready(function(e){e(".wrap .page-title-action").after("<a class='page-title-action' href='tools.php?page=rrze-pieksy-tools'>"+rrze_pieksy_seat.button_label+"</a>")});

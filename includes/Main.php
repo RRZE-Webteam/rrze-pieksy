@@ -145,7 +145,7 @@ class Main
 				plugin()->getVersion()
 			);
 
-			wp_localize_script('rrze-pieksy-seat', 'button_label', __('Create Seats', 'rrze-pieksy'));
+			wp_localize_script('rrze-pieksy-seat', 'rrze_pieksy_seat', ['button_label' => __('Create Seats', 'rrze-pieksy')]);
 		}
 	}
 
