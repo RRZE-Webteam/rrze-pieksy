@@ -31,7 +31,6 @@ class ICS
 		$dtstampFormat = Functions::dateFormat(current_time('timestamp')) . ' ' . Functions::timeFormat(current_time('timestamp'));
 
 		$timestamp = date('ymdHi', $booking['start']);
-		$uid = md5('BK TEST') . "@rrze-pieksy";
 		$dtstamp = date('Ymd\THis');
 		$dtstart = date('Ymd\THis', $booking['start']);
 		$dtend = date('Ymd\THis', $booking['end']);
