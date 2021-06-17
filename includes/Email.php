@@ -253,13 +253,6 @@ class Email
             $data['show_cancel_btn'] = false;
         }
 
-        // echo 'BK TEST here we are';
-        // echo '$status = ' . $status;
-        // echo '$mailContext = ' . $mailContext;
-        // $status = cancelled
-        // $mailContext = bookingCancelled
-        // exit;
-
         // ICS attachment
         $attachment = '';
         if ($status == 'confirmed' || $mailContext == 'newBooking' || $status == 'cancelled' || $mailContext == 'bookingCancelled') {
