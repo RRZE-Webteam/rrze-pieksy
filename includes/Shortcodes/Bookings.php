@@ -1085,7 +1085,7 @@ class Bookings extends Shortcodes {
             $response['time'] = $this->buildTimeslotSelect($roomID, $date, $time, $availability);
             if ($time && ($bookingMode != 'consultation')) {
                 $seatSelect = $this->buildSeatSelect($roomID, $date, $time, $seat, $availability);
-                $response['seat'] = $seatSelect . $seatInfo;
+                $response['seat'] = $seatSelect;
             }
         }
         wp_send_json($response);
