@@ -253,70 +253,18 @@ class Email
             $data['show_cancel_btn'] = false;
         }
 
-        // // CheckIn Button
-        // if ($showCheckinButton) {
-        //     $data['show_checkin_btn'] = true;
-        //     $data['checkin_url'] = Functions::bookingReplyUrl('checkin', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-        //     $data['checkin_btn'] = __('Check In', 'rrze-pieksy');
-        //     $data['checkin_btn_en'] = 'Check In';
-        //     $forceCheckin = isset($roomMeta['rrze-pieksy-room-force-to-checkin']) ? $roomMeta['rrze-pieksy-room-force-to-checkin'][0] : '';
-
-        //     if ($forceCheckin) {
-        //         $checkInTime = isset($roomMeta['rrze-pieksy-room-check-in-time']) ? $roomMeta['rrze-pieksy-room-check-in-time'][0] : '';
-        //         if ($checkInTime == '') {
-        //             $defaultCheckInTime = $this->settings->getDefault('general', 'check-in-time');
-        //             $settingsCheckInTime = $this->settings->getOption('general', 'check-in-time', $defaultCheckInTime, true);
-        //             $checkInTime = $settingsCheckInTime;
-        //         }
-        //         $bookingTimeStamp = $booking['booking_date_timestamp'];
-        //         $bookingStart = $booking['start'];
-        //         if ($bookingStart < $bookingTimeStamp) {
-        //             //Seat booked after beginning of timeslot
-        //             $timeStampCheckIn = $bookingTimeStamp + ($checkInTime * MINUTE_IN_SECONDS);
-        //         } else {
-        //             $timeStampCheckIn = $bookingStart + ($checkInTime * MINUTE_IN_SECONDS);
-        //         }
-        //         $checkInLimit = Functions::timeFormat($timeStampCheckIn);
-        //         $checkInLimit_en = date('g:i a', $timeStampCheckIn);
-        //         $data['checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
-        //         $data['checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
-        //         $data['alt_checkin_text'] = sprintf(__('Please check-in your booking on site until %s.', 'rrze-pieksy'), $checkInLimit);
-        //         $data['alt_checkin_text_en'] = sprintf('Please check-in your booking on site until %s.', $checkInLimit_en);
-        //     } else {
-        //         $data['checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
-        //         $data['checkin_text_en'] = 'Please check-in your booking on site.';
-        //         $data['alt_checkin_text'] = __('Please check-in your booking on site.', 'rrze-pieksy');
-        //         $data['alt_checkin_text_en'] = 'Please check-in your booking on site.';
-        //     }
-        // } else {
-        //     $data['show_checkin_btn'] = false;
-        // }
-
-        // // CheckOut Button
-        // if ($showCheckoutButton) {
-        //     $data['show_checkout_btn'] = true;
-        //     $data['checkout_url'] = Functions::bookingReplyUrl('checkout', sprintf('%s-%s-customer', $bookingId, $booking['start']), $bookingId);
-        //     $data['checkout_btn'] = __('Check Out', 'rrze-pieksy');
-        //     $data['checkout_btn_en'] = 'Check Out';
-        //     $data['checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
-        //     $data['checkout_text_en'] = 'Please check out when you leave the site.';
-        //     $data['alt_checkout_text'] = __('Please check out when you leave the site.', 'rrze-pieksy');
-        //     $data['alt_checkout_text_en'] = 'Please check out when you leave the site.';
-        // } else {
-        //     $data['show_checkout_btn'] = false;
-        // }
-
-        // if ($showCheckinButton || $showCheckoutButton) {
-        //     $data['show_check_btns'] = true;
-        // } else {
-        //     $data['show_check_btns'] = false;
-        // }
+        // echo 'BK TEST here we are';
+        // echo '$status = ' . $status;
+        // echo '$mailContext = ' . $mailContext;
+        // $status = cancelled
+        // $mailContext = bookingCancelled
+        // exit;
 
         // ICS attachment
         $attachment = '';
-        if ($status == 'confirmed' || $mailContext == 'newBooking') {
+        if ($status == 'confirmed' || $mailContext == 'newBooking' || $status == 'cancelled' || $mailContext == 'bookingCancelled') {
             $icsFilename = sprintf('%s-%s.ics', sanitize_title($booking['room_name']), date('YmdHi', $booking['start']));
-            $icsContent = ICS::generate($bookingId, $icsFilename);
+            $icsContent = ICS::generate($booking, $icsFilename);
             $attachment = $this->tempFile($icsFilename, $icsContent);
         }
 
@@ -344,7 +292,7 @@ class Email
             $altMessage = $this->template->getContent('email/email.txt', $data);
 
             $icsFilename = sprintf('%s-%s-copy.ics', sanitize_title($booking['room_name']), date('YmdHi', $booking['start']));
-            $icsContent = ICS::generate($bookingId, $icsFilename, 'send-to-email');
+            $icsContent = ICS::generate($booking, $icsFilename, 'send-to-email');
             $attachment = $this->tempFile($icsFilename, $icsContent);
 
             $this->send($sendToEmail, $subject, $message, $altMessage, $attachment);
